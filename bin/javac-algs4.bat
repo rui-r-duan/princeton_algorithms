@@ -8,4 +8,6 @@
 :: code)
 :: ***************************************************
 
-"%JAVA_HOME%"\bin\javac -cp ".;stdlib.jar;algs4.jar" -g -encoding UTF-8 -Xlint:all %*
+set INSTALLDIR=%USERPROFILE%\code\PrincetonAlgorithms
+
+"%JAVA_HOME%"\bin\javac -cp ".;%INSTALLDIR%\stdlib.jar;%INSTALLDIR%\algs4.jar" -g -encoding UTF-8 -Xlint:all %*

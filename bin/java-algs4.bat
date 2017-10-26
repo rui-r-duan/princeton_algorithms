@@ -8,4 +8,6 @@
 :: code)
 :: ***************************************************
 
-java -cp ".;stdlib.jar;algs4.jar" %*
+set INSTALLDIR=%USERPROFILE%\code\PrincetonAlgorithms
+
+java -cp ".;%INSTALLDIR%\stdlib.jar;%INSTALLDIR%\algs4.jar" %*
