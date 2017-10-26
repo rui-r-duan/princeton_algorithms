@@ -10,4 +10,4 @@
 
 INSTALLDIR=~/code/PrincetonAlgorithms
 
-java -cp ".;$INSTALLDIR/stdlib.jar;$INSTALLDIR/algs4.jar" $*
+java -cp ".:$INSTALLDIR/stdlib.jar:$INSTALLDIR/algs4.jar" $*
