@@ -31,8 +31,11 @@ public class Binomial {
     // slow
     public static double binomial1(int N, int k, double p) {
         recursiveCallCount++;
+        // System.out.println(N + " " + k);
         if (N == 0 && k == 0) return 1.0;
         if (N < 0 || k < 0) return 0.0;
+        // We can add the following base case:
+        if (N < k) return 0.0;
         return (1.0 - p) *binomial1(N-1, k, p) + p*binomial1(N-1, k-1, p);
     }
 
@@ -41,12 +44,16 @@ public class Binomial {
         double[][] b = new double[N+1][k+1];
 
         // base cases
-        for (int i = 0; i <= N; i++)
+        // for (int i = 0; i <= N; i++)
+        // i can start from 1 to avoid calculating b[0][0] twice
+        for (int i = 1; i <= N; i++)
             b[i][0] = Math.pow(1.0 - p, i);
         b[0][0] = 1.0;
 
         // recursive formula
         for (int i = 1; i <= N; i++) {
+            // for (int j = 1; j <= Math.min(i, k); j++) {
+            // Use j <= k is safe, because when i > k, b[i][k] = 0
             for (int j = 1; j <= k; j++) {
                 b[i][j] = p * b[i-1][j-1] + (1.0 - p) *b[i-1][j];
             }
