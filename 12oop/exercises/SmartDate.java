@@ -2,36 +2,45 @@
  * Compilation:  javac-algs4 SmartDate.java
  * Execution:    java-algs4 SmartDate
  * Dependencies: StdOut.java
- * 
- * Develop an implementation SmartDate of the Date API in the book algs4
+ *
+ * 1. Develop an implementation SmartDate of the Date API in the book algs4
  * that raises an exception if the date is not legal.
- * 
+ *
+ * 2. Add a method dayOfTheWeek() to SmartDate that returns a String value
+ * Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, or Sunday, giving
+ * the appropriate day of the week for the date. You may assume that the date
+ * is in the 21st century.
+ *
  * An immutable data type for dates.
- * 
+ *
  *****************************************************************************/
 
 /**
  *  The {@code SmartDate} class is an immutable data type to encapsulate a
  *  date (day, month, and year).
  *  <p>
- *  For additional documentation, 
- *  see <a href="https://algs4.cs.princeton.edu/12oop">Section 1.2</a> of 
- *  <i>Algorithms, 4th Edition</i> by Robert Sedgewick and Kevin Wayne. 
+ *  For additional documentation,
+ *  see <a href="https://algs4.cs.princeton.edu/12oop">Section 1.2</a> of
+ *  <i>Algorithms, 4th Edition</i> by Robert Sedgewick and Kevin Wayne.
  *
  *  This implementation is based on class Date that is implemented by
  *  Robert Sedgewick and Kevin Wayne.
- * 
+ *
  *  @author Ryan Duan
  */
 public class SmartDate implements Comparable<SmartDate> {
     private static final int[] DAYS = {
         0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
     };
-    
+    private static final String[] WEEKDAYS = {
+        "Monday", "Tuesday", "Wednesday", "Thursday", "Friday",
+        "Saturday", "Sunday"
+    };
+
     private final int month; // between 1 and 12
     private final int day;   // between 1 and DAYS[month]
     private final int year;
-    
+
     /**
      * Initializes a new date from the month, day, and year.
      * @param m the month (between 1 and 12)
@@ -50,7 +59,7 @@ public class SmartDate implements Comparable<SmartDate> {
         day = d;
         year = y;
     }
-    
+
     /**
      * Returns the month.
      * @return the month (an integer between 1 and 12)
@@ -58,7 +67,7 @@ public class SmartDate implements Comparable<SmartDate> {
     public int month() {
         return month;
     }
-    
+
     /**
      * Returns the day.
      * @return the day (an integer between 1 and 31)
@@ -66,7 +75,7 @@ public class SmartDate implements Comparable<SmartDate> {
     public int day() {
         return day;
     }
-    
+
     /**
      * Returns the year.
      * @return the year
@@ -74,7 +83,7 @@ public class SmartDate implements Comparable<SmartDate> {
     public int year() {
         return year;
     }
-    
+
     // Is the given date valid?
     private static boolean isValid(int m, int d, int y) {
         if (m < 1 || m > 12)      return false;
@@ -82,14 +91,30 @@ public class SmartDate implements Comparable<SmartDate> {
         if (m == 2 && d == 29 && !isLeapYear(y)) return false;
         return true;
     }
-    
+
     // Is y a leap year?
     private static boolean isLeapYear(int y) {
         if (y % 400 == 0) return true;
         if (y % 100 == 0) return false;
         return y % 4 == 0;
     }
-        
+
+    public String dayOfTheWeek() {
+        int d = this.day;
+        int m = this.month;
+        int y = this.year;
+
+        if (m < 3) {
+            m += 12;
+            y--;
+        }
+        // Variance of Zeller's formula
+        // http://www.cnblogs.com/mq0036/p/3534314.html
+        // https://en.wikipedia.org/wiki/Determination_of_the_day_of_the_week
+        int w = (d + 2*m + 3*(m+1)/5 + y + y/4 - y/100 + y/400) % 7;
+        return WEEKDAYS[w]; // w = 1 : MONDAY, w = 7 : SUNDAY
+    }
+
     /**
      * Compares two dates chronologically.
      *
@@ -118,17 +143,20 @@ public class SmartDate implements Comparable<SmartDate> {
     public String toString() {
         return month() + "/" + day() + "/" + year();
     }
-    
+
     /**
      * Unit tests the {@code SmartDate} data type.
-     * Enumerate all possible combinations for the tuple (m,d,y)
-     * where m ranges [0,16], d ranges [-1,32], y ranges [-235,2017].
+     *
+     * 1. Enumerate all possible combinations for the tuple (m,d,y)
+     * where m ranges [0,16], d ranges [-1,32], y ranges [-1,2017].
+     *
+     * 2. Test dayOfWeek().
      *
      * @param args the command-line arguments
      */
     public static void main(String[] args) {
         SmartDate date;
-        for (int y = -235; y <= 2017; y++) {
+        for (int y = -1; y <= 2017; y++) {
             for (int m = 0; m <= 16; m++) {
                 for (int d = -1; d <= 32; d++) {
                     try {
@@ -140,6 +168,9 @@ public class SmartDate implements Comparable<SmartDate> {
                 }
             }
         }
+
+        date = new SmartDate(11, 1, 2017);
+        StdOut.println(date + ": " + date.dayOfTheWeek());
     }
 
 }
