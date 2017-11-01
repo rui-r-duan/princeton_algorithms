@@ -2,9 +2,9 @@
 Solutions to the exercises are in the "exercises" directories.
 
 ## Reference
-https://github.com/kevin-wayne/algs4/
-
-https://github.com/mbhushan/algoz
+* https://github.com/kevin-wayne/algs4/
+* https://github.com/mbhushan/algoz
+* https://github.com/ikesnowy/Algorithms-4th-Edition-in-Csharp
 
 ## Set up the development environment
 
