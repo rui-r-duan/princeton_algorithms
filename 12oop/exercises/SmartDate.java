@@ -61,6 +61,23 @@ public class SmartDate implements Comparable<SmartDate> {
     }
 
     /**
+     * Initializes new date specified as a string in form MM/DD/YYYY.
+     * @param date the string representation of this date
+     * @throws IllegalArgumentException if this date is invalid
+     */
+    public SmartDate(String date) {
+        String[] fields = date.split("/");
+        if (fields.length != 3) {
+            throw new IllegalArgumentException("Invalid date: " + date);
+        }
+        month = Integer.parseInt(fields[0]);
+        day   = Integer.parseInt(fields[1]);
+        year  = Integer.parseInt(fields[2]);
+        if (!isValid(month, day, year))
+            throw new IllegalArgumentException("Invalid date: " + date);
+    }
+
+    /**
      * Returns the month.
      * @return the month (an integer between 1 and 12)
      */
