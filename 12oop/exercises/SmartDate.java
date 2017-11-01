@@ -11,6 +11,9 @@
  * the appropriate day of the week for the date. You may assume that the date
  * is in the 21st century.
  *
+ * 3. Parsing. Add a constructor to parse a String to SmartDate. For example
+ * "5/22/1939" is parsed as SmartDate(month=5,day=22,year=1939).
+ *
  * An immutable data type for dates.
  *
  *****************************************************************************/

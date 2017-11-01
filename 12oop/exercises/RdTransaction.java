@@ -1,5 +1,8 @@
 /******************************************************************************
  * Immutable transaction data type
+ *
+ * @author Ryan Duan
+ *
  *****************************************************************************/
 
 public class RdTransaction implements Comparable<RdTransaction> {
