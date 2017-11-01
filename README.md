@@ -1,4 +1,5 @@
 # PrincetonAlgorithms
+Solutions to the exercises are in the "exercises" directories.
 
 ## Reference
 https://github.com/kevin-wayne/algs4/
