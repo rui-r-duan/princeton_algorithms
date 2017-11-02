@@ -2,6 +2,16 @@
  *
  * Immutable data type for rational numbers.
  *
+ * It is better to raise an Exception than using an assertion to check
+ * overflow.
+ *
+ * Reference: Google's Guava Library
+ * https://github.com/google/guava/blob/master/guava/src/com/google/common/math/MathPreconditions.java
+ * https://github.com/google/guava/blob/master/guava/src/com/google/common/math/LongMath.java
+ *
+ * In C#, we can use "checked" keyword on a code block to check the arithmetic
+ * overflow.
+ *
  ******************************************************************************/
 
 public class Rational {
@@ -25,8 +35,7 @@ public class Rational {
         if (denominator == 0) {
             throw new IllegalArgumentException("denominator cannot be zero");
         }
-        boolean isNegative = (numerator < 0 && denominator > 0)
-            || (numerator > 0 && denominator < 0);
+        boolean isNegative = ((numerator ^ denominator) < 0);
         n = Math.abs(numerator);
         d = Math.abs(denominator);
         long gcd = gcd(n, d);
@@ -39,26 +48,28 @@ public class Rational {
     }
 
     public Rational plus(Rational that) {
-        long nn = n * that.d + that.n * d;
-        long dd = d * that.d;
+        long nn = LongMath.checkedAdd(LongMath.checkedMultiply( n, that.d ),
+                                      LongMath.checkedMultiply( that.n, d ));
+        long dd = LongMath.checkedMultiply(d, that.d);
         return new Rational(nn, dd);
     }
 
     public Rational minus(Rational that) {
-        long nn = n * that.d - that.n * d;
-        long dd = d * that.d;
+        long nn = LongMath.checkedSubtract(LongMath.checkedMultiply( n, that.d ),
+                                           LongMath.checkedMultiply( that.n, d ));
+        long dd = LongMath.checkedMultiply(d, that.d);
         return new Rational(nn, dd);
     }
 
     public Rational times(Rational that) {
-        long nn = n * that.n;
-        long dd = d * that.d;
+        long nn = LongMath.checkedMultiply(n, that.n);
+        long dd = LongMath.checkedMultiply(d, that.d);
         return new Rational(nn, dd);
     }
 
     public Rational dividedBy(Rational that) {
-        long nn = n * that.d;
-        long dd = d * that.n;
+        long nn = LongMath.checkedMultiply(n, that.d);
+        long dd = LongMath.checkedMultiply(d, that.n);
         return new Rational(nn, dd);
     }
 
@@ -82,11 +93,19 @@ public class Rational {
     /**
      * Euclid's algorithm to compute the Greates Common Divisor of
      * two nonnegative integers p and q.
+     *
+     * If {@code p == 0} && {@code q == 0}, then return 0.
      */
     public static long gcd(long p, long q) {
         // if (q == 0) return p;
         // long r = p % q;
         // return gcd(q, r);
+        if (p == 0) {
+            return q;
+        }
+        else if (q == 0) {
+            return p;
+        }
         long r;
         while (q != 0) {
             r = p % q;
