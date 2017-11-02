@@ -5,9 +5,8 @@
  ******************************************************************************/
 
 public class Rational {
-    private long n;             // numerator (>= 0)
+    private long n;             // numerator (it can > 0 or < 0 or == 0)
     private long d;             // denominator (> 0)
-    private boolean sign;       // true: posivie or zero; false: negative
 
     /**
      * Make an instance of class Rational.
@@ -26,44 +25,40 @@ public class Rational {
         if (denominator == 0) {
             throw new IllegalArgumentException("denominator cannot be zero");
         }
-        sign = (numerator >= 0 && denominator > 0)
-            || (numerator <= 0 && denominator < 0);
+        boolean isNegative = (numerator < 0 && denominator > 0)
+            || (numerator > 0 && denominator < 0);
         n = Math.abs(numerator);
         d = Math.abs(denominator);
         long gcd = gcd(n, d);
         n /= gcd;
         d /= gcd;
+        // put the negative information in the numerator
+        if (isNegative) {
+            n = -n;
+        }
     }
-    
+
     public Rational plus(Rational that) {
-        long n1 = (sign ? n : -n);
-        long n2 = (that.sign ? that.n : -that.n);
-        long nn = n1 * that.d + n2 * d;
+        long nn = n * that.d + that.n * d;
         long dd = d * that.d;
         return new Rational(nn, dd);
     }
 
     public Rational minus(Rational that) {
-        long n1 = (sign ? n : -n);
-        long n2 = (that.sign ? that.n : -that.n);
-        long nn = n1 * that.d - n2 * d;
+        long nn = n * that.d - that.n * d;
         long dd = d * that.d;
         return new Rational(nn, dd);
     }
 
     public Rational times(Rational that) {
-        long n1 = (sign ? n : -n);
-        long n2 = (that.sign ? that.n : -that.n);
-        long nn = n1 * n2;
+        long nn = n * that.n;
         long dd = d * that.d;
         return new Rational(nn, dd);
     }
 
     public Rational dividedBy(Rational that) {
-        long n1 = (sign ? n : -n);
-        long n2 = (that.sign ? that.n : -that.n);
-        long nn = n1 * that.d;
-        long dd = d * n2;
+        long nn = n * that.d;
+        long dd = d * that.n;
         return new Rational(nn, dd);
     }
 
@@ -73,16 +68,15 @@ public class Rational {
         if (that == null) return false;
         if (this.getClass() != that.getClass()) return false;
         Rational t = (Rational)that;
-        return (n == t.n) && (d == t.d) && (sign == t.sign);
+        return (n == t.n) && (d == t.d);
     }
 
     @Override
     public String toString() {
-        String signString = (sign ? "" : "-");
         if (d == 1)
-            return signString + n;
+            return n + "";
         else
-            return signString + n + "/" + d;
+            return n + "/" + d;
     }
 
     /**
