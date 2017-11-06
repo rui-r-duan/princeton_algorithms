@@ -1,5 +1,3 @@
-import edu.princeton.cs.algs4.StdRandom;
-import edu.princeton.cs.algs4.StdStats;
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 public class Percolation {
@@ -122,11 +120,11 @@ public class Percolation {
     }
     
     private void connect(int[] s, int[] t) {
-        StdOut.println("connect [" + s[0] + "," + s[1] + "] and ["
-                           + t[0] + "," + t[1] + "]");
+//        StdOut.println("connect [" + s[0] + "," + s[1] + "] and ["
+//                           + t[0] + "," + t[1] + "]");
         int si = getUFIndex(s);
         int ti = getUFIndex(t);
-        StdOut.println("union(" + si + "," + ti + ")");
+//        StdOut.println("union(" + si + "," + ti + ")");
         wquf.union(si, ti);
     }
     
@@ -139,7 +137,7 @@ public class Percolation {
     // blocked site: '*'
     // open site:    'o'
     // full site:    '+'
-    private void print() {
+    public void print() {
         for (int i = 1; i <= n; i++) {
             for (int j = 1; j <= n; j++) {
                 if (isFull(i, j)) {
