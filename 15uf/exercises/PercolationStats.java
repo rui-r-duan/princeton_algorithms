@@ -1,5 +1,6 @@
 import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.StdStats;
+import edu.princeton.cs.algs4.Stopwatch;
 
 public class PercolationStats {
     private Percolation p;
@@ -23,10 +24,6 @@ public class PercolationStats {
                 int r = StdRandom.uniform(1, n+1);
                 int c = StdRandom.uniform(1, n+1);
                 p.open(r, c);
-//                StdOut.println(r + "," + c);
-//                StdOut.println(p.numberOfOpenSites());
-//                p.print();
-//                StdOut.println();
             }
             x[i] = (double)p.numberOfOpenSites() / totalSites;
         }
@@ -71,10 +68,13 @@ public class PercolationStats {
     public static void main(String[] args) {
         int n = Integer.parseInt(args[0]);
         int trials = Integer.parseInt(args[1]);
+        Stopwatch stopwatch = new Stopwatch();
         PercolationStats stats = new PercolationStats(n, trials);
+        double elapsedTime = stopwatch.elapsedTime();
         StdOut.printf("%-23s = %.16f\n", "mean", stats.mean());
         StdOut.printf("%-23s = %.18f\n", "stddev", stats.stddev());
         StdOut.printf("%-23s = [%.16f, %.16f]\n", "95% confidence interval",
                       stats.confidenceLo(), stats.confidenceHi());
+        StdOut.printf("elapsedTime = %f\n", elapsedTime);
     }
 }
