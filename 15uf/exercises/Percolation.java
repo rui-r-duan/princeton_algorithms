@@ -14,6 +14,9 @@ public class Percolation {
      * create n-by-n grid, with all sites blocked
      */
     public Percolation(int n) {
+        if (n <= 0) {
+            throw new IllegalArgumentException("invalid n, n must be positive");
+        }
         this.n = n;
         grid = new int[n][n];
 
@@ -99,7 +102,7 @@ public class Percolation {
         if (row == 1) {
             wquf.union(getUFIndex(currentSite), top);
         }
-        if (row == n) {
+        if (row == n && isFull(row, col)) {
             wquf.union(getUFIndex(currentSite), bottom);
         }
         int[] upIndex = new int[] { row-1, col };
@@ -120,11 +123,8 @@ public class Percolation {
     }
     
     private void connect(int[] s, int[] t) {
-//        StdOut.println("connect [" + s[0] + "," + s[1] + "] and ["
-//                           + t[0] + "," + t[1] + "]");
         int si = getUFIndex(s);
         int ti = getUFIndex(t);
-//        StdOut.println("union(" + si + "," + ti + ")");
         wquf.union(si, ti);
     }
     
