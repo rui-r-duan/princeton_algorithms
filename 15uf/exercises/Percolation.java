@@ -40,9 +40,11 @@ public class Percolation {
         if (!siteExists(row, col)) {
             throw new IllegalArgumentException("illegal index");
         }
-        grid[row-1][col-1] = 1;
-        numberOfOpenSites++;
-        connectNeighbors(row, col);
+        if (grid[row-1][col-1] == 0) {
+            grid[row-1][col-1] = 1;
+            numberOfOpenSites++;
+            connectNeighbors(row, col);
+        }
     }
 
     /**
@@ -52,7 +54,7 @@ public class Percolation {
         if (!siteExists(row, col)) {
             throw new IllegalArgumentException("illegal index");
         }
-        return grid[row-1][col-1] == 1;
+        return (grid[row-1][col-1] == 1) || grid[row-1][col-1] == 2;
     }
 
     /**
@@ -63,13 +65,18 @@ public class Percolation {
             throw new IllegalArgumentException("illegal index");
         }
         int currentSite = getUFIndex(new int[] { row, col });
-        if (isOpen(row, col)
-                && wquf.connected(top, currentSite)) {
-            grid[row-1][col-1] = 2;
+        if (grid[row-1][col-1] == 2) {
             return true;
         }
         else {
-            return false;
+            if (isOpen(row, col)
+                    && wquf.connected(top, currentSite)) {
+                grid[row-1][col-1] = 2;
+                return true;
+            }
+            else {
+                return false;
+            }
         }
     }
 
@@ -153,7 +160,7 @@ public class Percolation {
      * test client
      */
     public static void main(String[] args) {
-        int n = Integer.parseInt(args[0]);
+        int n = 5;
         StdOut.println("Grid One:");
         Percolation percolation = new Percolation(n);
         for (int i = 1; i <= n; i++) {
@@ -169,6 +176,7 @@ public class Percolation {
         for (int i = 1; i < n; i++) {
             percolation.open(i, 2);
         }
+        percolation.open(1, 1);
         percolation.open(1, 1);
         percolation.open(5, 5);
         percolation.print();
