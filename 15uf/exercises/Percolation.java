@@ -8,7 +8,7 @@ public class Percolation {
     private int numberOfOpenSites;
     private int top;            // index of the virtual site 'top' in WQUF
     private int bottom;         // index of the virtual site 'bottom' in WQUF
-    
+
 
     /**
      * create n-by-n grid, with all sites blocked
@@ -49,9 +49,8 @@ public class Percolation {
         // Check each bottom site to see if they are full or not.
         // If they are full, then connect them to the virtual bottom site.
         for (int i = 1; i <= n; i++) {
-            if (isOpen(n, i) && isFull(n, i)) {
-                int[] currentSite = new int[] { n, i };
-                wquf.union(getUFIndex(currentSite), bottom);
+            if (uncheckedIsFull(n, i)) {
+                wquf.union(getUFIndex(n, i), bottom);
             }
         }
     }
@@ -63,6 +62,10 @@ public class Percolation {
         if (!siteExists(row, col)) {
             throw new IllegalArgumentException("illegal index");
         }
+        return uncheckedIsOpen(row, col);
+    }
+
+    private boolean uncheckedIsOpen(int row, int col) {
         return (grid[row-1][col-1] == 1) || grid[row-1][col-1] == 2;
     }
 
@@ -73,12 +76,16 @@ public class Percolation {
         if (!siteExists(row, col)) {
             throw new IllegalArgumentException("illegal index");
         }
-        int currentSite = getUFIndex(new int[] { row, col });
+        return uncheckedIsFull(row, col);
+    }
+
+    private boolean uncheckedIsFull(int row, int col) {
+        int currentSite = getUFIndex(row, col);
         if (grid[row-1][col-1] == 2) {
             return true;
         }
         else {
-            if (isOpen(row, col)
+            if (uncheckedIsOpen(row, col)
                     && wquf.connected(top, currentSite)) {
                 grid[row-1][col-1] = 2;
                 return true;
@@ -106,52 +113,49 @@ public class Percolation {
     // @pre: the current site (row,col) must be open
     private void connectNeighbors(int row, int col) {
         assert isOpen(row, col);
-        int[] currentSite = new int[] { row, col };
         if (row == 1) {
-            wquf.union(getUFIndex(currentSite), top);
+            wquf.union(getUFIndex(row, col), top);
         }
-        if (row == n && isFull(row, col)) {
-            wquf.union(getUFIndex(currentSite), bottom);
+        if (row == n && uncheckedIsFull(row, col)) {
+            wquf.union(getUFIndex(row, col), bottom);
         }
-        int[] upIndex = new int[] { row-1, col };
-        int[] downIndex = new int[] { row+1, col };
-        int[] leftIndex = new int[] { row, col-1 };
-        int[] rightIndex = new int[] { row, col+1 };
-        int[][] neighbors = { upIndex, downIndex, leftIndex, rightIndex };
 
-        for (int[] s : neighbors) {
-            if (siteExists(s[0], s[1]) && isOpen(s[0], s[1])) {
-                connect(currentSite, s);
+        // up, down, let, right
+        int[] neighborRows = { row-1, row+1, row, row };
+        int[] neighborCols = { col, col, col-1, col+1 };
+
+        for (int i = 0; i < neighborRows.length; i++) {
+            if (siteExists(neighborRows[i], neighborCols[i])
+                    && uncheckedIsOpen(neighborRows[i], neighborCols[i])) {
+                connect(row, col, neighborRows[i], neighborCols[i]);
             }
         }
     }
-    
+
     private boolean siteExists(int r, int c) {
         return (r > 0) && (r <= n) && (c > 0) && (c <= n);
     }
-    
-    private void connect(int[] s, int[] t) {
-        int si = getUFIndex(s);
-        int ti = getUFIndex(t);
+
+    private void connect(int r1, int c1, int r2, int c2) {
+        int si = getUFIndex(r1, c1);
+        int ti = getUFIndex(r2, c2);
         wquf.union(si, ti);
     }
-    
-    private int getUFIndex(int[] siteIndex) {
-        int r = siteIndex[0] - 1;
-        int c = siteIndex[1] - 1;
-        return r * n + c;
+
+    private int getUFIndex(int row, int col) {
+        return (row - 1) * n + (col - 1);
     }
-    
+
     // blocked site: '*'
     // open site:    'o'
     // full site:    '+'
     public void print() {
         for (int i = 1; i <= n; i++) {
             for (int j = 1; j <= n; j++) {
-                if (isFull(i, j)) {
+                if (uncheckedIsFull(i, j)) {
                     StdOut.print("+ ");
                 }
-                else if (isOpen(i, j)) {
+                else if (uncheckedIsOpen(i, j)) {
                     StdOut.print("o ");
                 }
                 else {
@@ -161,7 +165,7 @@ public class Percolation {
             StdOut.print("\n");
         }
     }
-    
+
     /**
      * test client
      */
@@ -175,7 +179,7 @@ public class Percolation {
         percolation.print();
         StdOut.println(percolation.percolates());
         StdOut.println("numberOfOpenSites=" + percolation.numberOfOpenSites());
-        
+
         StdOut.println();
         StdOut.println("Grid Two:");
         percolation = new Percolation(n);
