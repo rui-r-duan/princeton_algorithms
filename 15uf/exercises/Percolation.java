@@ -46,6 +46,14 @@ public class Percolation {
             numberOfOpenSites++;
             connectNeighbors(row, col);
         }
+        // Check each bottom site to see if they are full or not.
+        // If they are full, then connect them to the virtual bottom site.
+        for (int i = 1; i <= n; i++) {
+            if (isOpen(n, i) && isFull(n, i)) {
+                int[] currentSite = new int[] { n, i };
+                wquf.union(getUFIndex(currentSite), bottom);
+            }
+        }
     }
 
     /**
