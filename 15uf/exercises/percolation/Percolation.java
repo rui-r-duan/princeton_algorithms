@@ -46,13 +46,6 @@ public class Percolation {
             numberOfOpenSites++;
             connectNeighbors(row, col);
         }
-        // Check each bottom site to see if they are full or not.
-        // If they are full, then connect them to the virtual bottom site.
-        for (int i = 1; i <= n; i++) {
-            if (uncheckedIsFull(n, i)) {
-                wquf.union(getUFIndex(n, i), bottom);
-            }
-        }
     }
 
     /**
@@ -79,6 +72,8 @@ public class Percolation {
         return uncheckedIsFull(row, col);
     }
 
+    // Caution: if site[row][col] is full, this function changes its
+    // internal state!
     private boolean uncheckedIsFull(int row, int col) {
         int currentSite = getUFIndex(row, col);
         if (grid[row-1][col-1] == 2) {
@@ -116,7 +111,7 @@ public class Percolation {
         if (row == 1) {
             wquf.union(getUFIndex(row, col), top);
         }
-        if (row == n && uncheckedIsFull(row, col)) {
+        if (row == n) {
             wquf.union(getUFIndex(row, col), bottom);
         }
 
