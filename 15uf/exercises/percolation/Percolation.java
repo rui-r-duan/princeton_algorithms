@@ -4,7 +4,11 @@ public class Percolation {
     private final int n;
     // n by n grid. blocked site: 0, open site: 1, full site: 2
     private byte[][] grid;
-    private final WeightedQuickUnionUF wquf; // weighted quick union find algorithm
+    // union find algorithm object with Top and Bottom virtual site
+    private final WeightedQuickUnionUF ufTopBottom;
+    /* union find algorithm object with only Top virtual site
+       It is used to solve the backwash problem in isFull(). */
+    private final WeightedQuickUnionUF ufTop;
     private int numberOfOpenSites;
     private final int top;            // index of the virtual site 'top' in WQUF
     private final int bottom;         // index of the virtual site 'bottom' in WQUF
@@ -20,14 +24,22 @@ public class Percolation {
         this.n = n;
         grid = new byte[n][n];
 
-        // With two virtual nodes: top and bottom,
-        // to reduce the number of percolates() query.
-        // 
-        // indice 0 to n-1 in WQUF   <==> grid[0][0] to grid[n-1][n-1]
-        // index (i*n+j) in WQUF <==> grid[i][j]
-        // index (n*n+2-2) in WQUF         <==> virtual site 'top'
-        // index (n*n+2-1) in WQUF       <==> virtual site 'bottom'
-        wquf = new WeightedQuickUnionUF(n * n + 2);
+        /* With two virtual nodes: top and bottom,
+           to reduce the number of percolates() query.
+
+           indice 0 to n-1 in WQUF   <==> grid[0][0] to grid[n-1][n-1]
+           index (i*n+j) in WQUF     <==> grid[i][j]
+           index (n*n+2-2) in WQUF   <==> virtual site 'top'
+           index (n*n+2-1) in WQUF   <==> virtual site 'bottom' */
+        ufTopBottom = new WeightedQuickUnionUF(n * n + 2);
+
+        /* With two virtual nodes: top and bottom,
+           to reduce the number of percolates() query.
+
+           indice 0 to n-1 in WQUF   <==> grid[0][0] to grid[n-1][n-1]
+           index (i*n+j) in WQUF     <==> grid[i][j]
+           index (n*n+1-1) in WQUF   <==> virtual site 'top' */
+        ufTop = new WeightedQuickUnionUF(n * n + 1);
         top = n * n;
         bottom = top + 1;
 
@@ -72,16 +84,18 @@ public class Percolation {
         return uncheckedIsFull(row, col);
     }
 
-    // Caution: if site[row][col] is full, this function changes its
-    // internal state!
+    /* Caution: if site[row][col] is full, this function changes its
+       internal state! */
     private boolean uncheckedIsFull(int row, int col) {
         int currentSite = getUFIndex(row, col);
         if (grid[row-1][col-1] == 2) {
             return true;
         }
         else {
+            /* check ufTop instead of ufTopBottom to avoid
+               the backwash problem */
             if (uncheckedIsOpen(row, col)
-                    && wquf.connected(top, currentSite)) {
+                    && ufTop.connected(top, currentSite)) {
                 grid[row-1][col-1] = 2;
                 return true;
             }
@@ -102,17 +116,19 @@ public class Percolation {
      * does the system percolate?
      */
     public boolean percolates() {
-        return wquf.connected(top, bottom);
+        return ufTopBottom.connected(top, bottom);
     }
 
     // @pre: the current site (row,col) must be open
     private void connectNeighbors(int row, int col) {
         assert isOpen(row, col);
+        int ufIndexCurrentSite = getUFIndex(row, col);
         if (row == 1) {
-            wquf.union(getUFIndex(row, col), top);
+            ufTopBottom.union(ufIndexCurrentSite, top);
+            ufTop.union(ufIndexCurrentSite, top);
         }
         if (row == n) {
-            wquf.union(getUFIndex(row, col), bottom);
+            ufTopBottom.union(ufIndexCurrentSite, bottom);
         }
 
         // up, down, let, right
@@ -122,7 +138,7 @@ public class Percolation {
         for (int i = 0; i < neighborRows.length; i++) {
             if (siteExists(neighborRows[i], neighborCols[i])
                     && uncheckedIsOpen(neighborRows[i], neighborCols[i])) {
-                connect(row, col, neighborRows[i], neighborCols[i]);
+                connectSites(row, col, neighborRows[i], neighborCols[i]);
             }
         }
     }
@@ -131,10 +147,11 @@ public class Percolation {
         return (r > 0) && (r <= n) && (c > 0) && (c <= n);
     }
 
-    private void connect(int r1, int c1, int r2, int c2) {
+    private void connectSites(int r1, int c1, int r2, int c2) {
         int si = getUFIndex(r1, c1);
         int ti = getUFIndex(r2, c2);
-        wquf.union(si, ti);
+        ufTopBottom.union(si, ti);
+        ufTop.union(si, ti);
     }
 
     private int getUFIndex(int row, int col) {
