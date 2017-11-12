@@ -1,13 +1,13 @@
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 public class Percolation {
-    private int n;
+    private final int n;
     // n by n grid. blocked site: 0, open site: 1, full site: 2
-    private int[][] grid;
-    private WeightedQuickUnionUF wquf; // weighted quick union find algorithm
+    private byte[][] grid;
+    private final WeightedQuickUnionUF wquf; // weighted quick union find algorithm
     private int numberOfOpenSites;
-    private int top;            // index of the virtual site 'top' in WQUF
-    private int bottom;         // index of the virtual site 'bottom' in WQUF
+    private final int top;            // index of the virtual site 'top' in WQUF
+    private final int bottom;         // index of the virtual site 'bottom' in WQUF
 
 
     /**
@@ -18,11 +18,11 @@ public class Percolation {
             throw new IllegalArgumentException("invalid n, n must be positive");
         }
         this.n = n;
-        grid = new int[n][n];
+        grid = new byte[n][n];
 
         // With two virtual nodes: top and bottom,
         // to reduce the number of percolates() query.
-        //
+        // 
         // indice 0 to n-1 in WQUF   <==> grid[0][0] to grid[n-1][n-1]
         // index (i*n+j) in WQUF <==> grid[i][j]
         // index (n*n+2-2) in WQUF         <==> virtual site 'top'

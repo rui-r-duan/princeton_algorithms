@@ -2,11 +2,10 @@ import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.StdStats;
 
 public class PercolationStats {
-    private Percolation p;
-    private double mean;
-    private double stddev;
-    private double confidenceLo;
-    private double confidenceHi;
+    private final double mean;
+    private final double stddev;
+    private final double confidenceLo;
+    private final double confidenceHi;
 
     /**
      * perform trials independent experiments on an n-by-n grid
@@ -18,13 +17,13 @@ public class PercolationStats {
         double totalSites = n * n;
         double[] x = new double[trials]; // ratio=(#open)/total for each trial
         for (int i = 0; i < trials; i++) {
-            p = new Percolation(n);
+            Percolation p = new Percolation(n);
             while (!p.percolates()) {
                 int r = StdRandom.uniform(1, n+1);
                 int c = StdRandom.uniform(1, n+1);
                 p.open(r, c);
             }
-            x[i] = (double)p.numberOfOpenSites() / totalSites;
+            x[i] = (double) p.numberOfOpenSites() / totalSites;
         }
         mean = StdStats.mean(x);
         stddev = StdStats.stddev(x);
