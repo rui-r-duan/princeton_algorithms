@@ -1,0 +1,20 @@
+algs4.jar provides the following package and the example classes.
+
+* package
+edu.princeton.cs.algs4
+
+* classes
+Counter:	counter
+Point2D:	point
+Interval1D:	1d interval
+Interval2D:	2d interval
+Date:		date
+Transaction:	transaction
+Accumulator:	running average and stddev, mutable, stream computing
+In
+Out
+Draw
+StaticSETofInts:	set of integers
+Whitelist:	whitelist client
+Vector:		Euclidean vector, immutable
+RectHV:		axis-alighed rectangle
