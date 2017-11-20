@@ -1,0 +1,21 @@
+#!/usr/bin/bash
+
+# ***************************************************
+#
+# java-classmexer
+# ------------------
+# Wrapper for java that includes stdlib.jar, algs4.jar (including stdlib and
+# selected exercise code), classmexer.jar and Jama-1.0.3.jar
+#
+# Note: the -XX:-UseCompressedOops command-line option to ensure that the
+#  memory model is consistent with the 64-bit memory model from lecture.
+#  By default, java command is equivalent to -XX:+UseCompressedOops
+#
+#  https://wiki.openjdk.java.net/display/HotSpot/CompressedOops
+#  https://www.javamex.com/classmexer/
+#
+# ***************************************************
+
+INSTALLDIR=~/code/PrincetonAlgorithms
+
+java -cp ".:$INSTALLDIR/stdlib.jar:$INSTALLDIR/algs4.jar:$INSTALLDIR/classmexer.jar:$INSTALLDIR/Jama-1.0.3.jar" -XX:-UseCompressedOops -javaagent:"$INSTALLDIR/classmexer.jar" $*

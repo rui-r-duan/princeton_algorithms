@@ -1,0 +1,15 @@
+#!/usr/bin/bash
+
+# ***************************************************
+# javac-classmexer
+# ------------------
+# Wrapper for javac that includes stdlib.jar, and
+# algs4.jar (including stdlib and selected exercise
+# code)
+#
+# https://www.javamex.com/classmexer/
+# ***************************************************
+
+INSTALLDIR=~/code/PrincetonAlgorithms
+
+"$JAVA_HOME"/bin/javac -cp ".:$INSTALLDIR/stdlib.jar:$INSTALLDIR/algs4.jar:$INSTALLDIR/classmexer.jar:$INSTALLDIR/Jama-1.0.3.jar" -g -encoding UTF-8 -Xlint:all $*
