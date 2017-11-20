@@ -10,6 +10,6 @@
 # https://www.javamex.com/classmexer/
 # ***************************************************
 
-INSTALLDIR=~/code/PrincetonAlgorithms
+INSTALLDIR=~/code/princeton_algorithms
 
 "$JAVA_HOME"/bin/javac -cp ".:$INSTALLDIR/stdlib.jar:$INSTALLDIR/algs4.jar:$INSTALLDIR/classmexer.jar:$INSTALLDIR/Jama-1.0.3.jar" -g -encoding UTF-8 -Xlint:all $*

@@ -8,6 +8,6 @@
 # code)
 # ***************************************************
 
-INSTALLDIR=~/code/PrincetonAlgorithms
+INSTALLDIR=~/code/princeton_algorithms
 
 java -cp ".:$INSTALLDIR/stdlib.jar:$INSTALLDIR/algs4.jar" $*
