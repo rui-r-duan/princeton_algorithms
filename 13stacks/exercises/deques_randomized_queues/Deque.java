@@ -22,7 +22,25 @@
  *
  *   Throw a java.lang.UnsupportedOperationException if the client calls the
  * remove() method in the iterator.
-
+ *
+ * Execution Example:
+ * prefixes:
+ *  + addFirst
+ *  - removeFirst
+ *  * addLast
+ *  / removeLast
+ *
+ * % java Deque
+ * % +a *b +c / +d - - -
+    (1 left on queue): a
+    (2 left on queue): a b
+    (3 left on queue): c a b
+    b (2 left on queue): c a
+    (3 left on queue): d c a
+    d (2 left on queue): c a
+    c (1 left on queue): a
+    a (0 left on queue):
+ *
  ******************************************************************************/
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -213,15 +231,15 @@ public class Deque<Item> implements Iterable<Item> {
                 deque.addFirst(item.substring(1));
             }
             else if (item.equals("-")) {
-                deque.removeFirst();
+                StdOut.print(deque.removeFirst() + " ");
             }
             else if (item.startsWith("*")) {
                 deque.addLast(item.substring(1));
             }
             else if (item.equals("/")) {
-                deque.removeLast();
+                StdOut.print(deque.removeLast() + " ");
             }
-            StdOut.println("(" + deque.size() + " left on queue)");
+            StdOut.print("(" + deque.size() + " left on queue): ");
             for (String s : deque) {
                 StdOut.printf("%s ", s);
             }
