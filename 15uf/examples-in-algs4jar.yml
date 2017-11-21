@@ -1,0 +1,9 @@
+# algs4.jar provides the following package and the example classes.
+
+package: edu.princeton.cs.algs4
+
+classes:
+  - UF		# weighted quick-union by rank with path compression by halving
+  - QuickUnionUF	# quick-union algorithm
+  - QuickFindUF		# quick-find algorithm
+  - WeightedQuickUnionUF	# weighted quick-union without path compression

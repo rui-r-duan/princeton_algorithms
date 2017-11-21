@@ -1,0 +1,16 @@
+# algs4.jar provides the following package and the example classes.
+
+package: edu.princeton.cs.algs4
+
+classes:
+ - Stack
+ - LinkedStack
+ - ResizingArrayStack
+
+ - Queue
+ - LinkedQueue
+ - ResizingArrayQueue
+
+ - Bag
+ - LinkedBag
+ - ResizingArrayBag
