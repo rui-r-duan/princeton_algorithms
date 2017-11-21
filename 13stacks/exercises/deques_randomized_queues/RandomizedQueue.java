@@ -77,6 +77,9 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
      * add the item
      */
     public void enqueue(Item item) {
+        if (item == null)
+            throw new IllegalArgumentException("null item is not allowed");
+
         if (n == q.length) resize(2 * q.length); // double size if necessary
         q[last++] = item;    // add item, last never go out of the array bounds
         if (last == q.length) last = 0; // wrap-around
@@ -109,18 +112,12 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     }
 
     // generate a random index "between" index 'this.first' and 'this.last'
+    // @pre: the caller must make sure the queue is not empty
+    // @pre: (first + n) % q.length == last
     private int getValidRandomIndex() {
-        if (first < last) {
-            assert first + n == last;
-            return StdRandom.uniform(n) + first; // [first, last)
-        }
-        else if (first > last) { // last wrapped-around
-            return (StdRandom.uniform(n) + first) % q.length;
-        }
-        else {                  // first == last
-            assert isEmpty();
-            throw new NoSuchElementException("Queue underflow");
-        }
+        assert !isEmpty();
+        assert (first + n) % q.length == last;
+        return (StdRandom.uniform(n) + first) % q.length;
     }
 
     /**
@@ -136,8 +133,8 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
         public ArrayIterator() {
             indexPermutation = StdRandom.permutation(n);
-            for (int i = 0; i < n; i++) {
-                indexPermutation[i] = (indexPermutation[i] + first) % q.length;
+            for (int j = 0; j < n; j++) {
+                indexPermutation[j] = (indexPermutation[j] + first) % q.length;
             }
         }
 
