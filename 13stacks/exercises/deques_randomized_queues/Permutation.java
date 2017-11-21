@@ -35,22 +35,30 @@
  at most k.)
  ******************************************************************************/
 
-import java.util.Iterator;
 import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdOut;
+import edu.princeton.cs.algs4.StdRandom;
 
 public class Permutation {
     public static void main(String[] args) {
         int k = Integer.parseInt(args[0]);
         RandomizedQueue<String> rq = new RandomizedQueue<String>();
+        int i = 0;
         while (!StdIn.isEmpty()) {
             String s = StdIn.readString();
-            rq.enqueue(s);
+            if (i < k) {
+                rq.enqueue(s);
+                i++;
+            }
+            else {              // i >= k
+                String t = rq.dequeue();
+                if (StdRandom.bernoulli(0.5))
+                    rq.enqueue(s);
+                else
+                    rq.enqueue(t);
+            }
         }
-        Iterator<String> itr = rq.iterator();
-        while (k > 0) {
-            StdOut.println(itr.next());
-            k--;
-        }
+        for (String item : rq)
+            StdOut.println(item);
     }
 }

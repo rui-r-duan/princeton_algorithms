@@ -129,7 +129,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     private class ArrayIterator implements Iterator<Item> {
         private int i = 0;
-        private int[] indexPermutation; // random index permutation
+        private final int[] indexPermutation; // random index permutation
 
         public ArrayIterator() {
             indexPermutation = StdRandom.permutation(n);

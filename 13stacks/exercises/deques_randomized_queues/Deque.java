@@ -226,13 +226,13 @@ public class Deque<Item> implements Iterable<Item> {
         Deque<String> deque = new Deque<String>();
         while (!StdIn.isEmpty()) {
             String item = StdIn.readString();
-            if (item.startsWith("+")) {
+            if (item.charAt(0) == '+') {
                 deque.addFirst(item.substring(1));
             }
             else if (item.equals("-")) {
                 StdOut.print(deque.removeFirst() + " ");
             }
-            else if (item.startsWith("*")) {
+            else if (item.charAt(0) == '*') {
                 deque.addLast(item.substring(1));
             }
             else if (item.equals("/")) {
