@@ -33,6 +33,10 @@
  either one Deque or RandomizedQueue object of maximum size at most n. (For an
  extra challenge, use only one Deque or RandomizedQueue object of maximum size
  at most k.)
+
+ GOOD SOLUTION: RESERVOIR SAMPLING
+ https://en.wikipedia.org/wiki/Reservoir_sampling
+
  ******************************************************************************/
 
 import edu.princeton.cs.algs4.StdIn;
@@ -48,16 +52,13 @@ public class Permutation {
         int i = 0;
         while (!StdIn.isEmpty()) {
             String s = StdIn.readString();
-            if (i < k) {
+            i++;
+            if (i <= k) {
                 rq.enqueue(s);
-                i++;
             }
-            else {              // i >= k
-                String t = rq.dequeue();
-                if (StdRandom.bernoulli(0.5))
-                    rq.enqueue(s);
-                else
-                    rq.enqueue(t);
+            else if (StdRandom.uniform() < (double) k / i) { // i > k
+                rq.dequeue();
+                rq.enqueue(s);
             }
         }
         for (String item : rq)
