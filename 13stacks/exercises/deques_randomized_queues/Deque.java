@@ -13,14 +13,11 @@
  * Corner cases.  Throw the specified exception for the following corner cases:
  *   - Throw a java.lang.IllegalArgumentException if the client calls either
  * addFirst() or addLast() with a null argument.  
- *
  *   - Throw a java.util.NoSuchElementException if the client calls either
  * removeFirst() or removeLast when the deque is empty.
-
  *   - Throw a java.util.NoSuchElementException if the client calls the next()
  * method in the iterator when there are no more items to return.
- *
- *   Throw a java.lang.UnsupportedOperationException if the client calls the
+ *   - Throw a java.lang.UnsupportedOperationException if the client calls the
  * remove() method in the iterator.
  *
  * Execution Example:
