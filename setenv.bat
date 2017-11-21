@@ -1,1 +1,1 @@
-set PATH=%USERPROFILE%\code\PrincetonAlgorithms\bin;%PATH%
+set PATH=%USERPROFILE%\code\princeton_algorithms\bin;%PATH%
