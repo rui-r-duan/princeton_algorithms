@@ -34,9 +34,7 @@ import edu.princeton.cs.algs4.StdOut;
 
 public class RandomizedQueue<Item> implements Iterable<Item> {
     private Item[] q;           // queue elements
-    private int n;              // number of elements on queue
-    private int first;          // index of first element of queue
-    private int last;           // index of next available slot
+    private int n; // number of elements on queue, index of next available slot
 
     /**
      * construct an empty randomized queue
@@ -44,8 +42,6 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     public RandomizedQueue() {
         q = (Item[]) new Object[2];
         n = 0;
-        first = 0;
-        last = 0;
     }
 
     /**
@@ -66,11 +62,9 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         assert capacity >= n;
         Item[] temp = (Item[]) new Object[capacity];
         for (int i = 0; i < n; i++) {
-            temp[i] = q[(first + i) % q.length];
+            temp[i] = q[i % q.length];
         }
         q = temp;
-        first = 0;
-        last = n;
     }
 
     /**
@@ -81,9 +75,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
             throw new IllegalArgumentException("null item is not allowed");
 
         if (n == q.length) resize(2 * q.length); // double size if necessary
-        q[last++] = item;    // add item, last never go out of the array bounds
-        if (last == q.length) last = 0; // wrap-around
-        n++;
+        q[n++] = item;    // add item, last never go out of the array bounds
     }
 
     /**
@@ -91,13 +83,11 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
      */
     public Item dequeue() {
         if (isEmpty()) throw new NoSuchElementException("Queue underflow");
-        int randIndex = getValidRandomIndex();
+        int randIndex = getValidRandomIndex(); // [0, n)
         Item item = q[randIndex];             // get the item in slot randIndex
-        q[randIndex] = q[first]; // move the item in slot first to slot randIndex
-        q[first] = null;         // remove the first item, to avoid loitering
+        q[randIndex] = q[n-1]; // copy the tail item to slot randIndex
+        q[n-1] = null;         // remove the tail item, to avoid loitering
         n--;
-        first++;
-        if (first == q.length) first = 0; // wrap-around
         // shrink size of array if necessary
         if (n > 0 && n == q.length/4) resize(q.length/2);
         return item;
@@ -111,13 +101,9 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         return q[getValidRandomIndex()];
     }
 
-    // generate a random index "between" index 'this.first' and 'this.last'
-    // @pre: the caller must make sure the queue is not empty
-    // @pre: (first + n) % q.length == last
+    // generate a random index in the range [0, n)
     private int getValidRandomIndex() {
-        assert !isEmpty();
-        assert (first + n) % q.length == last;
-        return (StdRandom.uniform(n) + first) % q.length;
+        return StdRandom.uniform(n);
     }
 
     /**
@@ -133,9 +119,6 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
         public ArrayIterator() {
             indexPermutation = StdRandom.permutation(n);
-            for (int j = 0; j < n; j++) {
-                indexPermutation[j] = (indexPermutation[j] + first) % q.length;
-            }
         }
 
         public boolean hasNext() {
