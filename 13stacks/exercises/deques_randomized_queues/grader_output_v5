@@ -1,0 +1,1273 @@
+See the Assessment Guide for information on how to interpret this report.
+
+ASSESSMENT SUMMARY
+
+Compilation:  PASSED (0 errors, 2 warnings)
+API:          PASSED
+
+Findbugs:     PASSED
+PMD:          PASSED
+Checkstyle:   PASSED
+
+Correctness:  41/43 tests passed
+Memory:       106/105 tests passed
+Timing:       136/136 tests passed
+
+Aggregate score: 97.30%
+[Compilation: 5%, API: 5%, Findbugs: 0%, PMD: 0%, Checkstyle: 0%, Correctness: 60%, Memory: 10%, Timing: 20%]
+
+ASSESSMENT DETAILS
+
+The following files were submitted:
+----------------------------------
+7.8K Nov 21 06:48 Deque.java
+2.5K Nov 21 06:48 Permutation.java
+7.2K Nov 21 06:48 RandomizedQueue.java
+
+
+********************************************************************************
+*  COMPILING                                                                    
+********************************************************************************
+
+
+% javac Deque.java
+*-----------------------------------------------------------
+
+% javac RandomizedQueue.java
+*-----------------------------------------------------------
+RandomizedQueue.java:45: warning: [unchecked] unchecked cast
+        q = (Item[]) new Object[2];
+                     ^
+  required: Item[]
+  found:    Object[]
+  where Item is a type-variable:
+    Item extends Object declared in class RandomizedQueue
+RandomizedQueue.java:67: warning: [unchecked] unchecked cast
+        Item[] temp = (Item[]) new Object[capacity];
+                               ^
+  required: Item[]
+  found:    Object[]
+  where Item is a type-variable:
+    Item extends Object declared in class RandomizedQueue
+2 warnings
+
+% javac Permutation.java
+*-----------------------------------------------------------
+
+
+================================================================
+
+
+Checking the APIs of your programs.
+*-----------------------------------------------------------
+Deque:
+
+RandomizedQueue:
+
+Permutation:
+
+================================================================
+
+
+********************************************************************************
+*  CHECKING STYLE AND COMMON BUG PATTERNS                                       
+********************************************************************************
+
+
+% findbugs *.class
+*-----------------------------------------------------------
+
+
+================================================================
+
+
+% pmd .
+*-----------------------------------------------------------
+
+
+================================================================
+
+
+% checkstyle *.java
+*-----------------------------------------------------------
+
+% custom checkstyle checks for Deque.java
+*-----------------------------------------------------------
+
+% custom checkstyle checks for RandomizedQueue.java
+*-----------------------------------------------------------
+
+% custom checkstyle checks for Permutation.java
+*-----------------------------------------------------------
+
+
+================================================================
+
+
+********************************************************************************
+*  TESTING CORRECTNESS
+********************************************************************************
+
+Testing correctness of Deque
+*-----------------------------------------------------------
+Running 16 total tests.
+
+Tests 1-6 make random calls to addFirst(), addLast(), removeFirst(),
+removeLast(), isEmpty(), and size(). The probabilities of each
+operation are (p1, p2, p3, p4, p5, p6), respectively.
+
+Test 1: check random calls to addFirst(), addLast(), and size()
+  *    5 random calls (0.4, 0.4, 0.0, 0.0, 0.0, 0.2)
+  *   50 random calls (0.4, 0.4, 0.0, 0.0, 0.0, 0.2)
+  *  500 random calls (0.4, 0.4, 0.0, 0.0, 0.0, 0.2)
+  * 1000 random calls (0.4, 0.4, 0.0, 0.0, 0.0, 0.2)
+==> passed
+
+Test 2: check random calls to addFirst(), removeFirst(), and isEmpty()
+  *    5 random calls (0.8, 0.0, 0.1, 0.0, 0.1, 0.0)
+  *   50 random calls (0.8, 0.0, 0.1, 0.0, 0.1, 0.0)
+  *  500 random calls (0.8, 0.0, 0.1, 0.0, 0.1, 0.0)
+  * 1000 random calls (0.8, 0.0, 0.1, 0.0, 0.1, 0.0)
+  *    5 random calls (0.1, 0.0, 0.8, 0.0, 0.1, 0.0)
+  *   50 random calls (0.1, 0.0, 0.8, 0.0, 0.1, 0.0)
+  *  500 random calls (0.1, 0.0, 0.8, 0.0, 0.1, 0.0)
+  * 1000 random calls (0.1, 0.0, 0.8, 0.0, 0.1, 0.0)
+==> passed
+
+Test 3: check random calls to addFirst(), removeLast(), and isEmpty()
+  *    5 random calls (0.8, 0.0, 0.0, 0.1, 0.1, 0.0)
+  *   50 random calls (0.8, 0.0, 0.0, 0.1, 0.1, 0.0)
+  *  500 random calls (0.8, 0.0, 0.0, 0.1, 0.1, 0.0)
+  * 1000 random calls (0.8, 0.0, 0.0, 0.1, 0.1, 0.0)
+  *    5 random calls (0.1, 0.0, 0.0, 0.8, 0.1, 0.0)
+  *   50 random calls (0.1, 0.0, 0.0, 0.8, 0.1, 0.0)
+  *  500 random calls (0.1, 0.0, 0.0, 0.8, 0.1, 0.0)
+  * 1000 random calls (0.1, 0.0, 0.0, 0.8, 0.1, 0.0)
+==> passed
+
+Test 4: check random calls to addLast(), removeLast(), and isEmpty()
+  *    5 random calls (0.0, 0.8, 0.0, 0.1, 0.1, 0.0)
+  *   50 random calls (0.0, 0.8, 0.0, 0.1, 0.1, 0.0)
+  *  500 random calls (0.0, 0.8, 0.0, 0.1, 0.1, 0.0)
+  * 1000 random calls (0.0, 0.8, 0.0, 0.1, 0.1, 0.0)
+  *    5 random calls (0.0, 0.1, 0.0, 0.8, 0.1, 0.0)
+  *   50 random calls (0.0, 0.1, 0.0, 0.8, 0.1, 0.0)
+  *  500 random calls (0.0, 0.1, 0.0, 0.8, 0.1, 0.0)
+  * 1000 random calls (0.0, 0.1, 0.0, 0.8, 0.1, 0.0)
+==> passed
+
+Test 5: check random calls to addLast(), removeFirst(), and isEmpty()
+  *    5 random calls (0.0, 0.8, 0.1, 0.0, 0.1, 0.0)
+  *   50 random calls (0.0, 0.8, 0.1, 0.0, 0.1, 0.0)
+  *  500 random calls (0.0, 0.8, 0.1, 0.0, 0.1, 0.0)
+  * 1000 random calls (0.0, 0.8, 0.1, 0.0, 0.1, 0.0)
+  *    5 random calls (0.0, 0.1, 0.8, 0.0, 0.1, 0.0)
+  *   50 random calls (0.0, 0.1, 0.8, 0.0, 0.1, 0.0)
+  *  500 random calls (0.0, 0.1, 0.8, 0.0, 0.1, 0.0)
+  * 1000 random calls (0.0, 0.1, 0.8, 0.0, 0.1, 0.0)
+==> passed
+
+Test 6: check random calls to addFirst(), addLast(), removeFirst(),
+        removeLast(), isEmpty(), and size()
+  *    5 random calls (0.3, 0.3, 0.1, 0.1, 0.1, 0.1)
+  *   50 random calls (0.3, 0.3, 0.1, 0.1, 0.1, 0.1)
+  *  500 random calls (0.3, 0.3, 0.1, 0.1, 0.1, 0.1)
+  * 1000 random calls (0.3, 0.3, 0.1, 0.1, 0.1, 0.1)
+  *    5 random calls (0.1, 0.1, 0.3, 0.3, 0.1, 0.1)
+  *   50 random calls (0.1, 0.1, 0.3, 0.3, 0.1, 0.1)
+  *  500 random calls (0.1, 0.1, 0.3, 0.3, 0.1, 0.1)
+  * 1000 random calls (0.1, 0.1, 0.3, 0.3, 0.1, 0.1)
+==> passed
+
+Test 7: check removeFirst() and removeLast() from an empty deque
+  * removeFirst()
+  * removeLast()
+==> passed
+
+Test 8: check whether two Deque objects can be created at the same time
+==> passed
+
+Test 9: check iterator() after n calls to addFirst()
+  * n = 10
+  * n = 50
+==> passed
+
+Test 10: check iterator() after each of m intermixed calls to
+         addFirst(), addLast(), removeFirst(), and removeLast()
+  * m = 20
+  * m = 50
+  * m = 100
+  * m = 1000
+==> passed
+
+Test 11: create two nested iterators to same deque
+  * n = 10
+  * n = 50
+==> passed
+
+Test 12: create two parallel iterators to same deque
+==> passed
+
+Test 13: create Deque objects of different parameterized types
+==> passed
+
+Test 14: call addFirst() and addLast() with null argument
+==> passed
+
+Test 15: check that remove() and next() throw the specified exceptions in iterator()
+==> passed
+
+Test 16: call iterator() when the deque is empty
+==> passed
+
+
+Total: 16/16 tests passed!
+
+
+================================================================
+Testing correctness of RandomizedQueue
+*-----------------------------------------------------------
+Running 18 total tests.
+
+Tests 1-4 make random calls to enqueue(), dequeue(), sample(),
+isEmpty(), and size(). The probabilities of each operation are
+(p1, p2, p3, p4, p5), respectively.
+
+Test 1: check random calls to enqueue() and size()
+  *    5 random calls (0.8, 0.0, 0.0, 0.0, 0.2)
+  *   50 random calls (0.8, 0.0, 0.0, 0.0, 0.2)
+  *  500 random calls (0.8, 0.0, 0.0, 0.0, 0.2)
+  * 1000 random calls (0.8, 0.0, 0.0, 0.0, 0.2)
+==> passed
+
+Test 2: check random calls to enqueue() and dequeue()
+  *    5 random calls (0.7, 0.1, 0.0, 0.1, 0.1)
+  *   50 random calls (0.7, 0.1, 0.0, 0.1, 0.1)
+  *  500 random calls (0.7, 0.1, 0.0, 0.1, 0.1)
+  * 1000 random calls (0.7, 0.1, 0.0, 0.1, 0.1)
+  *    5 random calls (0.1, 0.7, 0.0, 0.1, 0.1)
+  *   50 random calls (0.1, 0.7, 0.0, 0.1, 0.1)
+  *  500 random calls (0.1, 0.7, 0.0, 0.1, 0.1)
+  * 1000 random calls (0.1, 0.7, 0.0, 0.1, 0.1)
+==> passed
+
+Test 3: check random calls to enqueue(), sample(), and size()
+  *    5 random calls (0.8, 0.0, 0.1, 0.0, 0.1)
+  *   50 random calls (0.8, 0.0, 0.1, 0.0, 0.1)
+  *  500 random calls (0.8, 0.0, 0.1, 0.0, 0.1)
+  * 1000 random calls (0.8, 0.0, 0.1, 0.0, 0.1)
+  *    5 random calls (0.1, 0.0, 0.8, 0.0, 0.1)
+  *   50 random calls (0.1, 0.0, 0.8, 0.0, 0.1)
+  *  500 random calls (0.1, 0.0, 0.8, 0.0, 0.1)
+  * 1000 random calls (0.1, 0.0, 0.8, 0.0, 0.1)
+==> passed
+
+Test 4: check random calls to enqueue(), dequeue(), sample(), isEmpty(), and size()
+  *    5 random calls (0.6, 0.1, 0.1, 0.1, 0.1)
+  *   50 random calls (0.6, 0.1, 0.1, 0.1, 0.1)
+  *  500 random calls (0.6, 0.1, 0.1, 0.1, 0.1)
+  * 1000 random calls (0.6, 0.1, 0.1, 0.1, 0.1)
+  *    5 random calls (0.1, 0.6, 0.1, 0.1, 0.1)
+  *   50 random calls (0.1, 0.6, 0.1, 0.1, 0.1)
+  *  500 random calls (0.1, 0.6, 0.1, 0.1, 0.1)
+  * 1000 random calls (0.1, 0.6, 0.1, 0.1, 0.1)
+==> passed
+
+Test 5: call dequeue() and sample() from an empty randomized queue
+  * dequeue()
+  * sample()
+==> passed
+
+Test 6: create multiple randomized queue objects at the same time
+  * n = 10
+  * n = 100
+==> passed
+
+Test 7: check that iterator() returns correct items after a sequence
+        of n enqueue() operations
+  * n = 10
+  * n = 50
+==> passed
+
+Test 8: check that iterator() returns correct items after sequence
+        of m enqueue() and dequeue() operations
+  * m = 10
+  * m = 1000
+==> passed
+
+Test 9: create two nested iterators over the same randomized queue
+  * n = 10
+  * n = 50
+==> passed
+
+Test 10: create two parallel iterators over the same randomized queue
+  * n = 10
+  * n = 50
+==> passed
+
+Test 11: create two iterators over different randomized queues
+==> passed
+
+Test 12: create RandomizedQueue objects of different parameterized types
+==> passed
+
+Test 13: check randomness of sample() by enqueueing n items, repeatedly calling
+         sample(), and counting the frequency of each item
+  * n = 3, trials = 12000
+  * n = 5, trials = 12000
+  * n = 8, trials = 12000
+  * n = 10, trials = 12000
+==> passed
+
+Test 14: check randomness of dequeue() by enqueueing n items, dequeueing n items,
+         and seeing whether each of the n! permutations is equally likely
+  * n = 2, trials = 12000
+  * n = 3, trials = 12000
+  * n = 4, trials = 12000
+  * n = 5, trials = 12000
+==> passed
+
+Test 15: check randomness of iterator() by enqueueing n items, iterating over those
+         n items, and seeing whether each of the n! permutations is equally likely
+  * n = 2, trials = 12000
+  * n = 3, trials = 12000
+  * n = 4, trials = 12000
+  * n = 5, trials = 12000
+==> passed
+
+Test 16: call enqueue() with a null argument
+==> passed
+
+Test 17: check that remove() and next() throw the specified exceptions in iterator()
+==> passed
+
+Test 18: call iterator() when randomized queue is empty
+==> passed
+
+
+Total: 18/18 tests passed!
+
+
+================================================================
+********************************************************************************
+*  TESTING CORRECTNESS (substituting reference RandomizedQueue and Deque)
+********************************************************************************
+
+Testing correctness of Permutation
+*-----------------------------------------------------------
+Tests 1-5 call the main() function directly, resetting standard input
+before each call.
+
+Running 9 total tests.
+
+Test 1a: check formatting for sample inputs from assignment specification
+  % java Permutation 3 < distinct.txt
+  C
+  G
+  E
+
+  % java Permutation 3 < distinct.txt
+  B
+  A
+  I
+
+  % java Permutation 8 < duplicates.txt
+  CC
+  AA
+  BB
+  BB
+  BB
+  CC
+  BB
+  BB
+
+==> passed
+
+Test 1b: check formatting for other inputs
+  % java Permutation 8 < mediumTale.txt
+  foolishness
+  best
+  age
+  times
+  of
+  it
+  it
+  was
+
+  % java Permutation 0 < distinct.txt
+  [no output]
+
+==> passed
+
+Test 2: check that main() reads all data from standard input
+  * filename = distinct.txt, k = 3
+  * filename = distinct.txt, k = 3
+  * filename = duplicates.txt, k = 8
+  * filename = mediumTale.txt, k = 8
+==> passed
+
+Test 3a: check that main() prints each item from the sequence at most once
+         (for inputs with no duplicate strings)
+  * filename = distinct.txt, k = 3
+  * filename = distinct.txt, k = 1
+  * filename = distinct.txt, k = 9
+  * filename = permutation6.txt, k = 6
+  * filename = permutation10.txt, k = 10
+==> passed
+
+Test 3b: check that main() prints each item from the sequence at most once
+         (for inputs with duplicate strings)
+  * filename = duplicates.txt, k = 8
+  * filename = duplicates.txt, k = 3
+  * filename = permutation8.txt, k = 6
+  * filename = permutation8.txt, k = 2
+  * filename = tinyTale.txt, k = 10
+==> passed
+
+Test 3c: check that main() prints each item from the sequence at most once
+         (for inputs with newlines)
+  * filename = mediumTale.txt, k = 10
+  * filename = mediumTale.txt, k = 20
+  * filename = tale.txt, k = 10
+  * filename = tale.txt, k = 50
+==> passed
+
+Test 4: check main() when k = 0
+  * filename = distinct.txt, k = 0
+  * filename = distinct.txt, k = 0
+==> passed
+
+Test 5a: check that permutations are uniformly random
+         (for inputs with no duplicate strings)
+  * filename = permutation4.txt, k = 1
+
+            value  observed  expected   2*O*ln(O/E)
+        -------------------------------------------
+                A       112     250.0       -179.86
+                B       121     250.0       -175.61
+                C       257     250.0         14.19
+                D       510     250.0        727.21
+        -------------------------------------------
+                       1000    1000.0        385.93
+    
+    G-statistic = 385.93 (p-value = 0.000000, reject if p-value <= 0.0001)
+    Note: a correct solution will fail this test by bad luck 1 time in 10,000.
+
+  * filename = permutation4.txt, k = 2
+
+            value  observed  expected   2*O*ln(O/E)
+        -------------------------------------------
+              A B       136      83.3        133.23
+              A C        61      83.3        -38.06
+              A D        80      83.3         -6.53
+              B A       113      83.3         68.83
+              B C        63      83.3        -35.24
+              B D        96      83.3         27.17
+              C A        60      83.3        -39.42
+              C B        57      83.3        -43.30
+              C D        71      83.3        -22.74
+              D A        92      83.3         18.20
+              D B       105      83.3         48.53
+              D C        66      83.3        -30.78
+        -------------------------------------------
+                       1000    1000.0         79.88
+    
+    G-statistic = 79.88 (p-value = 0.000000, reject if p-value <= 0.0001)
+    Note: a correct solution will fail this test by bad luck 1 time in 10,000.
+
+  * filename = permutation4.txt, k = 3
+
+            value  observed  expected   2*O*ln(O/E)
+        -------------------------------------------
+            A B C        83      41.7        114.40
+            A B D        33      41.7        -15.39
+            A C B        88      41.7        131.58
+            A C D        18      41.7        -30.22
+            A D B        33      41.7        -15.39
+            A D C        27      41.7        -23.43
+            B A C        85      41.7        121.20
+            B A D        31      41.7        -18.33
+            B C A        78      41.7         97.81
+            B C D        26      41.7        -24.52
+            B D A        36      41.7        -10.53
+            B D C        38      41.7         -7.00
+            C A B        76      41.7         91.36
+            C A D        34      41.7        -13.83
+            C B A        70      41.7         72.63
+            C B D        26      41.7        -24.52
+            C D A        28      41.7        -22.26
+            C D B        24      41.7        -26.48
+            D A B        33      41.7        -15.39
+            D A C        36      41.7        -10.53
+            D B A        20      41.7        -29.36
+            D B C        24      41.7        -26.48
+            D C A        18      41.7        -30.22
+            D C B        35      41.7        -12.20
+        -------------------------------------------
+                       1000    1000.0        272.91
+    
+    G-statistic = 272.91 (p-value = 0.000000, reject if p-value <= 0.0001)
+    Note: a correct solution will fail this test by bad luck 1 time in 10,000.
+
+  * filename = permutation4.txt, k = 4
+  * filename = permutation6.txt, k = 2
+
+==> FAILED
+
+Test 5b: check that permutations are uniformly random
+         (for inputs with duplicate strings)
+  * filename = permutation5.txt, k = 1
+
+            value  observed  expected   2*O*ln(O/E)
+        -------------------------------------------
+                A       437     600.0       -277.05
+                B       563     400.0        384.88
+        -------------------------------------------
+                       1000    1000.0        107.83
+    
+    G-statistic = 107.83 (p-value = 0.000000, reject if p-value <= 0.0001)
+    Note: a correct solution will fail this test by bad luck 1 time in 10,000.
+
+  * filename = permutation5.txt, k = 2
+
+            value  observed  expected   2*O*ln(O/E)
+        -------------------------------------------
+              A A       229     300.0       -123.69
+              A B       324     300.0         49.87
+              B A       295     300.0         -9.92
+              B B       152     100.0        127.29
+        -------------------------------------------
+                       1000    1000.0         43.55
+    
+    G-statistic = 43.55 (p-value = 0.000000, reject if p-value <= 0.0001)
+    Note: a correct solution will fail this test by bad luck 1 time in 10,000.
+
+  * filename = permutation5.txt, k = 3
+  * filename = duplicates.txt, k = 3
+
+            value  observed  expected   2*O*ln(O/E)
+        -------------------------------------------
+         AA BB BB        49      59.5        -19.07
+         AA BB CC        39      29.8         21.09
+         AA CC BB        36      29.8         13.70
+         AA CC CC        13       6.0         20.31
+         BB AA BB        45      59.5        -25.17
+         BB AA CC        46      29.8         40.06
+         BB BB AA        56      59.5         -6.83
+         BB BB BB       103     178.6       -113.35
+         BB BB CC       124     119.0         10.11
+         BB CC AA        37      29.8         16.11
+         BB CC BB       108     119.0        -21.04
+         BB CC CC        38      29.8         18.57
+         CC AA BB        36      29.8         13.70
+         CC AA CC        13       6.0         20.31
+         CC BB AA        32      29.8          4.64
+         CC BB BB       128     119.0         18.56
+         CC BB CC        42      29.8         28.93
+         CC CC AA         8       6.0          4.73
+         CC CC BB        47      29.8         42.95
+        -------------------------------------------
+                       1000    1000.0         88.30
+    
+    G-statistic = 88.30 (p-value = 0.000000, reject if p-value <= 0.0001)
+    Note: a correct solution will fail this test by bad luck 1 time in 10,000.
+
+  * filename = permutation8.txt, k = 2
+
+            value  observed  expected   2*O*ln(O/E)
+        -------------------------------------------
+              A B         6      17.9        -13.09
+              A C       100      71.4         67.29
+              A D        30      35.7        -10.46
+              B A         6      17.9        -13.09
+              B C        45      71.4        -41.58
+              B D         0      35.7          0.00
+              C A       108      71.4         89.30
+              C B        38      71.4        -47.96
+              C C       362     214.3        379.62
+              C D       116     142.9        -48.32
+              D A        34      35.7         -3.34
+              D B         5      35.7        -19.66
+              D C       138     142.9         -9.55
+              D D        12      35.7        -26.18
+        -------------------------------------------
+                       1000    1000.0        302.99
+    
+    G-statistic = 302.99 (p-value = 0.000000, reject if p-value <= 0.0001)
+    Note: a correct solution will fail this test by bad luck 1 time in 10,000.
+
+==> FAILED
+
+Total: 7/9 tests passed!
+
+
+================================================================
+********************************************************************************
+*  TIMING (substituting reference RandomizedQueue and Deque)
+********************************************************************************
+
+Timing Permutation
+*-----------------------------------------------------------
+Running 23 total tests.
+
+Test 1: count calls to methods in StdIn
+  * java Permutation 5 < distinct.txt
+  * java Permutation 10 < permutation10.txt
+  * java Permutation 1 < mediumTale.txt
+  * java Permutation 20 < tale.txt
+  * java Permutation 100 < tale.txt
+  * java Permutation 16412 < tale.txt
+==> passed
+
+Test 2: count calls to methods in Deque and RandomizedQueue
+  * java Permutation 5 < distinct.txt
+  * java Permutation 10 < permutation10.txt
+  * java Permutation 1 < mediumTale.txt
+  * java Permutation 20 < tale.txt
+  * java Permutation 100 < tale.txt
+  * java Permutation 16412 < tale.txt
+==> passed
+
+Test 3: count calls to methods in StdRandom
+  * java Permutation 5 < distinct.txt
+  * java Permutation 10 < permutation10.txt
+  * java Permutation 1 < mediumTale.txt
+  * java Permutation 20 < tale.txt
+  * java Permutation 100 < tale.txt
+  * java Permutation 16412 < tale.txt
+==> passed
+
+Test 4: Time main() with k = 5, for inputs containing n random strings
+
+                    n  seconds
+------------------------------
+=> passed        1000     0.00
+=> passed        2000     0.00
+=> passed        4000     0.00
+=> passed        8000     0.00
+=> passed       16000     0.01
+=> passed       32000     0.02
+=> passed       64000     0.03
+=> passed      128000     0.05
+=> passed      256000     0.10
+=> passed      512000     0.20
+==> 10/10 tests passed
+
+
+Test 5: Time main() with k = 1000, for inputs containing n random strings
+
+                    n  seconds
+------------------------------
+=> passed        1000     0.00
+=> passed        2000     0.00
+=> passed        4000     0.00
+=> passed        8000     0.00
+=> passed       16000     0.01
+=> passed       32000     0.01
+=> passed       64000     0.03
+=> passed      128000     0.05
+=> passed      256000     0.13
+=> passed      512000     0.21
+==> 10/10 tests passed
+
+
+Total: 23/23 tests passed!
+
+
+================================================================
+
+
+
+********************************************************************************
+*  MEMORY
+********************************************************************************
+
+Analyzing memory of Permutation
+*-----------------------------------------------------------
+Running 2 total tests.
+
+Test 1: check that only one Deque or RandomizedQueue object is created
+  * filename = distinct.txt, n = 9, k = 1
+  * filename = distinct.txt, n = 9, k = 2
+  * filename = distinct.txt, n = 9, k = 4
+  * filename = tinyTale.txt, n = 12, k = 10
+  * filename = tale.txt, n = 138653, k = 50
+==> passed
+
+Test 2: check that the maximum size of any Deque or RandomizedQueue object
+        created is between k and n
+  * filename = distinct.txt, n = 9, k = 1
+  * filename = distinct.txt, n = 9, k = 2
+  * filename = distinct.txt, n = 9, k = 4
+  * filename = tinyTale.txt, n = 12, k = 10
+  * filename = tale.txt, n = 138653, k = 5
+  * filename = tale.txt, n = 138653, k = 50
+  * filename = tale.txt, n = 138653, k = 500
+  * filename = tale.txt, n = 138653, k = 5000
+  * filename = tale.txt, n = 138653, k = 50000
+==> passed
+
+Test 3 (bonus): check that maximum size of any or Deque or RandomizedQueue object
+                created is equal to k
+  * filename = tale.txt, n = 138653, k = 5
+  * filename = tale.txt, n = 138653, k = 50
+  * filename = tale.txt, n = 138653, k = 500
+  * filename = tale.txt, n = 138653, k = 5000
+  * filename = tale.txt, n = 138653, k = 50000
+==> passed
+
+Total: 3/2 tests passed!
+
+================================================================
+
+
+
+********************************************************************************
+*  MEMORY
+********************************************************************************
+
+Analyzing memory of Deque
+*-----------------------------------------------------------
+For tests 1-4, the maximum amount of memory allowed for a Deque
+containing n items is 48n + 192.
+
+Running 28 total tests.
+
+Test 1a-1e: Total memory usage after inserting n items,
+            where n is a power of 2.
+
+                 n        bytes
+----------------------------------------------------------
+=> passed        8          424         
+=> passed       64         3112         
+=> passed      256        12328         
+=> passed     1024        49192         
+=> passed     4096       196648         
+==> 5/5 tests passed
+
+Memory: 48.00 n + 40.00   (R^2 = 1.000)
+
+
+
+Test 2a-2e: Total memory usage after inserting n+1 items,
+            where n is a power of 2.
+
+                 n        bytes
+----------------------------------------------------------
+=> passed        8          472         
+=> passed       64         3160         
+=> passed      256        12376         
+=> passed     1024        49240         
+=> passed     4096       196696         
+==> 5/5 tests passed
+
+Memory after adding n = 2^i + 1 items: 48.00 n + 40.00   (R^2 = 1.000)
+
+
+
+Test 3a-3e: Total memory usage after inserting 2n+1 items
+            and deleting n items, where n is a power of 2.
+
+                 n        bytes
+----------------------------------------------------------
+=> passed        8          472         
+=> passed       64         3160         
+=> passed      256        12376         
+=> passed     1024        49240         
+=> passed     4096       196696         
+==> 5/5 tests passed
+
+Memory: 48.00 n + 40.00   (R^2 = 1.000)
+
+
+
+Test 4a-4e: Total memory usage after inserting n items and then
+            deleting all but one item, where n is a power of 2.
+            (should not grow with n or be too large of a constant)
+
+                 n        bytes
+----------------------------------------------------------
+=> passed        8           88         
+=> passed       64           88         
+=> passed      256           88         
+=> passed     1024           88         
+=> passed     4096           88         
+==> 5/5 tests passed
+
+Memory after adding n = 2^i items: 88.00   (R^2 = 1.000)
+
+
+
+Test 5a-5e: Total memory usage of iterator after inserting n items.
+            (should not grow with n or be too large of a constant)
+
+                 n        bytes
+----------------------------------------------------------
+=> passed        8           32         
+=> passed       64           32         
+=> passed      256           32         
+=> passed     1024           32         
+=> passed     4096           32         
+==> 5/5 tests passed
+
+Memory of iterator after adding n = 2^i items: 32.00   (R^2 = 1.000)
+
+
+
+Test 6a: Insert n strings; delete them one at a time, checking for
+         loitering after each deletion. The probabilities of addFirst()
+         and addLast() are (p1, p2), respectively. The probabilities of
+         removeFirst() and removeLast() are (q1, q2), respectively
+  * 100 random insertions (1.0, 0.0) and 100 random deletions (1.0, 0.0)
+  * 100 random insertions (1.0, 0.0) and 100 random deletions (0.0, 1.0)
+  * 100 random insertions (0.0, 1.0) and 100 random deletions (1.0, 0.0)
+  * 100 random insertions (0.0, 1.0) and 100 random deletions (0.0, 1.0)
+  * 100 random insertions (0.5, 0.5) and 100 random deletions (0.5, 0.5)
+==> passed
+
+Test 6b: Perform random operations, checking for loitering after
+         each operation. The probabilities of addFirst(), addLast(),
+         removeFirst(), and removeLast() are (p1, p2, p3, p4),
+         respectively.
+  * 100 random operations (0.8, 0.0, 0.2, 0.0)
+  * 100 random operations (0.8, 0.0, 0.0, 0.2)
+  * 100 random operations (0.0, 0.8, 0.2, 0.0)
+  * 100 random operations (0.0, 0.8, 0.0, 0.2)
+  * 100 random operations (0.4, 0.4, 0.1, 0.1)
+  * 100 random operations (0.2, 0.2, 0.3, 0.3)
+==> passed
+
+Test 7: Worst-case constant memory allocated or deallocated
+        per deque operation?
+  * 128 random operations
+  * 256 random operations
+  * 512 random operations
+==> passed
+
+Total: 28/28 tests passed!
+
+================================================================
+
+
+
+Analyzing memory of RandomizedQueue
+*-----------------------------------------------------------
+For tests 1-5, the maximum amount of memory allowed for
+a RandomizedQueue containing n items is 48n + 192.
+
+Test 1a-1i: Total memory usage after inserting n items
+            when n is a power of 2.
+
+                 n        bytes
+----------------------------------------------------------
+=> passed       32          320         
+=> passed       64          576         
+=> passed      128         1088         
+=> passed      256         2112         
+=> passed      512         4160         
+=> passed     1024         8256         
+=> passed     2048        16448         
+=> passed     4096        32832         
+=> passed     8192        65600         
+==> 9/9 tests passed
+
+Memory: 8.00 n + 64.00   (R^2 = 1.000)
+
+
+Test 2a-2i: Total memory usage after inserting n items,
+            when n is one more than a power of 2.
+
+                 n        bytes
+----------------------------------------------------------
+=> passed       33          576         
+=> passed       65         1088         
+=> passed      129         2112         
+=> passed      257         4160         
+=> passed      513         8256         
+=> passed     1025        16448         
+=> passed     2049        32832         
+=> passed     4097        65600         
+=> passed     8193       131136         
+==> 9/9 tests passed
+
+Memory: 16.00 n + 48.00   (R^2 = 1.000)
+
+
+Test 3a-3i: Total memory usage after inserting 2n-1 items, and then
+            deleting n-1 items, when n is one more than a power of 2.
+
+                 n        bytes
+----------------------------------------------------------
+=> passed       33         1088         
+=> passed       65         2112         
+=> passed      129         4160         
+=> passed      257         8256         
+=> passed      513        16448         
+=> passed     1025        32832         
+=> passed     2049        65600         
+=> passed     4097       131136         
+=> passed     8193       262208         
+==> 9/9 tests passed
+
+Memory: 32.00 n + 32.00   (R^2 = 1.000)
+
+
+Test 4a-4i: Total memory usage after inserting n items, deleting n items,
+            then inserting n times, when n is a power of 2.
+
+                 n        bytes
+----------------------------------------------------------
+=> passed       32          320         
+=> passed       64          576         
+=> passed      128         1088         
+=> passed      256         2112         
+=> passed      512         4160         
+=> passed     1024         8256         
+=> passed     2048        16448         
+=> passed     4096        32832         
+=> passed     8192        65600         
+==> 9/9 tests passed
+
+Memory: 8.00 n + 64.00   (R^2 = 1.000)
+
+
+Test 5a-5i: Total memory usage after inserting n items,
+            and then deleting all but one item.
+
+                 n        bytes
+----------------------------------------------------------
+=> passed       32           80         
+=> passed       64           80         
+=> passed      128           80         
+=> passed      256           80         
+=> passed      512           80         
+=> passed     1024           80         
+=> passed     2048           80         
+=> passed     4096           80         
+=> passed     8192           80         
+==> 9/9 tests passed
+
+Memory: 80.00   (R^2 = 1.000)
+
+
+Test 6a-6d: Total memory usage of iterator after inserting n items.
+
+                 n        bytes
+----------------------------------------------------------
+=> passed       32          192         
+=> passed       64          320         
+=> passed      128          576         
+=> passed      256         1088         
+=> passed      512         2112         
+=> passed     1024         4160         
+=> passed     2048         8256         
+=> passed     4096        16448         
+=> passed     8192        32832         
+==> 9/9 tests passed
+
+Memory: 4.00 n + 64.00   (R^2 = 1.000)
+
+
+Test 7a: Insert 100 strings; delete them one at a time, checking
+         for loitering after each deletion.
+==> passed
+
+Test 7b: Perform random operations, checking for loitering after
+         each operation. The probabilities of enqueue(), dequeue(),
+         and sample() are (p1, p2, p3), respectively.
+  * 200 random operations (0.8, 0.2, 0.0)
+  * 200 random operations (0.2, 0.8, 0.0)
+  * 200 random operations (0.6, 0.2, 0.2)
+  * 200 random operations (0.2, 0.4, 0.4)
+==> passed
+
+Test 8: Insert T items into queue; then iterate over queue and check
+        that worst-case constant memory is allocated or deallocated
+        per iterator operation.
+  * T = 64
+  * T = 128
+  * T = 256
+==> passed
+
+Test 9: Total memory usage after inserting n items, seeking to identify
+        values of n where memory usage is minimized as a function of n.
+
+                 n        bytes
+----------------------------------------------------------
+=> passed        8          128         
+=> passed       16          192         
+=> passed       32          320         
+=> passed       64          576         
+=> passed      128         1088         
+=> passed      256         2112         
+=> passed      512         4160         
+=> passed     1024         8256         
+=> passed     2048        16448         
+==> 9/9 tests passed
+
+Memory: 8.00 n + 64.00   (R^2 = 1.000)
+
+
+Test 10: Total memory usage after inserting 4096 items, then successively
+         deleting items, seeking values of n where memory usage is maximized
+         as a function of n
+
+                 n        bytes
+----------------------------------------------------------
+=> passed     2049        65600         
+=> passed     1025        32832         
+=> passed      513        16448         
+=> passed      257         8256         
+=> passed      129         4160         
+=> passed       65         2112         
+=> passed       33         1088         
+=> passed       17          576         
+=> passed        9          320         
+==> 9/9 tests passed
+
+Memory: 32.00 n + 32.00   (R^2 = 1.000)
+
+
+Min observed memory for RandomizedQueue: 8.00 n + 64.00   (R^2 = 1.000)
+Max observed memory for RandomizedQueue: 32.00 n + 32.00   (R^2 = 1.000)
+
+Running 75 total tests.
+
+Total: 75/75 tests passed!
+
+================================================================
+
+
+
+********************************************************************************
+*  TIMING
+********************************************************************************
+
+Timing Deque
+*-----------------------------------------------------------
+Running 55 total tests.
+
+Test 1a-1g: make n random calls to addFirst(), removeFirst(), isEmpty(), and size()
+            with probabilities (0.7, 0.1, 0.1, 0.1)
+
+                    n  seconds
+------------------------------
+=> passed        1024     0.00
+=> passed        2048     0.00
+=> passed        4096     0.00
+=> passed        8192     0.00
+=> passed       16384     0.00
+=> passed       32768     0.00
+=> passed       65536     0.01
+=> passed      128000     0.01
+=> passed      256000     0.02
+=> passed      512000     0.04
+=> passed     1024000     0.07
+=> passed     2048000     0.12
+==> 12/12 tests passed
+
+
+Test 2a-2g: make n random calls to addLast(), removeLast(), isEmpty(), and size(),
+            with probabilities (0.7, 0.1, 0.1, 0.1)
+
+                    n  seconds
+------------------------------
+=> passed        1024     0.00
+=> passed        2048     0.00
+=> passed        4096     0.00
+=> passed        8192     0.00
+=> passed       16384     0.00
+=> passed       32768     0.00
+=> passed       65536     0.00
+=> passed      128000     0.00
+=> passed      256000     0.01
+=> passed      512000     0.02
+=> passed     1024000     0.03
+=> passed     2048000     0.07
+==> 12/12 tests passed
+
+
+Test 3a-3g: make n random calls to addFirst(), addLast(), removeFirst(), removeLast(),
+            isEmpty(), and size() with probabilities (0.3, 0.3, 0.1, 0.1, 0.1, 0.1)
+
+                    n  seconds
+------------------------------
+=> passed        1024     0.00
+=> passed        2048     0.00
+=> passed        4096     0.00
+=> passed        8192     0.00
+=> passed       16384     0.00
+=> passed       32768     0.00
+=> passed       65536     0.00
+=> passed      128000     0.01
+=> passed      256000     0.01
+=> passed      512000     0.02
+=> passed     1024000     0.04
+=> passed     2048000     0.14
+==> 12/12 tests passed
+
+
+Test 4a-4g: make n calls to addFirst(); iterate over the n items by calling
+            next() and hasNext()
+
+                    n  seconds
+------------------------------
+=> passed        1024     0.00
+=> passed        2048     0.00
+=> passed        4096     0.00
+=> passed        8192     0.00
+=> passed       16384     0.00
+=> passed       32768     0.00
+=> passed       65536     0.00
+=> passed      128000     0.01
+=> passed      256000     0.02
+=> passed      512000     0.03
+=> passed     1024000     0.05
+=> passed     2048000     0.03
+==> 12/12 tests passed
+
+
+Test 5a-5g: make n calls to addFirst()/addLast(); interleave n calls each to
+            removeFirst()/removeLast() and addFirst()/addLast()
+
+                    n  seconds
+----------------------------------
+=> passed        1025     0.00
+=> passed        2049     0.00
+=> passed        4097     0.00
+=> passed       16385     0.00
+=> passed       32767     0.00
+=> passed       32768     0.00
+=> passed       32769     0.00
+==> 7/7 tests passed
+
+Total: 55/55 tests passed!
+
+
+================================================================
+
+
+
+Timing RandomizedQueue
+*-----------------------------------------------------------
+Running 58 total tests.
+
+Test 1: make n calls to enqueue(); make n calls to dequeue();
+        count calls to StdRandom
+  * n = 10
+  * n = 100
+  * n = 1000
+==> passed
+
+Test 2: make n calls to enqueue(); make n calls to sample();
+        count calls to StdRandom
+  * n = 10
+  * n = 100
+  * n = 1000
+==> passed
+
+Test 3: make n calls to enqueue(); iterate over the n items;
+        count calls to StdRandom
+  * n = 10
+  * n = 100
+  * n = 1000
+==> passed
+
+Test 4a-g: make n random calls to enqueue(), sample(), dequeue(), isEmpty(),
+           and size() with probabilities (0.2, 0.2, 0.2, 0.2, 0.2)
+
+                    n  seconds
+----------------------------------
+=> passed        1024     0.00
+=> passed        2048     0.00
+=> passed        4096     0.00
+=> passed        8192     0.00
+=> passed       16384     0.00
+=> passed       32768     0.00
+=> passed       65536     0.00
+=> passed      128000     0.01
+=> passed      256000     0.01
+=> passed      512000     0.02
+=> passed     1024000     0.05
+=> passed     2048000     0.10
+==> 12/12 tests passed
+
+
+Test 5a-g: make n random calls to enqueue(), sample(), dequeue(), isEmpty(),
+           and size() with probabilities (0.6, 0.1, 0.1, 0.1, 0.1)
+
+                    n  seconds
+----------------------------------
+=> passed        1024     0.00
+=> passed        2048     0.00
+=> passed        4096     0.00
+=> passed        8192     0.00
+=> passed       16384     0.00
+=> passed       32768     0.00
+=> passed       65536     0.00
+=> passed      128000     0.01
+=> passed      256000     0.02
+=> passed      512000     0.03
+=> passed     1024000     0.06
+=> passed     2048000     0.13
+==> 12/12 tests passed
+
+
+Test 6a-g: make n random calls to enqueue(), sample(), dequeue(), isEmpty(),
+           and size() with probabilities (0.1, 0.1, 0.6, 0.1, 0.1)
+
+                    n  seconds
+----------------------------------
+=> passed        1024     0.00
+=> passed        2048     0.00
+=> passed        4096     0.00
+=> passed        8192     0.00
+=> passed       16384     0.00
+=> passed       32768     0.00
+=> passed       65536     0.00
+=> passed      128000     0.01
+=> passed      256000     0.01
+=> passed      512000     0.02
+=> passed     1024000     0.05
+=> passed     2048000     0.10
+==> 12/12 tests passed
+
+
+Test 7a-g: make n calls to enqueue(); iterate over the n items
+           by calling next() and hasNext().
+
+                    n  seconds
+----------------------------------
+=> passed        1024     0.00
+=> passed        2048     0.00
+=> passed        4096     0.00
+=> passed        8192     0.00
+=> passed       16384     0.00
+=> passed       32768     0.00
+=> passed       65536     0.01
+=> passed      128000     0.01
+=> passed      256000     0.02
+=> passed      512000     0.04
+=> passed     1024000     0.06
+=> passed     2048000     0.12
+==> 12/12 tests passed
+
+
+Test 8a-g: make n calls to enqueue(); interleave n calls each
+           to dequeue() and enqueue().
+
+                    n  seconds
+----------------------------------
+=> passed        1025     0.00
+=> passed        2049     0.00
+=> passed        4097     0.00
+=> passed       16385     0.00
+=> passed       32767     0.00
+=> passed       32768     0.00
+=> passed       32769     0.00
+==> 7/7 tests passed
+
+Total: 58/58 tests passed!
+
+
+================================================================

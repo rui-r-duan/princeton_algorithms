@@ -42,6 +42,8 @@ import edu.princeton.cs.algs4.StdRandom;
 public class Permutation {
     public static void main(String[] args) {
         int k = Integer.parseInt(args[0]);
+        if (k <= 0) return;
+
         RandomizedQueue<String> rq = new RandomizedQueue<String>();
         int i = 0;
         while (!StdIn.isEmpty()) {
