@@ -20,7 +20,7 @@ public class ReverseLinkedList<Item> {
     public static <Item> void reverse2(LinkedList<Item> list) {
         list.setHead(reverseRecur(list.head()));
     }
-    
+
     /*
      * Iterative solution: To accomplish this task, we maintain references to three
      * consecutive nodes in the linked list, {@code reverse}, {@code first}, and
@@ -61,7 +61,7 @@ public class ReverseLinkedList<Item> {
         first.next = null;
         return rest;
     }
-    
+
     public static void main(String[] args) {
         String[] sa = { "a", "b", "c" };
         LinkedList<String> strList = new LinkedList<String>(sa);
