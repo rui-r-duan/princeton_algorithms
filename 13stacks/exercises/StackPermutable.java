@@ -71,12 +71,12 @@ public class StackPermutable {
                 stack.push(++j);
                 ops.add("+");
             }
-            if (target[i] != stack.peek()) {
-                throw new RuntimeException("cannot be generated");
-            }
-            else {
+            if (target[i] == stack.peek()) {
                 stack.pop();
                 ops.add("-");
+            }
+            else {
+                throw new RuntimeException("cannot be generated");
             }
         }
         return ops;
