@@ -104,7 +104,7 @@ public class Point implements Comparable<Point> {
         return new SlopeComparator();
     }
 
-    class SlopeComparator implements Comparator<Point> {
+    private class SlopeComparator implements Comparator<Point> {
         @Override
         public int compare(Point p1, Point p2) {
             double s1 = slopeTo(p1);

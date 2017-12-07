@@ -23,12 +23,30 @@ public class Collinear {
         StdDraw.show();
 
         // print and draw the line segments
-        // FastCollinearPoints collinear = new FastCollinearPoints(points);
-         BruteCollinearPoints collinear = new BruteCollinearPoints(points);
-         for (LineSegment segment : collinear.segments()) {
-             StdOut.println(segment);
-             segment.draw();
-         }
-         StdDraw.show();
+        LineSegment[] segs = null;
+        if (args.length == 2) {
+            if (args[1].equals("fast")) {
+                StdOut.println("fast");
+                FastCollinearPoints collinear = new FastCollinearPoints(points);
+                segs = collinear.segments();
+            }
+            else if (args[1].equals("brute")) {
+                StdOut.println("brute");
+                BruteCollinearPoints collinear = new BruteCollinearPoints(points);
+                segs = collinear.segments();
+            }
+        }
+        else {
+            StdOut.println("fast");
+            FastCollinearPoints collinear = new FastCollinearPoints(points);
+            segs = collinear.segments();
+        }
+
+        for (LineSegment segment : segs) {
+            StdOut.println(segment);
+            segment.draw();
+            StdDraw.pause(300);
+        }
+        StdDraw.show();
     }
 }
