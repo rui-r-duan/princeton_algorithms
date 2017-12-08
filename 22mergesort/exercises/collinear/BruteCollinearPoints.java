@@ -1,3 +1,5 @@
+import edu.princeton.cs.algs4.ResizingArrayBag;
+
 public class BruteCollinearPoints {
     private int n;        // number of segments
     private final LineSegment[] segments;
@@ -23,7 +25,7 @@ public class BruteCollinearPoints {
                 throw new IllegalArgumentException();
         }
 
-        LineSegment[] tmp = new LineSegment[points.length / 4];
+        ResizingArrayBag<LineSegment> bag = new ResizingArrayBag<LineSegment>();
         n = 0;
         
         for (int i = 0; i < points.length; i++) {
@@ -67,15 +69,17 @@ public class BruteCollinearPoints {
                                 max = k;
                             }
 
-                            tmp[n++] = new LineSegment(points[min], points[max]);
+                            bag.add(new LineSegment(points[min], points[max]));
+                            n++;
                         }
                     }
                 }
             }
         }
         segments = new LineSegment[n];
-        for (int i = 0; i < n; i++) {
-            segments[i] = tmp[i];
+        int i = 0;
+        for (LineSegment ls : bag) {
+            segments[i++] = ls;
         }
     }
 
