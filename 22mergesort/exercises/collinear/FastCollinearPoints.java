@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import edu.princeton.cs.algs4.ResizingArrayBag;
 // import edu.princeton.cs.algs4.StdDraw;
 
 public class FastCollinearPoints {
@@ -17,7 +18,7 @@ public class FastCollinearPoints {
                 throw new IllegalArgumentException();
         }
 
-        LineSegment[] tmp = new LineSegment[points.length];
+        ResizingArrayBag<LineSegment> bag = new ResizingArrayBag<LineSegment>();
         n = 0;
 
         if (points.length <= 3) {
@@ -84,15 +85,17 @@ public class FastCollinearPoints {
                 }
 
                 StdOut.println("\t" + n + ", " + points[min] + " -> " + points[max]);
-                tmp[n++] = new LineSegment(points[min], points[max]);
+                bag.add(new LineSegment(points[min], points[max]));
 
                 j = k;
                 StdOut.printf("next j=%d\n", j);
             }
         }
+        n = bag.size();
         segments = new LineSegment[n];
-        for (int i = 0; i < n; i++) {
-            segments[i] = tmp[i];
+        int i = 0;
+        for (LineSegment ls : bag) {
+            segments[i++] = ls;
         }
     }
 

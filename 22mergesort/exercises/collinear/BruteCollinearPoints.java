@@ -26,7 +26,6 @@ public class BruteCollinearPoints {
         }
 
         ResizingArrayBag<LineSegment> bag = new ResizingArrayBag<LineSegment>();
-        n = 0;
         
         for (int i = 0; i < points.length; i++) {
             for (int j = i+1; j < points.length; j++) {
@@ -70,12 +69,12 @@ public class BruteCollinearPoints {
                             }
 
                             bag.add(new LineSegment(points[min], points[max]));
-                            n++;
                         }
                     }
                 }
             }
         }
+        n = bag.size();
         segments = new LineSegment[n];
         int i = 0;
         for (LineSegment ls : bag) {

@@ -15,8 +15,8 @@ public class Collinear {
 
         // draw the points
         StdDraw.enableDoubleBuffering();
-        StdDraw.setXscale(0, 32768);
-        StdDraw.setYscale(0, 32768);
+        StdDraw.setXscale(-1000, 32768);
+        StdDraw.setYscale(-1000, 32768);
         for (Point p : points) {
             p.draw();
         }
@@ -45,8 +45,9 @@ public class Collinear {
         for (LineSegment segment : segs) {
             StdOut.println(segment);
             segment.draw();
-            StdDraw.pause(300);
+            StdDraw.show();
+            StdDraw.pause(200);
         }
-        StdDraw.show();
+        StdOut.println("number of segments: " + segs.length);
     }
 }
