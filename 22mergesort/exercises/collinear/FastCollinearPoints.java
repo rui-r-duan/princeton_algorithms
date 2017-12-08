@@ -1,10 +1,30 @@
 import java.util.Arrays;
 import edu.princeton.cs.algs4.ResizingArrayBag;
+import edu.princeton.cs.algs4.MergeBU;
 // import edu.princeton.cs.algs4.StdDraw;
 
 public class FastCollinearPoints {
     private int n;        // number of segments
     private final LineSegment[] segments;
+
+    private class Pair implements Comparable<Pair> {
+        Point p;
+        Point q;
+        Pair(Point p, Point q) {
+            this.p = p;
+            this.q = q;
+        }
+        @Override
+        public int compareTo(Pair that) {
+            if (this.p.compareTo(that.p) < 0) return -1;
+            else if (this.p.compareTo(that.p) > 0) return +1;
+            else {
+                if (this.q.compareTo(that.q) < 0) return -1;
+                else if (this.q.compareTo(that.q) > 0) return +1;
+                else return 0;
+            }
+        }
+    }
 
     /**
      * finds all line segments containing 4 or more points
@@ -18,7 +38,7 @@ public class FastCollinearPoints {
                 throw new IllegalArgumentException();
         }
 
-        ResizingArrayBag<LineSegment> bag = new ResizingArrayBag<LineSegment>();
+        ResizingArrayBag<Pair> bag = new ResizingArrayBag<Pair>();
         n = 0;
 
         if (points.length <= 3) {
@@ -95,18 +115,45 @@ public class FastCollinearPoints {
                 }
 
                 StdOut.println("\t" + (++n) + ", " + pointsCopy[min] + " -> " + pointsCopy[max]);
-                bag.add(new LineSegment(pointsCopy[min], pointsCopy[max]));
+                bag.add(new Pair(pointsCopy[min], pointsCopy[max]));
 
                 j = k;
                 StdOut.printf("next j=%d\n", j);
             }
         }
+        // remove the duplicates in the bag
         n = bag.size();
-        segments = new LineSegment[n];
+        Pair[] set = new Pair[n];
         int i = 0;
-        for (LineSegment ls : bag) {
-            segments[i++] = ls;
+        for (Pair pair : bag) {
+            set[i++] = pair;
         }
+        MergeBU.sort(set);
+        Pair[] set2 = new Pair[n];
+        if (n > 0) {
+            set2[0] = set[0];
+        }
+        i = 0;              // index for set
+        int j = 0;          // index for set2
+        while (i < set.length) {
+            if (set[i].compareTo(set2[j]) != 0) {
+                ++j;
+                set2[j] = set[i];
+                i++;
+            }
+            else {
+                i++;
+            }
+        }
+
+        // create LineSegment[] according to set2
+        n = j + 1;
+        StdOut.println(" n = " + n);
+        segments = new LineSegment[n];
+        for (i = 0; i < n; i++) {
+            segments[i] = new LineSegment(set2[i].p, set2[i].q);
+        }
+
     }
 
     private boolean less(Point a, Point b) {
