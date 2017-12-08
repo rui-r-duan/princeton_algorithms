@@ -37,6 +37,11 @@ public class FastCollinearPoints {
             Point p = points[i];
             for (int j = i+1; j < points.length; ) {
                 double slope = p.slopeTo(points[j]);
+                // check if any of them has a repeated item same as p
+                if (Double.compare(slope, Double.NEGATIVE_INFINITY) == 0) {
+                    throw new IllegalArgumentException();
+                }
+
                 // for debugging
                 StdOut.printf("i\tp[i]\t\tp[j]\t\tslope\n");
                 StdOut.printf("%d\t%s\t%s\t%f\n", i, p, points[j], p.slopeTo(points[j]));
