@@ -26,34 +26,39 @@ public class FastCollinearPoints {
             return;
         }
         for (int i = 0; i < points.length - 1; i++) {
-            Arrays.sort(points, i+1, points.length, points[i].slopeOrder());
-            // StdDraw.clear();
-            // for (int s = i+1; s < points.length; s++) {
-            //     points[i].drawTo(points[s]);
-            //     StdDraw.show();
-            //     StdDraw.pause(80);
-            // }
+            Point[] pointsCopy = new Point[points.length];
+            System.arraycopy(points, 0, pointsCopy, 0, points.length);
 
-            Point p = points[i];
-            for (int j = i+1; j < points.length; ) {
-                double slope = p.slopeTo(points[j]);
+            // swap pointsCopy[i] and pointsCopy[0]
+            if (i > 0) {
+                Point t = pointsCopy[i];
+                pointsCopy[i] = pointsCopy[0];
+                pointsCopy[0] = t;
+            }
+
+            Point p = pointsCopy[0];
+            Arrays.sort(pointsCopy, 1, points.length, p.slopeOrder());
+
+            for (int j = 1; j < pointsCopy.length; ) {
+                double slope = p.slopeTo(pointsCopy[j]);
                 // check if any of them has a repeated item same as p
                 if (Double.compare(slope, Double.NEGATIVE_INFINITY) == 0) {
+                    StdOut.println(p + " and " + pointsCopy[j] + " are the same!");
                     throw new IllegalArgumentException();
                 }
 
                 // for debugging
                 StdOut.printf("i\tp[i]\t\tp[j]\t\tslope\n");
-                StdOut.printf("%d\t%s\t%s\t%f\n", i, p, points[j], p.slopeTo(points[j]));
+                StdOut.printf("%d\t%s\t%s\t%f\n", i, p, pointsCopy[j], p.slopeTo(pointsCopy[j]));
 
                 int k = j+1;
-                while (k < points.length
-                       && Double.compare(p.slopeTo(points[k]), slope) == 0) {
+                while (k < pointsCopy.length
+                       && Double.compare(p.slopeTo(pointsCopy[k]), slope) == 0) {
                     // for debugging
-                    StdOut.printf("%d\t%s\t%s\t%f\n", i, p, points[k], p.slopeTo(points[k]));
+                    StdOut.printf("%d\t%s\t%s\t%f\n", i, p, pointsCopy[k], p.slopeTo(pointsCopy[k]));
                     k++;
                 }
-                // Now points[i], points[j] to points[k] are collinear.
+                // Now pointsCopy[0], pointsCopy[j] to pointsCopy[k] are collinear.
 
                 // if k - j < 3, then the collinear points are less than 4
                 StdOut.printf("k-j=%d, k=%d, j=%d\n", k-j, k, j);
@@ -65,10 +70,10 @@ public class FastCollinearPoints {
 
                 // Now we have at least 4 points collinear,
                 // then find the two endpoints among them.
-                // Their indices are: i, j, k: [j+1, k)
+                // Their indices are: 0, j, k: [j+1, k)
                 // Put their indices in an array
                 int[] indice = new int[k - j + 1];
-                indice[0] = i;
+                indice[0] = 0;
                 for (int w = 1; w < k-j+1; w++) {
                     indice[w] = j + (w-1);
                 }
@@ -78,19 +83,19 @@ public class FastCollinearPoints {
                 StdOut.println();
                 int min = indice[0];
                 for (int x = 0; x < k-j+1; x++) {
-                    if (less(points[indice[x]], points[min])) {
+                    if (less(pointsCopy[indice[x]], pointsCopy[min])) {
                         min = indice[x];
                     }
                 }
                 int max = indice[k - j];
                 for (int x = 0; x < k-j+1; x++) {
-                    if (less(points[max], points[indice[x]])) {
+                    if (less(pointsCopy[max], pointsCopy[indice[x]])) {
                         max = indice[x];
                     }
                 }
 
-                StdOut.println("\t" + n + ", " + points[min] + " -> " + points[max]);
-                bag.add(new LineSegment(points[min], points[max]));
+                StdOut.println("\t" + (++n) + ", " + pointsCopy[min] + " -> " + pointsCopy[max]);
+                bag.add(new LineSegment(pointsCopy[min], pointsCopy[max]));
 
                 j = k;
                 StdOut.printf("next j=%d\n", j);
