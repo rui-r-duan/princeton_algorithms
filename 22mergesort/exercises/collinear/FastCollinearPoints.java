@@ -67,22 +67,22 @@ public class FastCollinearPoints {
                 }
 
                 // for debugging
-                StdOut.printf("i\tp[i]\t\tp[j]\t\tslope\n");
-                StdOut.printf("%d\t%s\t%s\t%f\n", i, p, pointsCopy[j], p.slopeTo(pointsCopy[j]));
+                // StdOut.printf("i\tp[i]\t\tp[j]\t\tslope\n");
+                // StdOut.printf("%d\t%s\t%s\t%f\n", i, p, pointsCopy[j], p.slopeTo(pointsCopy[j]));
 
                 int k = j+1;
                 while (k < pointsCopy.length
                        && Double.compare(p.slopeTo(pointsCopy[k]), slope) == 0) {
                     // for debugging
-                    StdOut.printf("%d\t%s\t%s\t%f\n", i, p, pointsCopy[k], p.slopeTo(pointsCopy[k]));
+                    // StdOut.printf("%d\t%s\t%s\t%f\n", i, p, pointsCopy[k], p.slopeTo(pointsCopy[k]));
                     k++;
                 }
                 // Now pointsCopy[0], pointsCopy[j] to pointsCopy[k] are collinear.
 
                 // if k - j < 3, then the collinear points are less than 4
-                StdOut.printf("k-j=%d, k=%d, j=%d\n", k-j, k, j);
+                // StdOut.printf("k-j=%d, k=%d, j=%d\n", k-j, k, j);
                 if (k - j < 3) {
-                    StdOut.println("\tcontinue...next j\n");
+                    // StdOut.println("\tcontinue...next j\n");
                     j = k;
                     continue;
                 }
@@ -96,10 +96,10 @@ public class FastCollinearPoints {
                 for (int w = 1; w < k-j+1; w++) {
                     indice[w] = j + (w-1);
                 }
-                for (int w = 0; w < k-j+1; w++) {
-                    StdOut.print(indice[w] + " ");
-                }
-                StdOut.println();
+                // for (int w = 0; w < k-j+1; w++) {
+                //     StdOut.print(indice[w] + " ");
+                // }
+                // StdOut.println();
                 int min = indice[0];
                 for (int x = 0; x < k-j+1; x++) {
                     if (less(pointsCopy[indice[x]], pointsCopy[min])) {
@@ -113,11 +113,11 @@ public class FastCollinearPoints {
                     }
                 }
 
-                StdOut.println("\t" + (++n) + ", " + pointsCopy[min] + " -> " + pointsCopy[max]);
+                // StdOut.println("\t" + (++n) + ", " + pointsCopy[min] + " -> " + pointsCopy[max]);
                 bag.add(new Pair(pointsCopy[min], pointsCopy[max]));
 
                 j = k;
-                StdOut.printf("next j=%d\n", j);
+                // StdOut.printf("next j=%d\n", j);
             }
         }
         // remove the duplicates in the bag
@@ -151,7 +151,7 @@ public class FastCollinearPoints {
 
         // create LineSegment[] according to set2
         n = j + 1;
-        StdOut.println(" n = " + n);
+        // StdOut.println(" n = " + n);
         segments = new LineSegment[n];
         for (i = 0; i < n; i++) {
             segments[i] = new LineSegment(set2[i].p, set2[i].q);

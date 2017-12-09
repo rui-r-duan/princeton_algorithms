@@ -1,0 +1,48 @@
+./collinear-testing/input10.txt
+number of segments: 2
+time = 0.0 seconds.
+./collinear-testing/input20.txt
+number of segments: 5
+time = 0.0 seconds.
+./collinear-testing/input40.txt
+number of segments: 4
+time = 0.0 seconds.
+./collinear-testing/input80.txt
+number of segments: 31
+time = 0.015 seconds.
+./collinear-testing/input100.txt
+number of segments: 62
+time = 0.023 seconds.
+./collinear-testing/input200.txt
+number of segments: 4
+time = 0.031 seconds.
+./collinear-testing/input400.txt
+number of segments: 7
+time = 0.101 seconds.
+./input800.txt
+number of segments: 3
+time = 0.449 seconds.
+./input1600.txt
+number of segments: 20
+time = 0.956 seconds.
+./input3200.txt
+number of segments: 255
+time = 3.124 seconds.
+./input6400.txt
+number of segments: 2706
+time = 12.566 seconds.
+./collinear-testing/input1000.txt
+number of segments: 0
+time = 0.578 seconds.
+./collinear-testing/input2000.txt
+number of segments: 0
+time = 1.317 seconds.
+./collinear-testing/input4000.txt
+number of segments: 3
+time = 4.617 seconds.
+./collinear-testing/input8000.txt
+number of segments: 15
+time = 18.797 seconds.
+./collinear-testing/input10000.txt
+number of segments: 35
+time = 29.631 seconds.
