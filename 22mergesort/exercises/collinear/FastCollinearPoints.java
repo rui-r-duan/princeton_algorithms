@@ -1,6 +1,7 @@
 import java.util.Arrays;
 import edu.princeton.cs.algs4.ResizingArrayBag;
 import edu.princeton.cs.algs4.MergeBU;
+// import edu.princeton.cs.algs4.StdOut;
 
 public class FastCollinearPoints {
     private int n;        // number of segments
@@ -62,7 +63,7 @@ public class FastCollinearPoints {
                 double slope = p.slopeTo(pointsCopy[j]);
                 // check if any of them has a repeated item same as p
                 if (Double.compare(slope, Double.NEGATIVE_INFINITY) == 0) {
-                    StdOut.println(p + " and " + pointsCopy[j] + " are the same!");
+                    // StdOut.println(p + " and " + pointsCopy[j] + " are the same!");
                     throw new IllegalArgumentException();
                 }
 

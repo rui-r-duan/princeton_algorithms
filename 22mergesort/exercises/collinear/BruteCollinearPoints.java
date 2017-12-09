@@ -1,5 +1,6 @@
 import edu.princeton.cs.algs4.ResizingArrayBag;
 import edu.princeton.cs.algs4.MergeBU;
+// import edu.princeton.cs.algs4.StdOut;
 
 public class BruteCollinearPoints {
     private int n;        // number of segments
