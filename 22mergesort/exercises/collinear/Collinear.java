@@ -26,18 +26,18 @@ public class Collinear {
         LineSegment[] segs = null;
         if (args.length == 2) {
             if (args[1].equals("fast")) {
-                StdOut.println("fast");
+                StdOut.println("\nfast");
                 FastCollinearPoints collinear = new FastCollinearPoints(points);
                 segs = collinear.segments();
             }
             else if (args[1].equals("brute")) {
-                StdOut.println("brute");
+                StdOut.println("\nbrute");
                 BruteCollinearPoints collinear = new BruteCollinearPoints(points);
                 segs = collinear.segments();
             }
         }
         else {
-            StdOut.println("fast");
+            StdOut.println("\nfast");
             FastCollinearPoints collinear = new FastCollinearPoints(points);
             segs = collinear.segments();
         }
@@ -46,7 +46,7 @@ public class Collinear {
             StdOut.println(segment);
             segment.draw();
             StdDraw.show();
-            StdDraw.pause(200);
+            // StdDraw.pause(200);
         }
         StdOut.println("number of segments: " + segs.length);
     }

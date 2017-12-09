@@ -1,7 +1,6 @@
 import java.util.Arrays;
 import edu.princeton.cs.algs4.ResizingArrayBag;
 import edu.princeton.cs.algs4.MergeBU;
-// import edu.princeton.cs.algs4.StdDraw;
 
 public class FastCollinearPoints {
     private int n;        // number of segments
@@ -123,6 +122,11 @@ public class FastCollinearPoints {
         }
         // remove the duplicates in the bag
         n = bag.size();
+        if (n == 0) {
+            segments = new LineSegment[0];
+            return;
+        }
+        
         Pair[] set = new Pair[n];
         int i = 0;
         for (Pair pair : bag) {
@@ -130,9 +134,8 @@ public class FastCollinearPoints {
         }
         MergeBU.sort(set);
         Pair[] set2 = new Pair[n];
-        if (n > 0) {
-            set2[0] = set[0];
-        }
+        set2[0] = set[0];
+
         i = 0;              // index for set
         int j = 0;          // index for set2
         while (i < set.length) {
@@ -153,7 +156,6 @@ public class FastCollinearPoints {
         for (i = 0; i < n; i++) {
             segments[i] = new LineSegment(set2[i].p, set2[i].q);
         }
-
     }
 
     private boolean less(Point a, Point b) {
