@@ -124,7 +124,7 @@ public class BruteCollinearPoints {
 
         // create LineSegment[] according to set2
         n = j + 1;
-        StdOut.println(" n = " + n);
+        // StdOut.println(" n = " + n);
         segments = new LineSegment[n];
         for (i = 0; i < n; i++) {
             segments[i] = new LineSegment(set2[i].p, set2[i].q);
