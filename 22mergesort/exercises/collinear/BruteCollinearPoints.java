@@ -47,24 +47,51 @@ public class BruteCollinearPoints {
         }
 
         ResizingArrayBag<Pair> bag = new ResizingArrayBag<Pair>();
-        
+
+        if (points.length <= 3) {
+            // check if there are repetitive points
+            if (points.length == 2) {
+                double slope = points[0].slopeTo(points[1]);
+                if (Double.compare(slope, Double.NEGATIVE_INFINITY) == 0) {
+                    throw new IllegalArgumentException();
+                }
+            }
+            else if (points.length == 3) {
+                double s1 = points[0].slopeTo(points[1]);
+                double s2 = points[0].slopeTo(points[2]);
+                double s3 = points[1].slopeTo(points[2]);
+                if (Double.compare(s1, Double.NEGATIVE_INFINITY) == 0
+                    || Double.compare(s2, Double.NEGATIVE_INFINITY) == 0
+                    || Double.compare(s3, Double.NEGATIVE_INFINITY) == 0) {
+                    throw new IllegalArgumentException();
+                }
+            }
+            segments = new LineSegment[0];
+            return;
+        }
+
         for (int i = 0; i < points.length; i++) {
             for (int j = i+1; j < points.length; j++) {
                 for (int k = j+1; k < points.length; k++) {
-                    for (int m = k+1; m < points.length; m++) {                   
-                        double slope1 = points[i].slopeTo(points[j]);
-                        double slope2 = points[i].slopeTo(points[k]);
-                        double slope3 = points[i].slopeTo(points[m]);
+                    for (int m = k+1; m < points.length; m++) {
+                        // StdOut.printf("%d %d %d %d\n", i, j, k, m);
+                        double[] slopes = new double[6];
+                        slopes[0] = points[i].slopeTo(points[j]);
+                        slopes[1] = points[i].slopeTo(points[k]);
+                        slopes[2] = points[i].slopeTo(points[m]);
+                        slopes[3] = points[j].slopeTo(points[k]);
+                        slopes[4] = points[j].slopeTo(points[m]);
+                        slopes[5] = points[k].slopeTo(points[m]);
 
                         // check if any of them is a repeated point
-                        if (Double.compare(slope1, Double.NEGATIVE_INFINITY) == 0
-                            || Double.compare(slope2, Double.NEGATIVE_INFINITY) == 0
-                            || Double.compare(slope3, Double.NEGATIVE_INFINITY) == 0) {
-                            throw new IllegalArgumentException();
+                        for (int x = 0; x < 6; x++) {
+                            if (Double.compare(slopes[x], Double.NEGATIVE_INFINITY) == 0) {
+                                throw new IllegalArgumentException();
+                            }
                         }
 
-                        if (Double.compare(slope1, slope2) == 0
-                            && Double.compare(slope1, slope3) == 0) {
+                        if (Double.compare(slopes[0], slopes[1]) == 0
+                            && Double.compare(slopes[0], slopes[2]) == 0) {
 
                             // find the two endpoints of the segment
                             int min = i;
@@ -135,7 +162,7 @@ public class BruteCollinearPoints {
     private boolean less(Point a, Point b) {
         return a.compareTo(b) < 0;
     }
-        
+
     /**
      * the number of line segments
      */

@@ -42,9 +42,27 @@ public class FastCollinearPoints {
         n = 0;
 
         if (points.length <= 3) {
+            // check if there are repetitive points
+            if (points.length == 2) {
+                double slope = points[0].slopeTo(points[1]);
+                if (Double.compare(slope, Double.NEGATIVE_INFINITY) == 0) {
+                    throw new IllegalArgumentException();
+                }
+            }
+            else if (points.length == 3) {
+                double s1 = points[0].slopeTo(points[1]);
+                double s2 = points[0].slopeTo(points[2]);
+                double s3 = points[1].slopeTo(points[2]);
+                if (Double.compare(s1, Double.NEGATIVE_INFINITY) == 0
+                    || Double.compare(s2, Double.NEGATIVE_INFINITY) == 0
+                    || Double.compare(s3, Double.NEGATIVE_INFINITY) == 0) {
+                    throw new IllegalArgumentException();
+                }
+            }
             segments = new LineSegment[0];
             return;
         }
+
         for (int i = 0; i < points.length - 1; i++) {
             Point[] pointsCopy = new Point[points.length];
             System.arraycopy(points, 0, pointsCopy, 0, points.length);
@@ -127,7 +145,7 @@ public class FastCollinearPoints {
             segments = new LineSegment[0];
             return;
         }
-        
+
         Pair[] set = new Pair[n];
         int i = 0;
         for (Pair pair : bag) {
