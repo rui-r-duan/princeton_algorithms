@@ -147,6 +147,8 @@ public class BruteCollinearPoints {
      * the line segments
      */
     public LineSegment[] segments() {
-        return segments;
+        LineSegment[] dst = new LineSegment[n];
+        System.arraycopy(segments, 0, dst, 0, n);
+        return dst;
     }
 }
