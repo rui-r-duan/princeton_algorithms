@@ -1,3 +1,5 @@
+import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.StdOut;
 import java.util.Iterator;
 
 public class Board {
@@ -114,7 +116,15 @@ public class Board {
 
     // does this board equal y?
     public boolean equals(Object y) {
-        return false;
+        if (this == y) return true;
+        if (y == null) return false;
+        if (this.getClass() != y.getClass()) return false;
+        Board that = (Board) y;
+        if (this.n != that.n)
+            return false;
+        if (!java.util.Arrays.deepEquals(this.blocks, that.blocks))
+            return false;
+        return true;
     }
 
     // all neighboring boards
@@ -176,6 +186,10 @@ public class Board {
         StdOut.println("hamming: " + initial.hamming());
         StdOut.println("manhattan: " + initial.manhattan());
         StdOut.println("twin:");
-        StdOut.println(initial.twin());
+        Board twin = initial.twin();
+        StdOut.println(twin);
+        Board b2 = new Board(blocks);
+        StdOut.println(b2.equals(twin));
+        StdOut.println(b2.equals(initial));
     }
 }
