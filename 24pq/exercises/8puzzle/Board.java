@@ -5,6 +5,25 @@ import java.util.Iterator;
 public class Board {
     private int n;          // dimension
     private int[][] blocks;
+    private Coord xyEmpty;      // empty block's position
+
+    private class Coord {
+        int x;
+        int y;
+        public Coord(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+        public boolean equals(Object y) {
+            if (this == y) return true;
+            if (y == null) return false;
+            if (this.getClass() != y.getClass()) return false;
+            Coord that = (Coord) y;
+            if (this.x != that.x) return false;
+            if (this.y != that.y) return false;
+            return true;
+        }
+    }
 
     public Board() {}
     
@@ -13,6 +32,16 @@ public class Board {
     public Board(int[][] blocks) {
         this.n = blocks.length;
         this.blocks = blocks;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (blocks[i][j] == 0) {
+                    this.xyEmpty = new Coord(i, j);
+                    break;
+                }
+            }
+        }
+        if (this.xyEmpty == null)
+            throw new IllegalArgumentException("invalid Board blocks input");
     }
 
     // board dimension n
@@ -191,5 +220,6 @@ public class Board {
         Board b2 = new Board(blocks);
         StdOut.println(b2.equals(twin));
         StdOut.println(b2.equals(initial));
+        StdOut.println("empty position: " + initial.xyEmpty.x + " " + initial.xyEmpty.y);
     }
 }
