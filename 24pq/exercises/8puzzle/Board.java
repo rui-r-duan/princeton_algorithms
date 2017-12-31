@@ -97,6 +97,14 @@ public class Board {
                 }
         return true;
     }
+
+    // Array "a"'s elements are changed, and the changed "a" is returned.
+    private int[][] swap(int[][] a, int i1, int j1, int i2, int j2) {
+        int t = a[i2][j2];
+        a[i2][j2] = a[i1][j1];
+        a[i1][j1] = t;
+        return a;
+    }
     
     // a board that is obtained by exchanging any pair of blocks
     public Board twin() {
@@ -136,9 +144,7 @@ public class Board {
         }
         assert firstSelected && secondSelected;
 
-        int t = nb[i2][j2];
-        nb[i2][j2] = nb[i1][j1];
-        nb[i1][j1] = t;
+        nb = swap(nb, i1, j1, i2, j2);
 
         return new Board(nb);
     }
@@ -168,19 +174,48 @@ public class Board {
     }
 
     private class NeighborIterator implements Iterator<Board> {
+        private int cnt = 0;
+
         @Override
         public boolean hasNext() {
-            return false;
+            return (cnt < 4);
         }
 
         @Override
         public Board next() {
-            return new Board();
+            cnt++;
+            return twin();
         }
 
         @Override
         public void remove() {
             throw new UnsupportedOperationException();
+        }
+
+        // get the coordination of the left element of the current "pos"
+        private Coord getLeft(Coord pos) {
+            if (pos.x == 0)
+                return null;
+            else
+                return new Coord(pos.x - 1, pos.y);
+        }
+        private Coord getUp(Coord pos) {
+            if (pos.y == 0)
+                return null;
+            else
+                return new Coord(pos.x, pos.y - 1);
+        }
+        private Coord getDown(Coord pos) {
+            if (pos.y == n - 1)
+                return null;
+            else
+                return new Coord(pos.x, pos.y + 1);
+        }
+        private Coord getRight(Coord pos) {
+            if (pos.x == n - 1)
+                return null;
+            else
+                return new Coord(pos.x + 1, pos.y);
         }
     }
     
@@ -221,5 +256,9 @@ public class Board {
         StdOut.println(b2.equals(twin));
         StdOut.println(b2.equals(initial));
         StdOut.println("empty position: " + initial.xyEmpty.x + " " + initial.xyEmpty.y);
+        for (Board b : initial.neighbors()) {
+            StdOut.println(b);
+            StdOut.println(initial);
+        }
     }
 }
