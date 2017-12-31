@@ -4,7 +4,7 @@
 #
 # java-classmexer
 # ------------------
-# Wrapper for java that includes stdlib.jar, algs4.jar (including stdlib and
+# Wrapper for java that includes algs4.jar (including stdlib and
 # selected exercise code), classmexer.jar and Jama-1.0.3.jar
 #
 # Note: the -XX:-UseCompressedOops command-line option to ensure that the
