@@ -13,6 +13,8 @@
  *
  ******************************************************************************/
 
+import edu.princeton.cs.algs4.StdOut;
+
 public class OrderedArrayMaxPQ<Key extends Comparable<Key>> {
     private Key[] pq;          // elements
     private int n;             // number of elements

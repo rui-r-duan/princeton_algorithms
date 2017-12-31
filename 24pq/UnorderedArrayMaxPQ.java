@@ -11,6 +11,7 @@
  *   - does not check for overflow or underflow.
  *
  ******************************************************************************/
+import edu.princeton.cs.algs4.StdOut;
 
 public class UnorderedArrayMaxPQ<Key extends Comparable<Key>> {
     private Key[] pq;      // elements
