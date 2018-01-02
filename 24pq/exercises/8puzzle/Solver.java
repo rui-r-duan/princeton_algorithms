@@ -60,7 +60,7 @@ public class Solver {
             minInit = pqInit.delMin();
             for (Board b : minInit.board.neighbors()) {
                 SearchNode node = new SearchNode(b, minInit.moves + 1, minInit);
-                if (!b.equals(minInit))
+                if (minInit.pre == null || !b.equals(minInit.pre.board))
                     pqInit.insert(node);
             }
             if (minInit.board.equals(GOAL)) {
@@ -71,7 +71,7 @@ public class Solver {
             minTwin = pqTwin.delMin();
             for (Board b : minTwin.board.neighbors()) {
                 SearchNode node = new SearchNode(b, minTwin.moves + 1, minTwin);
-                if (!b.equals(minTwin))
+                if (minInit.pre == null || !b.equals(minTwin.pre.board))
                     pqTwin.insert(node);
             }
             if (minTwin.board.equals(GOAL)) {
