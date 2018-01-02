@@ -5,22 +5,33 @@ import edu.princeton.cs.algs4.ResizingArrayStack;
 
 public class Solver {
     private class SearchNode implements Comparable<SearchNode> {
-        final Board board;        
+        final Board board;
         int moves;
         SearchNode pre;         // predecessor search node
-        int priority; 
+        int priority;
+        // final String str;       // for debug
 
         public SearchNode(Board bd, int moves, SearchNode pre) {
             this.board = bd;
             this.moves = moves;
             this.pre = pre;
             this.priority = board.manhattan() + moves;
+
+            // StringBuilder sb = new StringBuilder(board.toString());
+            // sb.append(String.format("moves=%2d\n", moves));
+            // sb.append(String.format("priority=%2d\n", priority));
+            // str = sb.toString();
         }
 
         @Override
         public int compareTo(SearchNode that) {
             return this.priority - that.priority;
         }
+
+        // @Override
+        // public String toString() {
+        //     return str;
+        // }
     }
 
     private ResizingArrayStack<Board> solution;
@@ -57,6 +68,12 @@ public class Solver {
         SearchNode minInit = null;
         SearchNode minTwin = null;
         while (indicator == 0) {
+            // debug
+            // for (SearchNode node : pqInit) {
+            //     StdOut.println(node);
+            // }
+            // StdOut.println("debug round done, pq size = " + pqInit.size());
+
             minInit = pqInit.delMin();
             for (Board b : minInit.board.neighbors()) {
                 SearchNode node = new SearchNode(b, minInit.moves + 1, minInit);
@@ -77,7 +94,7 @@ public class Solver {
             if (minTwin.board.equals(GOAL)) {
                 indicator = 2;
                 break;
-            }            
+            }
         }
 
         isSolvable = (indicator == 1);
