@@ -1,9 +1,10 @@
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdOut;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class Board {
-    private int n;          // dimension
+    private int n;              // dimension
     private int[][] blocks;
     private Coord xyEmpty;      // empty block's position
 
@@ -26,7 +27,7 @@ public class Board {
     }
 
     public Board() {}
-    
+
     // construct a board from an n-by-n array of blocks
     // (where blocks[i][j] = block in row i, column j)
     public Board(int[][] blocks) {
@@ -63,7 +64,7 @@ public class Board {
     private int manhattanDistance(int i1, int j1, int i2, int j2) {
         return Math.abs(i2 - i1) + Math.abs(j2 - j1);
     }
-    
+
     // sum of Manhattan distances between blocks and goal
     public int manhattan() {
         int s = 0;
@@ -77,7 +78,7 @@ public class Board {
                     // Add Manhattan distance between the current block position
                     // and its goal position.
                     s += manhattanDistance(i, j, gi, gj);
-                }                
+                }
             }
         }
         return s;
@@ -105,7 +106,7 @@ public class Board {
         a[i1][j1] = t;
         return a;
     }
-    
+
     // a board that is obtained by exchanging any pair of blocks
     public Board twin() {
         int[][] nb = blocks.clone();
@@ -174,17 +175,55 @@ public class Board {
     }
 
     private class NeighborIterator implements Iterator<Board> {
-        private int cnt = 0;
+        private int cnt;
+        private Coord nextPos;
 
         @Override
         public boolean hasNext() {
-            return (cnt < 4);
+            if (cnt == 0) {
+                nextPos = getLeft(xyEmpty);
+                if (nextPos != null)
+                    return true;
+                else
+                    cnt++;
+            }
+            if (cnt == 1) {
+                nextPos = getRight(xyEmpty);
+                if (nextPos != null)
+                    return true;
+                else
+                    cnt++;
+            }
+            if (cnt == 2) {
+                nextPos = getUp(xyEmpty);
+                if (nextPos != null)
+                    return true;
+                else
+                    cnt++;
+            }
+            if (cnt == 3) {
+                nextPos = getDown(xyEmpty);
+                if (nextPos != null)
+                    return true;
+                else
+                    cnt++;
+            }
+            return cnt < 4;
         }
 
         @Override
         public Board next() {
+            if (!hasNext()) throw new NoSuchElementException();
+
+            assert nextPos != null;
+            int[][] nb = blocks.clone();
+            for (int j = 0; j < nb.length; j++) {
+                nb[j] = blocks[j].clone();
+            }
+            swap(nb, xyEmpty.x, xyEmpty.y, nextPos.x, nextPos.y);
+            Board board = new Board(nb);
             cnt++;
-            return twin();
+            return board;
         }
 
         @Override
@@ -218,8 +257,8 @@ public class Board {
                 return new Coord(pos.x + 1, pos.y);
         }
     }
-    
-    // string representation of this board (in the output format specified below)
+
+    // string representation of this board
     public String toString() {
         StringBuilder s = new StringBuilder();
         for (int i = 0; i < n; i++)
@@ -256,9 +295,22 @@ public class Board {
         StdOut.println(b2.equals(twin));
         StdOut.println(b2.equals(initial));
         StdOut.println("empty position: " + initial.xyEmpty.x + " " + initial.xyEmpty.y);
+        StdOut.println();
+        StdOut.println("Iterable test 1: for loop");
         for (Board b : initial.neighbors()) {
             StdOut.println(b);
-            StdOut.println(initial);
+        }
+        StdOut.println("Iterable test 2");
+        Iterable<Board> it = initial.neighbors();
+        Iterator<Board> itr = it.iterator();
+        try {
+            StdOut.println(itr.next());
+            StdOut.println(itr.next());
+            StdOut.println(itr.next());
+            StdOut.println(itr.next());
+        }
+        catch (NoSuchElementException e) {
+            StdOut.println(e);
         }
     }
 }
