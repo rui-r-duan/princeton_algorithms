@@ -4,8 +4,8 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class Board {
-    private int n;              // dimension
-    private int[][] blocks;
+    private final int n;        // dimension
+    private final int[][] blocks;
     private Coord xyEmpty;      // empty block's position
 
     private class Coord {
@@ -25,8 +25,6 @@ public class Board {
             return true;
         }
     }
-
-    public Board() {}
 
     // construct a board from an n-by-n array of blocks
     // (where blocks[i][j] = block in row i, column j)
