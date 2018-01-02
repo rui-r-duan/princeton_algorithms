@@ -259,6 +259,7 @@ public class Board {
     // string representation of this board
     public String toString() {
         StringBuilder s = new StringBuilder();
+        s.append(String.format("%d\n", n));
         for (int i = 0; i < n; i++)
             for (int j = 0; j < n; j++) {
                 s.append(String.format("%2d", blocks[i][j]));
