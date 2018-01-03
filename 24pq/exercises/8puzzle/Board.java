@@ -5,7 +5,7 @@ import java.util.NoSuchElementException;
 
 public class Board {
     private final int n;        // dimension
-    private final int[][] blocks;
+    private final int[][] tiles;
     private Coord xyEmpty;      // empty block's position
 
     private class Coord {
@@ -15,22 +15,19 @@ public class Board {
             this.x = x;
             this.y = y;
         }
-        public boolean equals(Object y) {
-            if (this == y) return true;
-            if (y == null) return false;
-            if (this.getClass() != y.getClass()) return false;
-            Coord that = (Coord) y;
-            if (this.x != that.x) return false;
-            if (this.y != that.y) return false;
-            return true;
-        }
     }
 
     // construct a board from an n-by-n array of blocks
     // (where blocks[i][j] = block in row i, column j)
     public Board(int[][] blocks) {
         this.n = blocks.length;
-        this.blocks = blocks;
+
+        // store a deep defence copy of the external mutable object "blocks"
+        this.tiles = blocks.clone();
+        for (int i = 0; i < blocks.length; i++) {
+            this.tiles[i] = blocks[i].clone();
+        }
+
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 if (blocks[i][j] == 0) {
@@ -53,7 +50,7 @@ public class Board {
         int s = 0;
         for (int i = 0; i < n; i++)
             for (int j = 0; j < n; j++)
-                if (!(i == n-1 && j == n-1) && (blocks[i][j] != i*n + j + 1))
+                if (!(i == n-1 && j == n-1) && (tiles[i][j] != i*n + j + 1))
                     s++;
         return s;
     }
@@ -68,7 +65,7 @@ public class Board {
         int s = 0;
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                int v = blocks[i][j];    // current block value
+                int v = tiles[i][j];    // current block value
                 if (v != 0) {
                     int gi = (v - 1) / n; // goal position index i
                     int gj = v - 1 - gi * n; // goal position index j
@@ -87,11 +84,11 @@ public class Board {
         for (int i = 0; i < n; i++)
             for (int j = 0; j < n; j++)
                 if (i == n-1 && j == n-1) {
-                    if (blocks[i][j] != 0)
+                    if (tiles[i][j] != 0)
                         return false;
                 }
                 else {
-                    if (blocks[i][j] != i*n + j + 1)
+                    if (tiles[i][j] != i*n + j + 1)
                         return false;
                 }
         return true;
@@ -107,9 +104,9 @@ public class Board {
 
     // a board that is obtained by exchanging any pair of blocks
     public Board twin() {
-        int[][] nb = blocks.clone();
+        int[][] nb = tiles.clone();
         for (int i = 0; i < nb.length; i++) {
-            nb[i] = blocks[i].clone();
+            nb[i] = tiles[i].clone();
         }
 
         boolean firstSelected = false;
@@ -136,8 +133,7 @@ public class Board {
                         j1 = j;
                         firstSelected = true;
                     }
-                    else
-                        ;       // continue checking next position
+                    // else: continue checking next position
                 }
             }
         }
@@ -156,7 +152,7 @@ public class Board {
         Board that = (Board) y;
         if (this.n != that.n)
             return false;
-        if (!java.util.Arrays.deepEquals(this.blocks, that.blocks))
+        if (!java.util.Arrays.deepEquals(this.tiles, that.tiles))
             return false;
         return true;
     }
@@ -214,9 +210,9 @@ public class Board {
             if (!hasNext()) throw new NoSuchElementException();
 
             assert nextPos != null;
-            int[][] nb = blocks.clone();
+            int[][] nb = tiles.clone();
             for (int j = 0; j < nb.length; j++) {
-                nb[j] = blocks[j].clone();
+                nb[j] = tiles[j].clone();
             }
             swap(nb, xyEmpty.x, xyEmpty.y, nextPos.x, nextPos.y);
             Board board = new Board(nb);
@@ -262,7 +258,7 @@ public class Board {
         s.append(String.format("%d\n", n));
         for (int i = 0; i < n; i++)
             for (int j = 0; j < n; j++) {
-                s.append(String.format("%2d", blocks[i][j]));
+                s.append(String.format("%2d", tiles[i][j]));
                 if (j == n-1)
                     s.append("\n");
                 else

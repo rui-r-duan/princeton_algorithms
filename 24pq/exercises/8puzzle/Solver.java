@@ -4,6 +4,9 @@ import edu.princeton.cs.algs4.MinPQ;
 import edu.princeton.cs.algs4.ResizingArrayStack;
 
 public class Solver {
+    private final ResizingArrayStack<Board> solution;
+    private final boolean isSolvable;
+
     private class SearchNode implements Comparable<SearchNode> {
         final Board board;
         int moves;
@@ -34,11 +37,10 @@ public class Solver {
         // }
     }
 
-    private ResizingArrayStack<Board> solution;
-    private boolean isSolvable;
-
     // find a solution to the initial board (using the A* algorithm)
     public Solver(Board initial) {
+        if (initial == null) throw new IllegalArgumentException("null Board");
+
         solution = new ResizingArrayStack<Board>();
 
         SearchNode nodeInit = new SearchNode(initial, 0, null);
