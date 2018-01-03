@@ -2,20 +2,13 @@ import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdOut;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import edu.princeton.cs.algs4.ResizingArrayQueue;
 
 public class Board {
     private final int n;        // dimension
     private final int[][] tiles;
-    private Coord xyEmpty;      // empty block's position
-
-    private class Coord {
-        int x;
-        int y;
-        public Coord(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-    }
+    private int rowBlank = -1; // blank block's row index
+    private int colBlank = -1; // blank block's column index
 
     // construct a board from an n-by-n array of blocks
     // (where blocks[i][j] = block in row i, column j)
@@ -31,12 +24,13 @@ public class Board {
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 if (blocks[i][j] == 0) {
-                    this.xyEmpty = new Coord(i, j);
+                    this.rowBlank = i;
+                    this.colBlank = j;
                     break;
                 }
             }
         }
-        if (this.xyEmpty == null)
+        if (this.rowBlank == -1)
             throw new IllegalArgumentException("invalid Board blocks input");
     }
 
@@ -81,34 +75,26 @@ public class Board {
 
     // is this board the goal board?
     public boolean isGoal() {
-        for (int i = 0; i < n; i++)
-            for (int j = 0; j < n; j++)
+        int k = 1;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
                 if (i == n-1 && j == n-1) {
-                    if (tiles[i][j] != 0)
+                    k = 0;
+                    if (tiles[i][j] != k)
                         return false;
                 }
                 else {
-                    if (tiles[i][j] != i*n + j + 1)
+                    if (tiles[i][j] != k)
                         return false;
                 }
+                k++;
+            }
+        }
         return true;
-    }
-
-    // Array "a"'s elements are changed, and the changed "a" is returned.
-    private int[][] swap(int[][] a, int i1, int j1, int i2, int j2) {
-        int t = a[i2][j2];
-        a[i2][j2] = a[i1][j1];
-        a[i1][j1] = t;
-        return a;
     }
 
     // a board that is obtained by exchanging any pair of blocks
     public Board twin() {
-        int[][] nb = tiles.clone();
-        for (int i = 0; i < nb.length; i++) {
-            nb[i] = tiles[i].clone();
-        }
-
         boolean firstSelected = false;
         boolean secondSelected = false;
         int i1 = 0, j1 = 0, i2 = 0, j2 = 0;
@@ -120,7 +106,7 @@ public class Board {
                         break;
                     }
                     else {
-                        if (nb[i][j] != 0) {
+                        if (tiles[i][j] != 0) {
                             i2 = i;
                             j2 = j;
                             secondSelected = true;
@@ -128,7 +114,7 @@ public class Board {
                     }
                 }
                 else {          // select the first
-                    if (nb[i][j] != 0) {
+                    if (tiles[i][j] != 0) {
                         i1 = i;
                         j1 = j;
                         firstSelected = true;
@@ -139,9 +125,9 @@ public class Board {
         }
         assert firstSelected && secondSelected;
 
-        nb = swap(nb, i1, j1, i2, j2);
-
-        return new Board(nb);
+        Board board = new Board(tiles);
+        board.swapBlocks(i1, j1, i2, j2);
+        return board;
     }
 
     // does this board equal y?
@@ -159,97 +145,84 @@ public class Board {
 
     // all neighboring boards
     public Iterable<Board> neighbors() {
-        return new NeighborIterable();
-    }
-
-    private class NeighborIterable implements Iterable<Board> {
-        public Iterator<Board> iterator() {
-            return new NeighborIterator();
-        }
-    }
-
-    private class NeighborIterator implements Iterator<Board> {
-        private int cnt;
-        private Coord nextPos;
-
-        @Override
-        public boolean hasNext() {
+        int[] nextPos = null;
+        ResizingArrayQueue<Board> queue = new ResizingArrayQueue<Board>();
+        for (int cnt = 0; cnt < 4; cnt++) { // check four directions
             if (cnt == 0) {
-                nextPos = getLeft(xyEmpty);
-                if (nextPos != null)
-                    return true;
-                else
-                    cnt++;
+                nextPos = getLeft(rowBlank, colBlank);
+                if (nextPos == null)
+                    continue;
             }
             if (cnt == 1) {
-                nextPos = getRight(xyEmpty);
-                if (nextPos != null)
-                    return true;
-                else
-                    cnt++;
+                nextPos = getRight(rowBlank, colBlank);
+                if (nextPos == null)
+                    continue;
             }
             if (cnt == 2) {
-                nextPos = getUp(xyEmpty);
-                if (nextPos != null)
-                    return true;
-                else
-                    cnt++;
+                nextPos = getUp(rowBlank, colBlank);
+                if (nextPos == null)
+                    continue;
             }
             if (cnt == 3) {
-                nextPos = getDown(xyEmpty);
-                if (nextPos != null)
-                    return true;
-                else
-                    cnt++;
+                nextPos = getDown(rowBlank, colBlank);
+                if (nextPos == null)
+                    continue;
             }
-            return cnt < 4;
-        }
 
-        @Override
-        public Board next() {
-            if (!hasNext()) throw new NoSuchElementException();
-
-            assert nextPos != null;
-            int[][] nb = tiles.clone();
-            for (int j = 0; j < nb.length; j++) {
-                nb[j] = tiles[j].clone();
+            if (nextPos != null) {
+                Board board = new Board(tiles);
+                board.moveBlankTo(nextPos[0], nextPos[1]);
+                queue.enqueue(board);
             }
-            swap(nb, xyEmpty.x, xyEmpty.y, nextPos.x, nextPos.y);
-            Board board = new Board(nb);
-            cnt++;
-            return board;
         }
 
-        @Override
-        public void remove() {
-            throw new UnsupportedOperationException();
-        }
+        return queue;
+    }
 
-        // get the coordination of the left element of the current "pos"
-        private Coord getLeft(Coord pos) {
-            if (pos.x == 0)
-                return null;
-            else
-                return new Coord(pos.x - 1, pos.y);
-        }
-        private Coord getUp(Coord pos) {
-            if (pos.y == 0)
-                return null;
-            else
-                return new Coord(pos.x, pos.y - 1);
-        }
-        private Coord getDown(Coord pos) {
-            if (pos.y == n - 1)
-                return null;
-            else
-                return new Coord(pos.x, pos.y + 1);
-        }
-        private Coord getRight(Coord pos) {
-            if (pos.x == n - 1)
-                return null;
-            else
-                return new Coord(pos.x + 1, pos.y);
-        }
+    // swap tile (i1, j1) and tile (i2, j2)
+    // note: one of them may be a blank tile, but this method does not update
+    // the blank tile position! It is only used for the block movement methods.
+    private void swap(int i1, int j1, int i2, int j2) {
+        int t = tiles[i2][j2];
+        tiles[i2][j2] = tiles[i1][j1];
+        tiles[i1][j1] = t;
+    }
+
+    // swap non-blank blocks
+    private void swapBlocks(int i1, int j1, int i2, int j2) {
+        swap(i1, j1, i2, j2);
+    }
+
+    private void moveBlankTo(int row, int col) {
+        swap(rowBlank, colBlank, row, col);
+        rowBlank = row;
+        colBlank = col;
+    }
+
+    // get the coordination of the left element of the current "pos"
+    private int[] getLeft(int row, int col) {
+        if (row == 0)
+            return null;
+        else
+            return new int[] { row - 1, col };
+    }
+    private int[] getUp(int row, int col) {
+        if (col == 0)
+            return null;
+        else
+            return new int[] { row, col - 1 };
+    }
+    private int[] getDown(int row, int col) {
+        if (col == n - 1)
+            return null;
+        else
+            return new int[] { row, col + 1 };
+    }
+    private int[] getRight(int row, int col) {
+        if (row == n - 1)
+            return null;
+        else
+            return new int[] { row + 1, col };
     }
 
     // string representation of this board
@@ -289,7 +262,7 @@ public class Board {
         Board b2 = new Board(blocks);
         StdOut.println(b2.equals(twin));
         StdOut.println(b2.equals(initial));
-        StdOut.println("empty position: " + initial.xyEmpty.x + " " + initial.xyEmpty.y);
+        StdOut.println("blank position: " + initial.rowBlank + " " + initial.colBlank);
         StdOut.println();
         StdOut.println("Iterable test 1: for loop");
         for (Board b : initial.neighbors()) {

@@ -4,7 +4,7 @@ import edu.princeton.cs.algs4.MinPQ;
 import edu.princeton.cs.algs4.ResizingArrayStack;
 
 public class Solver {
-    private final ResizingArrayStack<Board> solution;
+    private ResizingArrayStack<Board> solution;
     private final boolean isSolvable;
 
     private class SearchNode implements Comparable<SearchNode> {
@@ -41,7 +41,7 @@ public class Solver {
     public Solver(Board initial) {
         if (initial == null) throw new IllegalArgumentException("null Board");
 
-        solution = new ResizingArrayStack<Board>();
+        solution = null;
 
         SearchNode nodeInit = new SearchNode(initial, 0, null);
         MinPQ<SearchNode> pqInit = new MinPQ<SearchNode>();
@@ -50,19 +50,6 @@ public class Solver {
         SearchNode nodeTwin = new SearchNode(initial.twin(), 0, null);
         MinPQ<SearchNode> pqTwin = new MinPQ<SearchNode>();
         pqTwin.insert(nodeTwin);
-
-        // construct GOAL Board
-        int k = 1;
-        int n = initial.dimension();
-        int[][] goalBlocks = new int[n][n];
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                goalBlocks[i][j] = k;
-                k++;
-            }
-        }
-        goalBlocks[n-1][n-1] = 0;
-        final Board GOAL = new Board(goalBlocks);
 
         // If the initial board is solvable, 1;
         // if the twin board is solvable, 2.
@@ -82,7 +69,7 @@ public class Solver {
                 if (minInit.pre == null || !b.equals(minInit.pre.board))
                     pqInit.insert(node);
             }
-            if (minInit.board.equals(GOAL)) {
+            if (minInit.board.isGoal()) {
                 indicator = 1;
                 break;
             }
@@ -93,7 +80,7 @@ public class Solver {
                 if (minInit.pre == null || !b.equals(minTwin.pre.board))
                     pqTwin.insert(node);
             }
-            if (minTwin.board.equals(GOAL)) {
+            if (minTwin.board.isGoal()) {
                 indicator = 2;
                 break;
             }
@@ -101,6 +88,7 @@ public class Solver {
 
         isSolvable = (indicator == 1);
         if (isSolvable) {
+            solution = new ResizingArrayStack<Board>();
             SearchNode node = minInit;
             while (node != null) {
                 solution.push(node.board);
@@ -116,7 +104,10 @@ public class Solver {
 
     // min number of moves to solve initial board; -1 if unsolvable
     public int moves() {
-        return solution.size() - 1;
+        if (isSolvable)
+            return solution.size() - 1;
+        else
+            return -1;
     }
 
     // sequence of boards in a shortest solution; null if unsolvable
