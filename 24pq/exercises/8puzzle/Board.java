@@ -231,7 +231,7 @@ public class Board {
         s.append(String.format("%d\n", n));
         for (int i = 0; i < n; i++)
             for (int j = 0; j < n; j++) {
-                s.append(String.format("%2d", tiles[i][j]));
+                s.append(String.format("%2d", (int) tiles[i][j]));
                 if (j == n-1)
                     s.append("\n");
                 else
