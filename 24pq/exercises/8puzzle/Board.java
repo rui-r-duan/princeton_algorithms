@@ -5,42 +5,39 @@ import java.util.NoSuchElementException;
 import edu.princeton.cs.algs4.ResizingArrayQueue;
 
 public class Board {
-    private final int n;        // dimension
-    private final int[][] tiles;
-    private int rowBlank = -1; // blank block's row index
-    private int colBlank = -1; // blank block's column index
+    private final char[][] tiles;
 
     // construct a board from an n-by-n array of blocks
     // (where blocks[i][j] = block in row i, column j)
     public Board(int[][] blocks) {
-        this.n = blocks.length;
-
-        // store a deep defence copy of the external mutable object "blocks"
-        this.tiles = blocks.clone();
-        for (int i = 0; i < blocks.length; i++) {
-            this.tiles[i] = blocks[i].clone();
-        }
-
+        int n = blocks.length;
+        tiles = new char[n][n];
         for (int i = 0; i < n; i++) {
+            tiles[i] = new char[n];
             for (int j = 0; j < n; j++) {
-                if (blocks[i][j] == 0) {
-                    this.rowBlank = i;
-                    this.colBlank = j;
-                    break;
-                }
+                tiles[i][j] = (char) blocks[i][j];
             }
         }
-        if (this.rowBlank == -1)
-            throw new IllegalArgumentException("invalid Board blocks input");
+    }
+    private Board(char[][] blocks) {
+        int n = blocks.length;
+        tiles = new char[n][n];
+        for (int i = 0; i < n; i++) {
+            tiles[i] = new char[n];
+            for (int j = 0; j < n; j++) {
+                tiles[i][j] = blocks[i][j];
+            }
+        }
     }
 
     // board dimension n
     public int dimension() {
-        return n;
+        return tiles.length;
     }
 
     // number of blocks out of place
     public int hamming() {
+        int n = tiles.length;
         int s = 0;
         for (int i = 0; i < n; i++)
             for (int j = 0; j < n; j++)
@@ -56,6 +53,7 @@ public class Board {
 
     // sum of Manhattan distances between blocks and goal
     public int manhattan() {
+        int n = tiles.length;
         int s = 0;
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
@@ -75,17 +73,15 @@ public class Board {
 
     // is this board the goal board?
     public boolean isGoal() {
+        int n = tiles.length;
         int k = 1;
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 if (i == n-1 && j == n-1) {
                     k = 0;
-                    if (tiles[i][j] != k)
-                        return false;
                 }
-                else {
-                    if (tiles[i][j] != k)
-                        return false;
+                if (tiles[i][j] != k) {
+                    return false;
                 }
                 k++;
             }
@@ -95,6 +91,7 @@ public class Board {
 
     // a board that is obtained by exchanging any pair of blocks
     public Board twin() {
+        int n = tiles.length;
         boolean firstSelected = false;
         boolean secondSelected = false;
         int i1 = 0, j1 = 0, i2 = 0, j2 = 0;
@@ -126,7 +123,7 @@ public class Board {
         assert firstSelected && secondSelected;
 
         Board board = new Board(tiles);
-        board.swapBlocks(i1, j1, i2, j2);
+        board.swap(i1, j1, i2, j2);
         return board;
     }
 
@@ -136,8 +133,6 @@ public class Board {
         if (y == null) return false;
         if (this.getClass() != y.getClass()) return false;
         Board that = (Board) y;
-        if (this.n != that.n)
-            return false;
         if (!java.util.Arrays.deepEquals(this.tiles, that.tiles))
             return false;
         return true;
@@ -145,6 +140,21 @@ public class Board {
 
     // all neighboring boards
     public Iterable<Board> neighbors() {
+        // find the position of the blank tile
+        int n = tiles.length;
+        int rowBlank = -1;
+        int colBlank = -1;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (tiles[i][j] == 0) {
+                    rowBlank = i;
+                    colBlank = j;
+                    break;
+                }
+            }
+        }
+        assert rowBlank != -1 && colBlank != -1;
+
         int[] nextPos = null;
         ResizingArrayQueue<Board> queue = new ResizingArrayQueue<Board>();
         for (int cnt = 0; cnt < 4; cnt++) { // check four directions
@@ -171,7 +181,7 @@ public class Board {
 
             if (nextPos != null) {
                 Board board = new Board(tiles);
-                board.moveBlankTo(nextPos[0], nextPos[1]);
+                board.swap(rowBlank, colBlank, nextPos[0], nextPos[1]);
                 queue.enqueue(board);
             }
         }
@@ -180,23 +190,10 @@ public class Board {
     }
 
     // swap tile (i1, j1) and tile (i2, j2)
-    // note: one of them may be a blank tile, but this method does not update
-    // the blank tile position! It is only used for the block movement methods.
     private void swap(int i1, int j1, int i2, int j2) {
-        int t = tiles[i2][j2];
+        char t = tiles[i2][j2];
         tiles[i2][j2] = tiles[i1][j1];
         tiles[i1][j1] = t;
-    }
-
-    // swap non-blank blocks
-    private void swapBlocks(int i1, int j1, int i2, int j2) {
-        swap(i1, j1, i2, j2);
-    }
-
-    private void moveBlankTo(int row, int col) {
-        swap(rowBlank, colBlank, row, col);
-        rowBlank = row;
-        colBlank = col;
     }
 
     // get the coordination of the left element of the current "pos"
@@ -213,12 +210,14 @@ public class Board {
             return new int[] { row, col - 1 };
     }
     private int[] getDown(int row, int col) {
+        int n = tiles.length;
         if (col == n - 1)
             return null;
         else
             return new int[] { row, col + 1 };
     }
     private int[] getRight(int row, int col) {
+        int n = tiles.length;
         if (row == n - 1)
             return null;
         else
@@ -227,6 +226,7 @@ public class Board {
 
     // string representation of this board
     public String toString() {
+        int n = tiles.length;
         StringBuilder s = new StringBuilder();
         s.append(String.format("%d\n", n));
         for (int i = 0; i < n; i++)
@@ -262,7 +262,6 @@ public class Board {
         Board b2 = new Board(blocks);
         StdOut.println(b2.equals(twin));
         StdOut.println(b2.equals(initial));
-        StdOut.println("blank position: " + initial.rowBlank + " " + initial.colBlank);
         StdOut.println();
         StdOut.println("Iterable test 1: for loop");
         for (Board b : initial.neighbors()) {

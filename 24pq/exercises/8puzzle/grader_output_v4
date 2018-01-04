@@ -1,0 +1,1539 @@
+See the Assessment Guide for information on how to interpret this report.
+
+ASSESSMENT SUMMARY
+
+Compilation:  PASSED
+API:          PASSED
+
+Findbugs:     FAILED (5 warnings)
+PMD:          PASSED
+Checkstyle:   PASSED
+
+Correctness:  38/49 tests passed
+Memory:       22/22 tests passed
+Timing:       125/125 tests passed
+
+Aggregate score: 86.53%
+[Compilation: 5%, API: 5%, Findbugs: 0%, PMD: 0%, Checkstyle: 0%, Correctness: 60%, Memory: 10%, Timing: 20%]
+
+ASSESSMENT DETAILS
+
+The following files were submitted:
+----------------------------------
+8.9K Jan  4 03:33 Board.java
+4.6K Jan  4 03:33 Solver.java
+
+
+********************************************************************************
+*  COMPILING                                                                    
+********************************************************************************
+
+
+% javac Board.java
+*-----------------------------------------------------------
+
+% javac Solver.java
+*-----------------------------------------------------------
+
+
+================================================================
+
+
+Checking the APIs of your programs.
+*-----------------------------------------------------------
+Board:
+
+Solver:
+
+================================================================
+
+
+********************************************************************************
+*  CHECKING STYLE AND COMMON BUG PATTERNS                                       
+********************************************************************************
+
+
+% findbugs *.class
+*-----------------------------------------------------------
+H C VA_FORMAT_STRING_BAD_CONVERSION FS: The argument of type 'Character' in the method 'format()' is incompatible with the format specifier '%2d' in the format string.  At Board.java:[line 234]
+L D PZLA_PREFER_ZERO_LENGTH_ARRAYS PZLA: Should 'getLeft()' return a zero-length array instead of null?  At Board.java:[line 202]
+L D PZLA_PREFER_ZERO_LENGTH_ARRAYS PZLA: Should 'getUp()' return a zero-length array instead of null?  At Board.java:[line 208]
+L D PZLA_PREFER_ZERO_LENGTH_ARRAYS PZLA: Should 'getDown()' return a zero-length array instead of null?  At Board.java:[line 215]
+L D PZLA_PREFER_ZERO_LENGTH_ARRAYS PZLA: Should 'getRight()' return a zero-length array instead of null?  At Board.java:[line 222]
+Warnings generated: 5
+
+
+================================================================
+
+
+% pmd .
+*-----------------------------------------------------------
+
+
+================================================================
+
+
+% checkstyle *.java
+*-----------------------------------------------------------
+
+% custom checkstyle checks for Board.java
+*-----------------------------------------------------------
+
+% custom checkstyle checks for Solver.java
+*-----------------------------------------------------------
+
+
+================================================================
+
+
+********************************************************************************
+*  TESTING CORRECTNESS
+********************************************************************************
+
+Testing correctness of Board
+*-----------------------------------------------------------
+Running 24 total tests.
+
+Tests 5, 6, 13, and 14 rely upon toString() returning results in prescribed format.
+
+Test 1a: check hamming() with file inputs
+  * puzzle04.txt
+  * puzzle00.txt
+  * puzzle07.txt
+  * puzzle17.txt
+  * puzzle27.txt
+  * puzzle2x2-unsolvable1.txt
+==> passed
+
+Test 1b: check hamming() with random n-by-n boards
+  * 2-by-2
+  * 3-by-3
+  * 4-by-4
+  * 5-by-5
+  * 9-by-9
+  * 10-by-10
+  * 127-by-127
+==> passed
+
+Test 2a: check manhattan() with file inputs
+  * puzzle04.txt
+  * puzzle00.txt
+  * puzzle07.txt
+  * puzzle17.txt
+  * puzzle27.txt
+  * puzzle2x2-unsolvable1.txt
+==> passed
+
+Test 2b: check manhattan() with random n-by-n boards
+  * 2-by-2
+  * 3-by-3
+  * 4-by-4
+  * 5-by-5
+  * 9-by-9
+  * 10-by-10
+  * 127-by-127
+==> passed
+
+Test 3: check dimension() with random n-by-n boards
+  * 2-by-2
+  * 3-by-3
+  * 4-by-4
+  * 5-by-5
+  * 6-by-6
+==> passed
+
+Test 4a: check toString() with file inputs
+  * puzzle04.txt
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    Board.toString(Board.java:234)
+    TestBoard.checkToString(TestBoard.java:417)
+    TestBoard.checkToString(TestBoard.java:393)
+    TestBoard.test4a(TestBoard.java:1290)
+    TestBoard.main(TestBoard.java:1560)
+
+  * puzzle00.txt
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    Board.toString(Board.java:234)
+    TestBoard.checkToString(TestBoard.java:417)
+    TestBoard.checkToString(TestBoard.java:393)
+    TestBoard.test4a(TestBoard.java:1291)
+    TestBoard.main(TestBoard.java:1560)
+
+  * puzzle06.txt
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    Board.toString(Board.java:234)
+    TestBoard.checkToString(TestBoard.java:417)
+    TestBoard.checkToString(TestBoard.java:393)
+    TestBoard.test4a(TestBoard.java:1292)
+    TestBoard.main(TestBoard.java:1560)
+
+  * puzzle09.txt
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    Board.toString(Board.java:234)
+    TestBoard.checkToString(TestBoard.java:417)
+    TestBoard.checkToString(TestBoard.java:393)
+    TestBoard.test4a(TestBoard.java:1293)
+    TestBoard.main(TestBoard.java:1560)
+
+  * puzzle23.txt
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    Board.toString(Board.java:234)
+    TestBoard.checkToString(TestBoard.java:417)
+    TestBoard.checkToString(TestBoard.java:393)
+    TestBoard.test4a(TestBoard.java:1294)
+    TestBoard.main(TestBoard.java:1560)
+
+  * puzzle2x2-unsolvable1.txt
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    Board.toString(Board.java:234)
+    TestBoard.checkToString(TestBoard.java:417)
+    TestBoard.checkToString(TestBoard.java:393)
+    TestBoard.test4a(TestBoard.java:1295)
+    TestBoard.main(TestBoard.java:1560)
+
+==> FAILED
+
+Test 4b: check toString() with random n-by-n boards
+  * 2-by-2
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    Board.toString(Board.java:234)
+    TestBoard.checkToString(TestBoard.java:417)
+    TestBoard.checkToString(TestBoard.java:401)
+    TestBoard.test4b(TestBoard.java:1302)
+    TestBoard.main(TestBoard.java:1561)
+
+    - failed on trial 1 of 1000
+
+  * 3-by-3
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    Board.toString(Board.java:234)
+    TestBoard.checkToString(TestBoard.java:417)
+    TestBoard.checkToString(TestBoard.java:401)
+    TestBoard.test4b(TestBoard.java:1303)
+    TestBoard.main(TestBoard.java:1561)
+
+    - failed on trial 1 of 1000
+
+  * 4-by-4
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    Board.toString(Board.java:234)
+    TestBoard.checkToString(TestBoard.java:417)
+    TestBoard.checkToString(TestBoard.java:401)
+    TestBoard.test4b(TestBoard.java:1304)
+    TestBoard.main(TestBoard.java:1561)
+
+    - failed on trial 1 of 1000
+
+  * 5-by-5
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    Board.toString(Board.java:234)
+    TestBoard.checkToString(TestBoard.java:417)
+    TestBoard.checkToString(TestBoard.java:401)
+    TestBoard.test4b(TestBoard.java:1305)
+    TestBoard.main(TestBoard.java:1561)
+
+    - failed on trial 1 of 1000
+
+  * 9-by-9
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    Board.toString(Board.java:234)
+    TestBoard.checkToString(TestBoard.java:417)
+    TestBoard.checkToString(TestBoard.java:401)
+    TestBoard.test4b(TestBoard.java:1306)
+    TestBoard.main(TestBoard.java:1561)
+
+    - failed on trial 1 of 100
+
+  * 10-by-10
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    Board.toString(Board.java:234)
+    TestBoard.checkToString(TestBoard.java:417)
+    TestBoard.checkToString(TestBoard.java:401)
+    TestBoard.test4b(TestBoard.java:1307)
+    TestBoard.main(TestBoard.java:1561)
+
+    - failed on trial 1 of 100
+
+  * 127-by-127
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    Board.toString(Board.java:234)
+    TestBoard.checkToString(TestBoard.java:417)
+    TestBoard.checkToString(TestBoard.java:401)
+    TestBoard.test4b(TestBoard.java:1308)
+    TestBoard.main(TestBoard.java:1561)
+
+    - failed on trial 1 of 10
+
+==> FAILED
+
+Test 5a: check neighbors() with file inputs
+  * puzzle04.txt
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    TestBoard.boardToBoard226(TestBoard.java:36)
+    TestBoard.checkNeighbors(TestBoard.java:471)
+    TestBoard.checkNeighbors(TestBoard.java:443)
+    TestBoard.test5a(TestBoard.java:1316)
+    TestBoard.main(TestBoard.java:1562)
+
+  * puzzle00.txt
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    TestBoard.boardToBoard226(TestBoard.java:36)
+    TestBoard.checkNeighbors(TestBoard.java:471)
+    TestBoard.checkNeighbors(TestBoard.java:443)
+    TestBoard.test5a(TestBoard.java:1317)
+    TestBoard.main(TestBoard.java:1562)
+
+  * puzzle06.txt
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    TestBoard.boardToBoard226(TestBoard.java:36)
+    TestBoard.checkNeighbors(TestBoard.java:471)
+    TestBoard.checkNeighbors(TestBoard.java:443)
+    TestBoard.test5a(TestBoard.java:1318)
+    TestBoard.main(TestBoard.java:1562)
+
+  * puzzle09.txt
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    TestBoard.boardToBoard226(TestBoard.java:36)
+    TestBoard.checkNeighbors(TestBoard.java:471)
+    TestBoard.checkNeighbors(TestBoard.java:443)
+    TestBoard.test5a(TestBoard.java:1319)
+    TestBoard.main(TestBoard.java:1562)
+
+  * puzzle23.txt
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    TestBoard.boardToBoard226(TestBoard.java:36)
+    TestBoard.checkNeighbors(TestBoard.java:471)
+    TestBoard.checkNeighbors(TestBoard.java:443)
+    TestBoard.test5a(TestBoard.java:1320)
+    TestBoard.main(TestBoard.java:1562)
+
+  * puzzle2x2-unsolvable1.txt
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    TestBoard.boardToBoard226(TestBoard.java:36)
+    TestBoard.checkNeighbors(TestBoard.java:471)
+    TestBoard.checkNeighbors(TestBoard.java:443)
+    TestBoard.test5a(TestBoard.java:1321)
+    TestBoard.main(TestBoard.java:1562)
+
+==> FAILED
+
+Test 5b: check neighbors() with random n-by-n boards
+  * 2-by-2
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    TestBoard.boardToBoard226(TestBoard.java:36)
+    TestBoard.checkNeighbors(TestBoard.java:471)
+    TestBoard.checkNeighbors(TestBoard.java:451)
+    TestBoard.test5b(TestBoard.java:1328)
+    TestBoard.main(TestBoard.java:1563)
+
+    - failed on trial 1 of 1000
+
+  * 3-by-3
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    TestBoard.boardToBoard226(TestBoard.java:36)
+    TestBoard.checkNeighbors(TestBoard.java:471)
+    TestBoard.checkNeighbors(TestBoard.java:451)
+    TestBoard.test5b(TestBoard.java:1329)
+    TestBoard.main(TestBoard.java:1563)
+
+    - failed on trial 1 of 1000
+
+  * 4-by-4
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    TestBoard.boardToBoard226(TestBoard.java:36)
+    TestBoard.checkNeighbors(TestBoard.java:471)
+    TestBoard.checkNeighbors(TestBoard.java:451)
+    TestBoard.test5b(TestBoard.java:1330)
+    TestBoard.main(TestBoard.java:1563)
+
+    - failed on trial 1 of 1000
+
+  * 5-by-5
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    TestBoard.boardToBoard226(TestBoard.java:36)
+    TestBoard.checkNeighbors(TestBoard.java:471)
+    TestBoard.checkNeighbors(TestBoard.java:451)
+    TestBoard.test5b(TestBoard.java:1331)
+    TestBoard.main(TestBoard.java:1563)
+
+    - failed on trial 1 of 1000
+
+  * 9-by-9
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    TestBoard.boardToBoard226(TestBoard.java:36)
+    TestBoard.checkNeighbors(TestBoard.java:471)
+    TestBoard.checkNeighbors(TestBoard.java:451)
+    TestBoard.test5b(TestBoard.java:1332)
+    TestBoard.main(TestBoard.java:1563)
+
+    - failed on trial 1 of 1000
+
+  * 10-by-10
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    TestBoard.boardToBoard226(TestBoard.java:36)
+    TestBoard.checkNeighbors(TestBoard.java:471)
+    TestBoard.checkNeighbors(TestBoard.java:451)
+    TestBoard.test5b(TestBoard.java:1333)
+    TestBoard.main(TestBoard.java:1563)
+
+    - failed on trial 1 of 1000
+
+  * 127-by-127
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    TestBoard.boardToBoard226(TestBoard.java:36)
+    TestBoard.checkNeighbors(TestBoard.java:471)
+    TestBoard.checkNeighbors(TestBoard.java:451)
+    TestBoard.test5b(TestBoard.java:1334)
+    TestBoard.main(TestBoard.java:1563)
+
+    - failed on trial 1 of 10
+
+==> FAILED
+
+Test 6a: check neighbors() of neigbors() with file inputs
+  * puzzle04.txt
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    TestBoard.boardToBoard226(TestBoard.java:36)
+    TestBoard.checkNeighborsOfNeighbors(TestBoard.java:550)
+    TestBoard.checkNeighborsOfNeighbors(TestBoard.java:521)
+    TestBoard.test6a(TestBoard.java:1342)
+    TestBoard.main(TestBoard.java:1564)
+
+  * puzzle00.txt
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    TestBoard.boardToBoard226(TestBoard.java:36)
+    TestBoard.checkNeighborsOfNeighbors(TestBoard.java:550)
+    TestBoard.checkNeighborsOfNeighbors(TestBoard.java:521)
+    TestBoard.test6a(TestBoard.java:1343)
+    TestBoard.main(TestBoard.java:1564)
+
+  * puzzle06.txt
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    TestBoard.boardToBoard226(TestBoard.java:36)
+    TestBoard.checkNeighborsOfNeighbors(TestBoard.java:550)
+    TestBoard.checkNeighborsOfNeighbors(TestBoard.java:521)
+    TestBoard.test6a(TestBoard.java:1344)
+    TestBoard.main(TestBoard.java:1564)
+
+  * puzzle09.txt
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    TestBoard.boardToBoard226(TestBoard.java:36)
+    TestBoard.checkNeighborsOfNeighbors(TestBoard.java:550)
+    TestBoard.checkNeighborsOfNeighbors(TestBoard.java:521)
+    TestBoard.test6a(TestBoard.java:1345)
+    TestBoard.main(TestBoard.java:1564)
+
+  * puzzle23.txt
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    TestBoard.boardToBoard226(TestBoard.java:36)
+    TestBoard.checkNeighborsOfNeighbors(TestBoard.java:550)
+    TestBoard.checkNeighborsOfNeighbors(TestBoard.java:521)
+    TestBoard.test6a(TestBoard.java:1346)
+    TestBoard.main(TestBoard.java:1564)
+
+  * puzzle2x2-unsolvable1.txt
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    TestBoard.boardToBoard226(TestBoard.java:36)
+    TestBoard.checkNeighborsOfNeighbors(TestBoard.java:550)
+    TestBoard.checkNeighborsOfNeighbors(TestBoard.java:521)
+    TestBoard.test6a(TestBoard.java:1347)
+    TestBoard.main(TestBoard.java:1564)
+
+==> FAILED
+
+Test 6b: check neighbors() of neighbors() with random n-by-n boards
+  * 2-by-2
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    TestBoard.boardToBoard226(TestBoard.java:36)
+    TestBoard.checkNeighborsOfNeighbors(TestBoard.java:550)
+    TestBoard.checkNeighborsOfNeighbors(TestBoard.java:529)
+    TestBoard.test6b(TestBoard.java:1355)
+    TestBoard.main(TestBoard.java:1565)
+
+    - failed on trial 1 of 1000
+
+  * 3-by-3
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    TestBoard.boardToBoard226(TestBoard.java:36)
+    TestBoard.checkNeighborsOfNeighbors(TestBoard.java:550)
+    TestBoard.checkNeighborsOfNeighbors(TestBoard.java:529)
+    TestBoard.test6b(TestBoard.java:1356)
+    TestBoard.main(TestBoard.java:1565)
+
+    - failed on trial 1 of 1000
+
+  * 4-by-4
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    TestBoard.boardToBoard226(TestBoard.java:36)
+    TestBoard.checkNeighborsOfNeighbors(TestBoard.java:550)
+    TestBoard.checkNeighborsOfNeighbors(TestBoard.java:529)
+    TestBoard.test6b(TestBoard.java:1357)
+    TestBoard.main(TestBoard.java:1565)
+
+    - failed on trial 1 of 1000
+
+  * 5-by-5
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    TestBoard.boardToBoard226(TestBoard.java:36)
+    TestBoard.checkNeighborsOfNeighbors(TestBoard.java:550)
+    TestBoard.checkNeighborsOfNeighbors(TestBoard.java:529)
+    TestBoard.test6b(TestBoard.java:1358)
+    TestBoard.main(TestBoard.java:1565)
+
+    - failed on trial 1 of 1000
+
+  * 9-by-9
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    TestBoard.boardToBoard226(TestBoard.java:36)
+    TestBoard.checkNeighborsOfNeighbors(TestBoard.java:550)
+    TestBoard.checkNeighborsOfNeighbors(TestBoard.java:529)
+    TestBoard.test6b(TestBoard.java:1359)
+    TestBoard.main(TestBoard.java:1565)
+
+    - failed on trial 1 of 1000
+
+  * 10-by-10
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    TestBoard.boardToBoard226(TestBoard.java:36)
+    TestBoard.checkNeighborsOfNeighbors(TestBoard.java:550)
+    TestBoard.checkNeighborsOfNeighbors(TestBoard.java:529)
+    TestBoard.test6b(TestBoard.java:1360)
+    TestBoard.main(TestBoard.java:1565)
+
+    - failed on trial 1 of 1000
+
+==> FAILED
+
+Test 7a: check twin() with file inputs
+  * puzzle04.txt
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    TestBoard.boardToBoard226(TestBoard.java:36)
+    TestBoard.checkTwin(TestBoard.java:598)
+    TestBoard.checkTwin(TestBoard.java:642)
+    TestBoard.test7a(TestBoard.java:1367)
+    TestBoard.main(TestBoard.java:1566)
+
+  * puzzle00.txt
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    TestBoard.boardToBoard226(TestBoard.java:36)
+    TestBoard.checkTwin(TestBoard.java:598)
+    TestBoard.checkTwin(TestBoard.java:642)
+    TestBoard.test7a(TestBoard.java:1368)
+    TestBoard.main(TestBoard.java:1566)
+
+  * puzzle06.txt
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    TestBoard.boardToBoard226(TestBoard.java:36)
+    TestBoard.checkTwin(TestBoard.java:598)
+    TestBoard.checkTwin(TestBoard.java:642)
+    TestBoard.test7a(TestBoard.java:1369)
+    TestBoard.main(TestBoard.java:1566)
+
+  * puzzle09.txt
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    TestBoard.boardToBoard226(TestBoard.java:36)
+    TestBoard.checkTwin(TestBoard.java:598)
+    TestBoard.checkTwin(TestBoard.java:642)
+    TestBoard.test7a(TestBoard.java:1370)
+    TestBoard.main(TestBoard.java:1566)
+
+  * puzzle23.txt
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    TestBoard.boardToBoard226(TestBoard.java:36)
+    TestBoard.checkTwin(TestBoard.java:598)
+    TestBoard.checkTwin(TestBoard.java:642)
+    TestBoard.test7a(TestBoard.java:1371)
+    TestBoard.main(TestBoard.java:1566)
+
+  * puzzle2x2-unsolvable1.txt
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    TestBoard.boardToBoard226(TestBoard.java:36)
+    TestBoard.checkTwin(TestBoard.java:598)
+    TestBoard.checkTwin(TestBoard.java:642)
+    TestBoard.test7a(TestBoard.java:1372)
+    TestBoard.main(TestBoard.java:1566)
+
+==> FAILED
+
+Test 7b: check twin() with random n-by-n boards
+  * 2-by-2
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    TestBoard.boardToBoard226(TestBoard.java:36)
+    TestBoard.checkTwin(TestBoard.java:598)
+    TestBoard.checkTwin(TestBoard.java:627)
+    TestBoard.test7b(TestBoard.java:1379)
+    TestBoard.main(TestBoard.java:1567)
+
+    - failed on trial 1 of 1000
+
+  * 3-by-3
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    TestBoard.boardToBoard226(TestBoard.java:36)
+    TestBoard.checkTwin(TestBoard.java:598)
+    TestBoard.checkTwin(TestBoard.java:627)
+    TestBoard.test7b(TestBoard.java:1380)
+    TestBoard.main(TestBoard.java:1567)
+
+    - failed on trial 1 of 1000
+
+  * 4-by-4
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    TestBoard.boardToBoard226(TestBoard.java:36)
+    TestBoard.checkTwin(TestBoard.java:598)
+    TestBoard.checkTwin(TestBoard.java:627)
+    TestBoard.test7b(TestBoard.java:1381)
+    TestBoard.main(TestBoard.java:1567)
+
+    - failed on trial 1 of 1000
+
+  * 5-by-5
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    TestBoard.boardToBoard226(TestBoard.java:36)
+    TestBoard.checkTwin(TestBoard.java:598)
+    TestBoard.checkTwin(TestBoard.java:627)
+    TestBoard.test7b(TestBoard.java:1382)
+    TestBoard.main(TestBoard.java:1567)
+
+    - failed on trial 1 of 1000
+
+  * 9-by-9
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    TestBoard.boardToBoard226(TestBoard.java:36)
+    TestBoard.checkTwin(TestBoard.java:598)
+    TestBoard.checkTwin(TestBoard.java:627)
+    TestBoard.test7b(TestBoard.java:1383)
+    TestBoard.main(TestBoard.java:1567)
+
+    - failed on trial 1 of 100
+
+  * 10-by-10
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    TestBoard.boardToBoard226(TestBoard.java:36)
+    TestBoard.checkTwin(TestBoard.java:598)
+    TestBoard.checkTwin(TestBoard.java:627)
+    TestBoard.test7b(TestBoard.java:1384)
+    TestBoard.main(TestBoard.java:1567)
+
+    - failed on trial 1 of 10
+
+==> FAILED
+
+Test 8a: check isGoal() with file inputs
+  * puzzle00.txt
+  * puzzle04.txt
+  * puzzle16.txt
+  * puzzle06.txt
+  * puzzle09.txt
+  * puzzle23.txt
+  * puzzle2x2-unsolvable1.txt
+  * puzzle3x3-unsolvable1.txt
+  * puzzle3x3-00.txt
+  * puzzle4x4-00.txt
+==> passed
+
+Test 8b: check isGoal() on n-by-n goal boards
+  * 2-by-2
+  * 3-by-3
+  * 4-by-4
+  * 5-by-5
+  * 6-by-6
+  * 100-by-100
+==> passed
+
+Test 9: check that two Board objects can be created at the same time
+  * random 3-by-3 and 3-by-3 boards
+  * random 4-by-4 and 4-by-4 boards
+  * random 2-by-2 and 2-by-2 boards
+  * random 3-by-3 and 4-by-4 boards
+  * random 4-by-4 and 3-by-3 boards
+==> passed
+
+Test 10a: check equals()
+  * reflexive
+  * symmetric
+  * transitive
+  * argument is null
+  * argument is of type String
+  * Board object stored in a variable of type Object
+==> passed
+
+Test 10b: check correctness of equals() on random n-by-n boards
+  * n = 2
+  * n = 3
+  * n = 4
+  * 5 <= n < 10
+==> passed
+
+Test 10c: check equals() when board sizes m and n are different
+  * m = 4, n = 5
+  * m = 2, n = 5
+  * m = 5, n = 3
+  * m = 2, n = 3
+  * m = 3, n = 2
+==> passed
+
+Test 11: check that Board is immutable by changing argument array after
+         construction and making sure Board does not mutate
+==> passed
+
+Test 12: check that Board is immutable by testing whether methods
+         return the same value, regardless of order in which called
+  * puzzle10.txt
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    Board.toString(Board.java:234)
+    TestBoard.checkImmutableBoard(TestBoard.java:1075)
+    TestBoard.checkImmutableBoard(TestBoard.java:1220)
+    TestBoard.test12(TestBoard.java:1500)
+    TestBoard.main(TestBoard.java:1575)
+
+    - sequence of Board operations was:
+         Board board = new Board(tiles)
+         board.twin()
+         board.twin()
+         board.hamming()     ==> 10
+         board.hamming()     ==> 10
+         board.twin()
+         board.toString()
+
+  * puzzle20.txt
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    Board.toString(Board.java:234)
+    TestBoard.checkImmutableBoard(TestBoard.java:1075)
+    TestBoard.checkImmutableBoard(TestBoard.java:1220)
+    TestBoard.test12(TestBoard.java:1501)
+    TestBoard.main(TestBoard.java:1575)
+
+
+  * puzzle30.txt
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    Board.toString(Board.java:234)
+    TestBoard.checkImmutableBoard(TestBoard.java:1075)
+    TestBoard.checkImmutableBoard(TestBoard.java:1220)
+    TestBoard.test12(TestBoard.java:1502)
+    TestBoard.main(TestBoard.java:1575)
+
+    - sequence of Board operations was:
+         Board board = new Board(tiles)
+         board.toString()
+
+  * 2-by-2
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    Board.toString(Board.java:234)
+    TestBoard.checkImmutableBoard(TestBoard.java:1075)
+    TestBoard.checkImmutableBoard(TestBoard.java:1205)
+    TestBoard.test12(TestBoard.java:1503)
+    TestBoard.main(TestBoard.java:1575)
+
+    - sequence of Board operations was:
+         Board board = new Board(tiles)
+         board.equals(other) ==> false
+         board.twin()
+         board.toString()
+
+    - failed on trial 1 of 100
+
+  * 3-by-3
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    Board.toString(Board.java:234)
+    TestBoard.checkImmutableBoard(TestBoard.java:1075)
+    TestBoard.checkImmutableBoard(TestBoard.java:1205)
+    TestBoard.test12(TestBoard.java:1504)
+    TestBoard.main(TestBoard.java:1575)
+
+    - sequence of Board operations was:
+         Board board = new Board(tiles)
+         board.hamming()     ==> 7
+         board.twin()
+         board.manhattan()   ==> 13
+         board.toString()
+
+    - failed on trial 1 of 100
+
+  * 4-by-4
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    Board.toString(Board.java:234)
+    TestBoard.checkImmutableBoard(TestBoard.java:1075)
+    TestBoard.checkImmutableBoard(TestBoard.java:1205)
+    TestBoard.test12(TestBoard.java:1505)
+    TestBoard.main(TestBoard.java:1575)
+
+
+    - failed on trial 1 of 100
+
+==> FAILED
+
+Test 13: check dimension() on a board that is kth-neighbor of a board
+  * 0th neighbor of puzzle27.txt
+  * 1st neighbor of puzzle27.txt
+  * 2nd neighbor of puzzle27.txt
+  * 13th neighbor of puzzle27.txt
+  * 13th neighbor of puzzle00.txt
+  * 13th neighbor of puzzle2x2-unsolvable1.txt
+==> passed
+
+Test 14: check hamming() on a board that is kth-neighbor of a board
+  * 0th neighbor of puzzle27.txt
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    TestBoard.boardToBoard226(TestBoard.java:36)
+    TestBoard.checkHammingWithNeighbors(TestBoard.java:196)
+    TestBoard.checkHammingWithNeighbors(TestBoard.java:182)
+    TestBoard.test14(TestBoard.java:1524)
+    TestBoard.main(TestBoard.java:1577)
+
+  * 1st neighbor of puzzle27.txt
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    TestBoard.boardToBoard226(TestBoard.java:36)
+    TestBoard.checkHammingWithNeighbors(TestBoard.java:196)
+    TestBoard.checkHammingWithNeighbors(TestBoard.java:182)
+    TestBoard.test14(TestBoard.java:1525)
+    TestBoard.main(TestBoard.java:1577)
+
+  * 2nd neighbor of puzzle27.txt
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    TestBoard.boardToBoard226(TestBoard.java:36)
+    TestBoard.checkHammingWithNeighbors(TestBoard.java:196)
+    TestBoard.checkHammingWithNeighbors(TestBoard.java:182)
+    TestBoard.test14(TestBoard.java:1526)
+    TestBoard.main(TestBoard.java:1577)
+
+  * 13th neighbor of puzzle27.txt
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    TestBoard.boardToBoard226(TestBoard.java:36)
+    TestBoard.checkHammingWithNeighbors(TestBoard.java:196)
+    TestBoard.checkHammingWithNeighbors(TestBoard.java:182)
+    TestBoard.test14(TestBoard.java:1527)
+    TestBoard.main(TestBoard.java:1577)
+
+  * 13th neighbor of puzzle00.txt
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    TestBoard.boardToBoard226(TestBoard.java:36)
+    TestBoard.checkHammingWithNeighbors(TestBoard.java:196)
+    TestBoard.checkHammingWithNeighbors(TestBoard.java:182)
+    TestBoard.test14(TestBoard.java:1528)
+    TestBoard.main(TestBoard.java:1577)
+
+  * 13th neighbor of puzzle2x2-unsolvable1.txt
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    TestBoard.boardToBoard226(TestBoard.java:36)
+    TestBoard.checkHammingWithNeighbors(TestBoard.java:196)
+    TestBoard.checkHammingWithNeighbors(TestBoard.java:182)
+    TestBoard.test14(TestBoard.java:1529)
+    TestBoard.main(TestBoard.java:1577)
+
+==> FAILED
+
+Test 15: check manhattan() on a board that is a kth-neighbor of a board
+  * 0th neighbor of puzzle27.txt
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    TestBoard.boardToBoard226(TestBoard.java:36)
+    TestBoard.checkManhattanWithNeighbors(TestBoard.java:367)
+    TestBoard.checkManhattanWithNeighbors(TestBoard.java:351)
+    TestBoard.test15(TestBoard.java:1536)
+    TestBoard.main(TestBoard.java:1578)
+
+  * 1st neighbor of puzzle27.txt
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    TestBoard.boardToBoard226(TestBoard.java:36)
+    TestBoard.checkManhattanWithNeighbors(TestBoard.java:367)
+    TestBoard.checkManhattanWithNeighbors(TestBoard.java:351)
+    TestBoard.test15(TestBoard.java:1537)
+    TestBoard.main(TestBoard.java:1578)
+
+  * 2nd neighbor of puzzle27.txt
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    TestBoard.boardToBoard226(TestBoard.java:36)
+    TestBoard.checkManhattanWithNeighbors(TestBoard.java:367)
+    TestBoard.checkManhattanWithNeighbors(TestBoard.java:351)
+    TestBoard.test15(TestBoard.java:1538)
+    TestBoard.main(TestBoard.java:1578)
+
+  * 13th neighbor of puzzle27.txt
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    TestBoard.boardToBoard226(TestBoard.java:36)
+    TestBoard.checkManhattanWithNeighbors(TestBoard.java:367)
+    TestBoard.checkManhattanWithNeighbors(TestBoard.java:351)
+    TestBoard.test15(TestBoard.java:1539)
+    TestBoard.main(TestBoard.java:1578)
+
+  * 13th neighbor of puzzle00.txt
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    TestBoard.boardToBoard226(TestBoard.java:36)
+    TestBoard.checkManhattanWithNeighbors(TestBoard.java:367)
+    TestBoard.checkManhattanWithNeighbors(TestBoard.java:351)
+    TestBoard.test15(TestBoard.java:1540)
+    TestBoard.main(TestBoard.java:1578)
+
+  * 13th neighbor of puzzle2x2-unsolvable1.txt
+    java.util.IllegalFormatConversionException: d != java.lang.Character
+
+    java.util.Formatter$FormatSpecifier.failConversion(Formatter.java:4302)
+    java.util.Formatter$FormatSpecifier.printInteger(Formatter.java:2793)
+    java.util.Formatter$FormatSpecifier.print(Formatter.java:2747)
+    java.util.Formatter.format(Formatter.java:2520)
+    java.util.Formatter.format(Formatter.java:2455)
+     ...
+    TestBoard.boardToBoard226(TestBoard.java:36)
+    TestBoard.checkManhattanWithNeighbors(TestBoard.java:367)
+    TestBoard.checkManhattanWithNeighbors(TestBoard.java:351)
+    TestBoard.test15(TestBoard.java:1541)
+    TestBoard.main(TestBoard.java:1578)
+
+==> FAILED
+
+
+Total: 13/24 tests passed!
+
+
+================================================================
+********************************************************************************
+*  MEMORY
+********************************************************************************
+
+Analyzing memory of Board
+*-----------------------------------------------------------
+Running 10 total tests.
+
+Memory usage of an n-by-n board
+[ must be at most 4n^2 + 32n + 64 bytes ]
+
+
+              n       student (bytes)    reference (bytes)
+----------------------------------------------------------
+=> passed     2           128                  128
+=> passed     3           168                  192
+=> passed     4           208                  240
+=> passed     8           432                  560
+=> passed    12           720                 1008
+=> passed    16          1072                 1584
+=> passed    20          1488                 2288
+=> passed    37          4192                 6856
+=> passed    72         12720                23088
+=> passed   120         32688                61488
+==> 10/10 tests passed
+
+Total: 10/10 tests passed!
+
+Student   memory = 2.00 n^2 + 32.00 n + 48.00   (R^2 = 1.000)
+Reference memory = 4.00 n^2 + 32.00 n + 48.00   (R^2 = 1.000)
+
+================================================================
+
+
+
+********************************************************************************
+*  TESTING CORRECTNESS (substituting reference Board)
+********************************************************************************
+
+Testing correctness of Solver
+*-----------------------------------------------------------
+Running 25 total tests.
+
+Test 1a: check moves() with file inputs
+  * puzzle00.txt
+  * puzzle01.txt
+  * puzzle02.txt
+  * puzzle03.txt
+  * puzzle04.txt
+  * puzzle05.txt
+  * puzzle06.txt
+  * puzzle07.txt
+  * puzzle08.txt
+  * puzzle09.txt
+  * puzzle10.txt
+  * puzzle11.txt
+  * puzzle12.txt
+  * puzzle13.txt
+==> passed
+
+Test 1b: check solution() with file inputs
+  * puzzle00.txt
+  * puzzle01.txt
+  * puzzle02.txt
+  * puzzle03.txt
+  * puzzle04.txt
+  * puzzle05.txt
+  * puzzle06.txt
+  * puzzle07.txt
+  * puzzle08.txt
+  * puzzle09.txt
+  * puzzle10.txt
+  * puzzle11.txt
+  * puzzle12.txt
+  * puzzle13.txt
+==> passed
+
+Test 2a: check moves() with more file inputs
+  * puzzle14.txt
+  * puzzle15.txt
+  * puzzle16.txt
+  * puzzle17.txt
+  * puzzle18.txt
+  * puzzle19.txt
+  * puzzle20.txt
+  * puzzle21.txt
+  * puzzle22.txt
+  * puzzle23.txt
+  * puzzle24.txt
+  * puzzle25.txt
+  * puzzle26.txt
+  * puzzle27.txt
+  * puzzle28.txt
+  * puzzle29.txt
+  * puzzle30.txt
+  * puzzle31.txt
+==> passed
+
+Test 2b: check solution() with more file inputs
+  * puzzle14.txt
+  * puzzle15.txt
+  * puzzle16.txt
+  * puzzle17.txt
+  * puzzle18.txt
+  * puzzle19.txt
+  * puzzle20.txt
+  * puzzle21.txt
+  * puzzle22.txt
+  * puzzle23.txt
+  * puzzle24.txt
+  * puzzle25.txt
+  * puzzle26.txt
+  * puzzle27.txt
+  * puzzle28.txt
+  * puzzle29.txt
+  * puzzle30.txt
+  * puzzle31.txt
+==> passed
+
+Test 3a: check moves() with random solvable n-by-n boards
+  * 1000 random 3-by-3 boards that are exactly 1 move from goal
+  * 1000 random 3-by-3 boards that are exactly 2 moves from goal
+  * 1000 random 3-by-3 boards that are exactly 3 moves from goal
+  * 1000 random 3-by-3 boards that are exactly 4 moves from goal
+  * 1000 random 3-by-3 boards that are exactly 5 moves from goal
+  * 1000 random 3-by-3 boards that are exactly 6 moves from goal
+  * 1000 random 3-by-3 boards that are exactly 7 moves from goal
+  * 1000 random 3-by-3 boards that are exactly 8 moves from goal
+  * 1000 random 3-by-3 boards that are exactly 9 moves from goal
+  * 1000 random 3-by-3 boards that are exactly 10 moves from goal
+  * 1000 random 3-by-3 boards that are exactly 11 moves from goal
+  * 1000 random 3-by-3 boards that are exactly 12 moves from goal
+==> passed
+
+Test 3b: check solution() with random solvable n-by-n boards
+  * 1000 random 3-by-3 boards that are exactly 1 move from goal
+  * 1000 random 3-by-3 boards that are exactly 2 moves from goal
+  * 1000 random 3-by-3 boards that are exactly 3 moves from goal
+  * 1000 random 3-by-3 boards that are exactly 4 moves from goal
+  * 1000 random 3-by-3 boards that are exactly 5 moves from goal
+  * 1000 random 3-by-3 boards that are exactly 6 moves from goal
+  * 1000 random 3-by-3 boards that are exactly 7 moves from goal
+  * 1000 random 3-by-3 boards that are exactly 8 moves from goal
+  * 1000 random 3-by-3 boards that are exactly 9 moves from goal
+  * 1000 random 3-by-3 boards that are exactly 10 moves from goal
+  * 1000 random 3-by-3 boards that are exactly 11 moves from goal
+  * 1000 random 3-by-3 boards that are exactly 12 moves from goal
+==> passed
+
+Test 4: create two Solver objects at the same time
+  * puzzle04.txt and puzzle04.txt
+  * puzzle00.txt and puzzle04.txt
+  * puzzle04.txt and puzzle00.txt
+==> passed
+
+Test 5a: call isSolvable() with file inputs
+  * puzzle01.txt
+  * puzzle03.txt
+  * puzzle04.txt
+  * puzzle17.txt
+  * puzzle3x3-unsolvable1.txt
+  * puzzle3x3-unsolvable2.txt
+  * puzzle4x4-unsolvable.txt
+==> passed
+
+Test 5b: call isSolvable() on random n-by-n boards
+  * 100 random 2-by-2 boards
+==> passed
+
+Test 6: check moves() on unsolvable puzzles
+  * puzzle2x2-unsolvable1.txt
+  * puzzle2x2-unsolvable2.txt
+  * puzzle3x3-unsolvable1.txt
+  * puzzle3x3-unsolvable2.txt
+  * puzzle4x4-unsolvable.txt
+
+
+...
+
+WARNING: the grading output was truncated due to excessive length.
+Typically, this is because you have a method that has an unanticipated side effect
+(such as printing to standard output or throwing an exception). A large amount of output
+can also arise from failing many tests.
