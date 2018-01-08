@@ -2,6 +2,7 @@ import edu.princeton.cs.algs4.SET;
 import edu.princeton.cs.algs4.Point2D;
 import edu.princeton.cs.algs4.RectHV;
 import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.Bag;
 
 public class PointSET {
     SET<Point2D> set;
@@ -57,7 +58,13 @@ public class PointSET {
      */
     public Iterable<Point2D> range(RectHV rect) {
         if (rect == null) throw new IllegalArgumentException("called range() with a null RecHV");
-        return null;
+        Bag<Point2D> bag = new Bag<Point2D>();
+        for (Point2D p : set) {
+            if (rect.contains(p)) {
+                bag.add(p);
+            }
+        }
+        return bag;
     }
 
     /**
@@ -65,7 +72,18 @@ public class PointSET {
      */
     public Point2D nearest(Point2D p) {
         if (p == null) throw new IllegalArgumentException("called nearest() with a null Point2D");
-        return null;
+        if (set.isEmpty())
+            return null;
+        double min = Double.POSITIVE_INFINITY;
+        Point2D nearestPoint = null;
+        for (Point2D e : set) {
+            double d = p.distanceSquaredTo(e);
+            if (d < min) {
+                min = d;
+                nearestPoint = e;
+            }
+        }
+        return nearestPoint;
     }
 
     /**
