@@ -1,8 +1,15 @@
+/********************************************************************************
+ * KdTree implements a 2d-tree to store a set of Point2D.
+ *
+ * Note that in our notation, "left bottom" is where the origin (0,0) is in the
+ * x-y plane.
+ *******************************************************************************/
 import edu.princeton.cs.algs4.Point2D;
 import edu.princeton.cs.algs4.RectHV;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.Bag;
 import edu.princeton.cs.algs4.StdOut;
+import edu.princeton.cs.algs4.StdDraw;
 
 public class KdTree {
     private Node root;
@@ -49,32 +56,60 @@ public class KdTree {
      */
     public void insert(Point2D p) {
         if (p == null) throw new IllegalArgumentException("called insert() with a null Point2D");
-        root = put(root, p, null, 0);
+        RectHV rect = new RectHV(0.0, 0.0, 1.0, 1.0);
+        root = put(root, p, rect, true);
     }
 
-    private int keyCompare(Point2D a, Point2D b, int level) {
-        if (level % 2 == 0) {
+    // @param isVertical the division orientation in the current level
+    private int keyCompare(Point2D a, Point2D b, boolean isVertical) {
+        if (isVertical) {
             return Double.compare(a.x(), b.x());
         }
         else {
             return Double.compare(a.y(), b.y());
         }
     }
-    
-    private Node put(Node node, Point2D p, RectHV val, int level) {
+
+    // @param isVertical the division orientation in the current level
+    private RectHV leftBranchRect(RectHV rect, Point2D p, boolean isVertical) {
+        if (isVertical) {
+            return new RectHV(rect.xmin(), rect.ymin(), p.x(), rect.ymax());
+        }
+        else {
+            return new RectHV(rect.xmin(), rect.ymin(), rect.xmax(), p.y());
+        }
+    }
+
+    // @param isVertical the division orientation in the current level
+    private RectHV rightBranchRect(RectHV rect, Point2D p, boolean isVertical) {
+        if (isVertical) {
+            return new RectHV(p.x(), rect.ymin(), rect.xmax(), rect.ymax());
+        }
+        else {
+            return new RectHV(rect.xmin(), p.y(), rect.xmax(), rect.ymax());
+        }
+    }
+
+    // @param isVertical the division orientation in the next lower level
+    private Node put(Node node, Point2D p, RectHV val, boolean isVertical) {
         if (node == null) {
             n++;
-            return new Node(p, null, null, null);
+            StdOut.println(val);
+            return new Node(p, val, null, null);
         }
 
-        int cmp = keyCompare(node.p, p, level);
+        int cmp = keyCompare(p, node.p, isVertical);
 
-        if (cmp < 0)
-            node.lb = put(node.lb, p, val, level + 1);
-        else if (cmp > 0)
-            node.rt = put(node.rt, p, val, level + 1);
-        else
-            node.rect = val;
+        if (cmp < 0) {
+            StdOut.print(val + " --> ");
+            node.lb = put(node.lb, p, leftBranchRect(val, node.p, isVertical),
+                          !isVertical); // change the division orientation in the next level
+        }
+        else /* if (cmp >= 0) */ {
+            StdOut.print(val + " --> " );
+            node.rt = put(node.rt, p, rightBranchRect(val, node.p, isVertical),
+                          !isVertical); // change the division orientation in the next level
+        }
 
         return node;
     }
@@ -84,27 +119,54 @@ public class KdTree {
      */
     public boolean contains(Point2D p) {
         if (p == null) throw new IllegalArgumentException("called contains() with a null Point2D");
-        return get(root, p, 0) != null;
+        return p.equals(get(root, p, true));
     }
 
-    private Point2D get(Node node, Point2D p, int level) {
+    // @param isVertical the division orientation in the next lower level
+    private Point2D get(Node node, Point2D key, boolean isVertical) {
         if (node == null)
             return null;
 
-        int cmp = keyCompare(node.p, p, level);
-        if (cmp < 0)
-            return get(node.lb, p, level + 1);
-        else if (cmp > 0)
-            return get(node.rt, p, level + 1);
-        else
+        if (key.equals(node.p))
             return node.p;
+
+        int cmp = keyCompare(key, node.p, isVertical);
+        if (cmp < 0)
+            return get(node.lb, key, !isVertical);
+        else // if (cmp >= 0)
+            return get(node.rt, key, !isVertical);
     }
 
     /**
      * draw all points to standard draw
      */
     public void draw() {
+        root.rect.draw();
+        drawSubTree(root, true);
     }
+
+    private void drawSubTree(Node node, boolean isVertical) {
+        if (node == null) return;
+
+        StdDraw.setPenColor(StdDraw.BLACK);
+        StdDraw.setPenRadius(0.01);
+        StdDraw.point(node.p.x(), node.p.y());
+
+        if (isVertical) {
+            StdDraw.setPenColor(StdDraw.RED);
+            StdDraw.setPenRadius();
+            StdDraw.line(node.p.x(), node.rect.ymin(), node.p.x(), node.rect.ymax());
+        }
+        else {
+            StdDraw.setPenColor(StdDraw.BLUE);
+            StdDraw.setPenRadius();
+            StdDraw.line(node.rect.xmin(), node.p.y(), node.rect.xmax(), node.p.y());
+        }
+
+        drawSubTree(node.lb, !isVertical);
+        drawSubTree(node.rt, !isVertical);
+    }
+
 
     /**
      * all points that are inside the rectangle (or on the boundary)
@@ -130,19 +192,19 @@ public class KdTree {
         String filename = args[0];
         In in = new In(filename);
         KdTree kdtree = new KdTree();
+        StdOut.println("size = " + kdtree.size());
         while (!in.isEmpty()) {
             double x = in.readDouble();
             double y = in.readDouble();
             Point2D p = new Point2D(x, y);
             StdOut.println("insert " + p);
             kdtree.insert(p);
-            if (kdtree.contains(p)) {
-                StdOut.println("yes");
-            }
+            StdOut.println("contains " + p + "? " + (kdtree.contains(p) ? "yes" : "no"));
         }
-        StdDraw.setPenColor(StdDraw.BLACK);
-        StdDraw.setPenRadius(0.01);
+        StdOut.println("isEmpty? " + kdtree.isEmpty());
+        StdOut.println("size = " + kdtree.size());
         StdDraw.enableDoubleBuffering();
+        StdDraw.setScale(-0.05, 1.05);
         kdtree.draw();
         StdDraw.show();
     }
