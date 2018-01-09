@@ -70,7 +70,7 @@ public class KdTree {
     }
 
     // @param isVertical the division orientation in the current level
-    private int keyCompare(Point2D a, Point2D b, boolean isVertical) {
+    private int keyComparePhase1(Point2D a, Point2D b, boolean isVertical) {
         if (isVertical) {
             return Double.compare(a.x(), b.x());
         }
@@ -79,9 +79,29 @@ public class KdTree {
         }
     }
 
-    // @param isVertical the division orientation in the current level
-    private RectHV leftBranchRect(RectHV rect, Point2D p, boolean isVertical) {
-        if (isVertical) {
+    private int keyComparePhase2(Point2D a, Point2D b, boolean isVertical,
+                                 int cmpResultPhase1) {
+        if (cmpResultPhase1 < 0)
+            return cmpResultPhase1;
+        else if (cmpResultPhase1 > 0)
+            return cmpResultPhase1;
+        else {
+            if (isVertical) {
+                return Double.compare(a.y(), b.y());
+            }
+            else {
+                return Double.compare(a.x(), b.y());
+            }
+        }
+    }
+
+    // @param parentIsVertical the division orientation in the parent level
+    private RectHV leftBranchRect(Node node, RectHV rect, Point2D p,
+                                  boolean parentIsVertical) {
+        if (node != null && node.rect != null) {
+            return node.rect;
+        }
+        if (parentIsVertical) {
             return new RectHV(rect.xmin(), rect.ymin(), p.x(), rect.ymax());
         }
         else {
@@ -89,9 +109,13 @@ public class KdTree {
         }
     }
 
-    // @param isVertical the division orientation in the current level
-    private RectHV rightBranchRect(RectHV rect, Point2D p, boolean isVertical) {
-        if (isVertical) {
+    // @param parentIsVertical the division orientation in the parent level
+    private RectHV rightBranchRect(Node node, RectHV rect, Point2D p,
+                                   boolean parentIsVertical) {
+        if (node != null && node.rect != null) {
+            return node.rect;
+        }
+        if (parentIsVertical) {
             return new RectHV(p.x(), rect.ymin(), rect.xmax(), rect.ymax());
         }
         else {
@@ -99,25 +123,42 @@ public class KdTree {
         }
     }
 
+    // @pre p != null
     // @param isVertical the division orientation in the next lower level
     private Node put(Node node, Point2D p, RectHV val, boolean isVertical) {
+        assert p != null;
         if (node == null) {
             n++;
             // StdOut.println(val);
             return new Node(p, val, null, null);
         }
 
-        int cmp = keyCompare(p, node.p, isVertical);
+        int cmp = keyComparePhase1(p, node.p, isVertical);
 
         if (cmp < 0) {
             // StdOut.print(val + " --> ");
-            node.lb = put(node.lb, p, leftBranchRect(val, node.p, isVertical),
+            node.lb = put(node.lb, p,
+                          leftBranchRect(node.lb, val, node.p, isVertical),
                           !isVertical); // change the division orientation in the next level
         }
-        else /* if (cmp >= 0) */ {
+        else if (cmp > 0) {
             // StdOut.print(val + " --> " );
-            node.rt = put(node.rt, p, rightBranchRect(val, node.p, isVertical),
+            node.rt = put(node.rt, p,
+                          rightBranchRect(node.rt, val, node.p, isVertical),
                           !isVertical); // change the division orientation in the next level
+        }
+        else {
+            int cmp2 = keyComparePhase2(p, node.p, isVertical, cmp);
+            if (cmp2 == 0) {
+                // now p and node.p are equal
+                node.rect = val;
+            }
+            else {
+                // go to the right branch of node
+                node.rt = put(node.rt, p,
+                              rightBranchRect(node.rt, val, node.p, isVertical),
+                              !isVertical); // change the division orientation in the next level
+            }
         }
 
         return node;
@@ -131,15 +172,18 @@ public class KdTree {
         return p.equals(get(root, p, true));
     }
 
+    // @pre key != null
     // @param isVertical the division orientation in the next lower level
     private Point2D get(Node node, Point2D key, boolean isVertical) {
+        assert key != null;
+
         if (node == null)
             return null;
 
         if (key.equals(node.p))
             return node.p;
 
-        int cmp = keyCompare(key, node.p, isVertical);
+        int cmp = keyComparePhase1(key, node.p, isVertical);
         if (cmp < 0)
             return get(node.lb, key, !isVertical);
         else // if (cmp >= 0)
@@ -299,6 +343,14 @@ public class KdTree {
             kdtree.insert(p);
             StdOut.println("contains " + p + "? " + (kdtree.contains(p) ? "yes" : "no"));
         }
+
+        // test duplicate insertions
+        Point2D p = new Point2D(0.5, 0.5);
+        StdOut.println("insert " + p);
+        kdtree.insert(p);
+        kdtree.insert(p);
+        StdOut.println("contains " + p + "? " + (kdtree.contains(p) ? "yes" : "no"));
+
         StdOut.println("isEmpty? " + kdtree.isEmpty());
         StdOut.println("size = " + kdtree.size());
         StdDraw.enableDoubleBuffering();
