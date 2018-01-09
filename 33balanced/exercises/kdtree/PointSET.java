@@ -79,7 +79,7 @@ public class PointSET {
         Point2D nearestPoint = null;
         for (Point2D e : set) {
             double d = p.distanceSquaredTo(e);
-            if (d < min) {
+            if (Double.compare(d, min) < 0) {
                 min = d;
                 nearestPoint = e;
             }

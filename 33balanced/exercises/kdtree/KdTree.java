@@ -29,6 +29,15 @@ public class KdTree {
         }
     }
 
+    private static class Nearest {
+        private Node minNode;
+        private double min;
+        public Nearest(Node minNode, double min) {
+            this.minNode = minNode;
+            this.min = min;
+        }
+    }
+
     /**
      * construct an empty set of points
      */
@@ -155,12 +164,14 @@ public class KdTree {
         if (isVertical) {
             StdDraw.setPenColor(StdDraw.RED);
             StdDraw.setPenRadius();
-            StdDraw.line(node.p.x(), node.rect.ymin(), node.p.x(), node.rect.ymax());
+            StdDraw.line(node.p.x(), node.rect.ymin(),
+                         node.p.x(), node.rect.ymax());
         }
         else {
             StdDraw.setPenColor(StdDraw.BLUE);
             StdDraw.setPenRadius();
-            StdDraw.line(node.rect.xmin(), node.p.y(), node.rect.xmax(), node.p.y());
+            StdDraw.line(node.rect.xmin(), node.p.y(),
+                         node.rect.xmax(), node.p.y());
         }
 
         drawSubTree(node.lb, !isVertical);
@@ -181,7 +192,8 @@ public class KdTree {
     // @param node the subtree to check
     // @param rect the query rectangle
     // @param pointSet the accumulator that collects the points that are in the query rectangle
-    private void collectPointsInRect(Node node, RectHV rect, Bag<Point2D> pointSet) {
+    private void collectPointsInRect(Node node, RectHV rect,
+                                     Bag<Point2D> pointSet) {
         if (node == null)
             return;
         if (!rect.intersects(node.rect))
@@ -200,7 +212,75 @@ public class KdTree {
      */
     public Point2D nearest(Point2D p) {
         if (p == null) throw new IllegalArgumentException("called nearest() with a null Point2D");
-        return null;
+        Nearest acc = new Nearest(null, Double.POSITIVE_INFINITY);
+        if (n == 0) {
+            assert root == null;
+            return null;
+        }
+        acc = nearestRecurr(root, true, p, acc);
+        assert acc != null;
+        assert acc.minNode != null;
+        return acc.minNode.p;
+    }
+
+    private Nearest nearestRecurr(Node node, boolean isVertical,
+                                  Point2D p,
+                                  Nearest acc) {
+        if (node == null)
+            return acc;
+
+        if (shouldPrune(node, p, acc.min))
+            return acc;
+
+        // process the current node
+        double d = node.p.distanceSquaredTo(p);
+        // java.awt.Color prevColor = StdDraw.getPenColor();
+        // double prevRadius = StdDraw.getPenRadius();
+        // StdDraw.setPenColor(StdDraw.BLACK);
+        // StdDraw.setPenRadius();
+        // StdDraw.line(p.x(), p.y(), node.p.x(), node.p.y());
+        // StdDraw.setPenColor(prevColor);
+        // StdDraw.setPenRadius(prevRadius);
+        if (Double.compare(d, acc.min) < 0) {
+            acc.minNode = node;
+            acc.min = d;
+        }
+
+        // process the subtrees
+        boolean shouldGoLeftFirst = true;
+        if (isVertical) {
+            // if the query point is to the left of the node point, go to the
+            // left child branch fist, otherwise, go to the right child branch
+            // first
+            shouldGoLeftFirst = (Double.compare(p.x(), node.p.x()) < 0);
+        }
+        else {
+            // if the query point is below the node point, go to the left child
+            // branch first, otherwise, go to the right child branch first
+            shouldGoLeftFirst = (Double.compare(p.y(), node.p.y()) < 0);
+        }
+
+        Node t1 = null;
+        Node t2 = null;
+        if (shouldGoLeftFirst) {
+            t1 = node.lb;
+            t2 = node.rt;
+        }
+        else {
+            t1 = node.rt;
+            t2 = node.lb;
+        }
+        acc = nearestRecurr(t1, !isVertical, p, acc);
+        acc = nearestRecurr(t2, !isVertical, p, acc);
+        return acc;
+    }
+
+    // @pre node != null
+    private boolean shouldPrune(Node node, Point2D p, double minSoFar) {
+        assert node != null : node;
+
+        double d = node.rect.distanceSquaredTo(p);
+        return d > minSoFar;
     }
 
     /**
