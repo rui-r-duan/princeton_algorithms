@@ -94,19 +94,19 @@ public class KdTree {
     private Node put(Node node, Point2D p, RectHV val, boolean isVertical) {
         if (node == null) {
             n++;
-            StdOut.println(val);
+            // StdOut.println(val);
             return new Node(p, val, null, null);
         }
 
         int cmp = keyCompare(p, node.p, isVertical);
 
         if (cmp < 0) {
-            StdOut.print(val + " --> ");
+            // StdOut.print(val + " --> ");
             node.lb = put(node.lb, p, leftBranchRect(val, node.p, isVertical),
                           !isVertical); // change the division orientation in the next level
         }
         else /* if (cmp >= 0) */ {
-            StdOut.print(val + " --> " );
+            // StdOut.print(val + " --> " );
             node.rt = put(node.rt, p, rightBranchRect(val, node.p, isVertical),
                           !isVertical); // change the division orientation in the next level
         }
@@ -174,7 +174,25 @@ public class KdTree {
     public Iterable<Point2D> range(RectHV rect) {
         if (rect == null) throw new IllegalArgumentException("called range() with a null RecHV");
         Bag<Point2D> bag = new Bag<Point2D>();
+        collectPointsInRect(root, rect, bag);
         return bag;
+    }
+
+    // @param node the subtree to check
+    // @param rect the query rectangle
+    // @param pointSet the accumulator that collects the points that are in the query rectangle
+    private void collectPointsInRect(Node node, RectHV rect, Bag<Point2D> pointSet) {
+        if (node == null)
+            return;
+        if (!rect.intersects(node.rect))
+            return;
+
+        if (rect.contains(node.p)) {
+            pointSet.add(node.p);
+        }
+
+        collectPointsInRect(node.lb, rect, pointSet);
+        collectPointsInRect(node.rt, rect, pointSet);
     }
 
     /**
