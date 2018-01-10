@@ -3,6 +3,10 @@
  *
  * Note that in our notation, "left bottom" is where the origin (0,0) is in the
  * x-y plane.
+ *
+ * ASSUMPTIONS
+ * All x- or y-coordinates of points inserted into the KdTree will be between 0
+ * and 1.
  *******************************************************************************/
 import edu.princeton.cs.algs4.Point2D;
 import edu.princeton.cs.algs4.RectHV;
@@ -30,10 +34,10 @@ public class KdTree {
     }
 
     private static class Nearest {
-        private Node minNode;
+        private Node node;
         private double min;
-        public Nearest(Node minNode, double min) {
-            this.minNode = minNode;
+        public Nearest(Node node, double min) {
+            this.node = node;
             this.min = min;
         }
     }
@@ -81,17 +85,13 @@ public class KdTree {
 
     private int keyComparePhase2(Point2D a, Point2D b, boolean isVertical,
                                  int cmpResultPhase1) {
-        if (cmpResultPhase1 < 0)
-            return cmpResultPhase1;
-        else if (cmpResultPhase1 > 0)
+        if (cmpResultPhase1 < 0 || cmpResultPhase1 > 0)
             return cmpResultPhase1;
         else {
-            if (isVertical) {
+            if (isVertical)
                 return Double.compare(a.y(), b.y());
-            }
-            else {
+            else
                 return Double.compare(a.x(), b.y());
-            }
         }
     }
 
@@ -155,6 +155,7 @@ public class KdTree {
             }
             else {
                 // go to the right branch of node
+                // StdOut.print(val + " --> " );
                 node.rt = put(node.rt, p,
                               rightBranchRect(node.rt, val, node.p, isVertical),
                               !isVertical); // change the division orientation in the next level
@@ -180,14 +181,18 @@ public class KdTree {
         if (node == null)
             return null;
 
-        if (key.equals(node.p))
-            return node.p;
-
         int cmp = keyComparePhase1(key, node.p, isVertical);
         if (cmp < 0)
             return get(node.lb, key, !isVertical);
-        else // if (cmp >= 0)
+        else if (cmp > 0)
             return get(node.rt, key, !isVertical);
+        else {
+            int cmp2 = keyComparePhase2(key, node.p, isVertical, cmp);
+            if (cmp2 == 0)
+                return node.p;
+            else
+                return get(node.rt, key, !isVertical);
+        }
     }
 
     /**
@@ -256,25 +261,25 @@ public class KdTree {
      */
     public Point2D nearest(Point2D p) {
         if (p == null) throw new IllegalArgumentException("called nearest() with a null Point2D");
-        Nearest acc = new Nearest(null, Double.POSITIVE_INFINITY);
+        Nearest champion = new Nearest(null, Double.POSITIVE_INFINITY);
         if (n == 0) {
             assert root == null;
             return null;
         }
-        acc = nearestRecurr(root, true, p, acc);
-        assert acc != null;
-        assert acc.minNode != null;
-        return acc.minNode.p;
+        champion = nearestRecurr(root, true, p, champion);
+        assert champion != null;
+        assert champion.node != null;
+        return champion.node.p;
     }
 
     private Nearest nearestRecurr(Node node, boolean isVertical,
                                   Point2D p,
-                                  Nearest acc) {
+                                  Nearest champion) {
         if (node == null)
-            return acc;
+            return champion;
 
-        if (shouldPrune(node, p, acc.min))
-            return acc;
+        if (shouldPrune(node, p, champion.min))
+            return champion;
 
         // process the current node
         double d = node.p.distanceSquaredTo(p);
@@ -285,9 +290,9 @@ public class KdTree {
         // StdDraw.line(p.x(), p.y(), node.p.x(), node.p.y());
         // StdDraw.setPenColor(prevColor);
         // StdDraw.setPenRadius(prevRadius);
-        if (Double.compare(d, acc.min) < 0) {
-            acc.minNode = node;
-            acc.min = d;
+        if (Double.compare(d, champion.min) < 0) {
+            champion.node = node;
+            champion.min = d;
         }
 
         // process the subtrees
@@ -314,14 +319,15 @@ public class KdTree {
             t1 = node.rt;
             t2 = node.lb;
         }
-        acc = nearestRecurr(t1, !isVertical, p, acc);
-        acc = nearestRecurr(t2, !isVertical, p, acc);
-        return acc;
+        champion = nearestRecurr(t1, !isVertical, p, champion);
+        champion = nearestRecurr(t2, !isVertical, p, champion);
+        return champion;
     }
 
     // @pre node != null
     private boolean shouldPrune(Node node, Point2D p, double minSoFar) {
         assert node != null : node;
+        assert node.rect != null;
 
         double d = node.rect.distanceSquaredTo(p);
         return d > minSoFar;
@@ -345,9 +351,12 @@ public class KdTree {
         }
 
         // test duplicate insertions
+        StdOut.println("size = " + kdtree.size());
+        StdOut.println("Test duplicate insertions");
         Point2D p = new Point2D(0.5, 0.5);
         StdOut.println("insert " + p);
         kdtree.insert(p);
+        StdOut.println("insert " + p);
         kdtree.insert(p);
         StdOut.println("contains " + p + "? " + (kdtree.contains(p) ? "yes" : "no"));
 
