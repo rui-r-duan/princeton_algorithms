@@ -91,7 +91,7 @@ public class KdTree {
             if (isVertical)
                 return Double.compare(a.y(), b.y());
             else
-                return Double.compare(a.x(), b.y());
+                return Double.compare(a.x(), b.x());
         }
     }
 
