@@ -5,3 +5,5 @@ package: edu.princeton.cs.algs4
 classes:
   - Selection
   - Insertion
+  - InsertionX
+  - Shell
