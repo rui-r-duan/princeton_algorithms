@@ -1,0 +1,14 @@
+# algs4.jar provides the following package and the example classes.
+
+package: edu.princeton.cs.algs4
+
+classes:
+  - SET
+  - DeDup
+  - Whitelist
+  - StaticSETofInts
+  - WhiteFilter
+  - BlackFilter
+  - LookupCSV
+  - FileIndex
+  - SparseVector
