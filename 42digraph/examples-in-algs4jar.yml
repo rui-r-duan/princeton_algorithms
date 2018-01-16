@@ -1,0 +1,20 @@
+# algs4.jar provides the following package and the example classes.
+
+package: edu.princeton.cs.algs4
+
+classes:
+  - Digraph
+  - DigraphGenerator
+  - DirectedDFS
+  - NonrecursiveDirectedDFS
+  - BreadthFirstDirectedPaths
+  - DepthFirstDirectedPaths
+  - DirectedCycle
+  - DirectedCycleX
+  - DepthFirstOrder
+  - Topological
+  - TopologicalX
+  - KosarajuSharirSCC
+  - GabowSCC
+  - TarjanSCC
+  - TransitiveClosure
