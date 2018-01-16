@@ -18,6 +18,8 @@
  ******************************************************************************/
 
 import java.util.TreeSet;
+import edu.princeton.cs.algs4.StdDraw;
+import edu.princeton.cs.algs4.StdRandom;
 
 public class Quick3wayBars {
     private static int rows;

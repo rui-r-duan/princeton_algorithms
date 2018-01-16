@@ -21,6 +21,9 @@
  *  all bad bed bug dad ... yes yet zoo    [ one string per line ]
  *
  ******************************************************************************/
+import edu.princeton.cs.algs4.StdRandom;
+import edu.princeton.cs.algs4.StdOut;
+import edu.princeton.cs.algs4.StdIn;
 
 public class QuickPedantic {
 
@@ -117,7 +120,7 @@ public class QuickPedantic {
 
 
     // print array to standard output
-    private static void show(Comparable[] a) {
+    private static <Key extends Comparable<Key>> void show(Comparable<Key>[] a) {
         for (int i = 0; i < a.length; i++) {
             StdOut.println(a[i]);
         }
