@@ -1,9 +1,10 @@
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.Out;
+import edu.princeton.cs.algs4.Digraph;
 
 public class WordNet {
-
+    private final Digraph digraph;
 
     /**
      * constructor takes the name of the two input files
@@ -11,10 +12,10 @@ public class WordNet {
     public WordNet(String synsets, String hypernyms) {
         if (synsets == null || hypernyms == null)
             throw new IllegalArgumentException("arguments cannot be null");
-        
+
         StdOut.println(synsets);
         In synsetsIn = new In(synsets);
-        Out synsetsOut = new Out("synsets");
+        int vertexCnt = 0;
         while (!synsetsIn.isEmpty()) {
             String line = synsetsIn.readLine();
             String[] fields = line.split(",", 3);
@@ -22,23 +23,17 @@ public class WordNet {
 
             int synsetID = Integer.parseInt(fields[0]);
             String[] words = fields[1].split(" ");
-            String gloss = fields[2];
-            synsetsOut.print(synsetID + ",");
-            for (int i = 0; i < words.length; i++) {
-                synsetsOut.print(words[i]);
-                if (i < words.length - 1)
-                    synsetsOut.print(" ");
-                else
-                    synsetsOut.print(",");
-            }
-            synsetsOut.println(gloss);
+            // String gloss = fields[2];
+            // for (int i = 0; i < words.length; i++) {
+            // }
+            vertexCnt++;
         }
         synsetsIn.close();
-        synsetsOut.close();
+
+        digraph = new Digraph(vertexCnt);
 
         StdOut.println(hypernyms);
         In hypernymsIn = new In(hypernyms);
-        Out hypernymsOut = new Out("hypernyms");
         while (!hypernymsIn.isEmpty()) {
             String line = hypernymsIn.readLine();
             String[] nums = line.split(",");
@@ -47,18 +42,17 @@ public class WordNet {
             int[] parents = null;
             if (nums.length > 1) {
                 parents = new int[nums.length - 1];
-                for (int i = 0; i < parents.length; i++)
+                for (int i = 0; i < parents.length; i++) {
                     parents[i] = Integer.parseInt(nums[i+1]);
+                    digraph.addEdge(synsetID, parents[i]);
+                }
             }
-            hypernymsOut.print(synsetID);
-            if (parents != null) {
-                for (int i = 0; i < parents.length; i++)
-                    hypernymsOut.print("," + parents[i]);
-            }
-            hypernymsOut.println();
         }
         hypernymsIn.close();
-        hypernymsOut.close();
+
+        // StdOut.println(digraph);
+        StdOut.println("V=" + digraph.V());
+        StdOut.println("E=" + digraph.E());
     }
 
     /**
