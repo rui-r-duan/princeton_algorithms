@@ -1,10 +1,11 @@
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdOut;
-import edu.princeton.cs.algs4.Out;
+// import edu.princeton.cs.algs4.Out;
 import edu.princeton.cs.algs4.Digraph;
 
 public class WordNet {
     private final Digraph digraph;
+    private final SAP sap;
 
     /**
      * constructor takes the name of the two input files
@@ -50,9 +51,9 @@ public class WordNet {
         }
         hypernymsIn.close();
 
-        // StdOut.println(digraph);
         StdOut.println("V=" + digraph.V());
         StdOut.println("E=" + digraph.E());
+        sap = new SAP(digraph);
     }
 
     /**
