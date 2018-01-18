@@ -2,18 +2,22 @@ import edu.princeton.cs.algs4.Digraph;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.ST;
 import edu.princeton.cs.algs4.SET;
+import edu.princeton.cs.algs4.DirectedCycleX;
 
 import edu.princeton.cs.algs4.StdOut;
 // import edu.princeton.cs.algs4.Out;
 
 public class WordNet {
-    private final Digraph digraph;
     private final ST<String, SET<Integer>> wordMap;   // <noun, synset_id list>
     private final ST<Integer, SET<String>> synsetMap; // <synset_id, noun list>
     private final SAP sap;
 
     /**
      * constructor takes the name of the two input files
+     *
+     * @throws IllegalArgumentException if any of the arguments is null, or if
+     * the constructed digraph is not a rooted DAG (a.k.a no cycle, and has
+     * only one root)
      */
     public WordNet(String synsets, String hypernyms) {
         if (synsets == null || hypernyms == null)
@@ -23,8 +27,14 @@ public class WordNet {
         synsetMap = new ST<Integer, SET<String>>();
         int vertexCnt = readSynsets(synsets);
         StdOut.println("vertexCnt=" + vertexCnt);
-        digraph = new Digraph(vertexCnt);
-        readHypernyms(hypernyms);
+        Digraph digraph = new Digraph(vertexCnt);
+        digraph = readHypernyms(hypernyms, digraph);
+
+        if (hasCycle(digraph))
+            throw new IllegalArgumentException("digraph has cycle");
+        if (hasMultipleRoots(digraph))
+            throw new IllegalArgumentException("digraph has more than one root");
+
         sap = new SAP(digraph);
         StdOut.println("G.V()=" + digraph.V());
         StdOut.println("G.E()=" + digraph.E());
@@ -78,9 +88,11 @@ public class WordNet {
 
     // Input hypernyms from a file, and build up the digraph.
     // It should be called only by the constructor.
+    // @return the constructed digraph
     // @param hypernyms the input file name
+    // @param digraph an empty digraph
     // @pre digraph != null
-    private void readHypernyms(String hypernyms) {
+    private Digraph readHypernyms(String hypernyms, Digraph digraph) {
         assert digraph != null;
         StdOut.println(hypernyms);
         In hypernymsIn = new In(hypernyms);
@@ -99,6 +111,21 @@ public class WordNet {
             }
         }
         hypernymsIn.close();
+        return digraph;
+    }
+
+    private boolean hasCycle(Digraph G) {
+        DirectedCycleX finder = new DirectedCycleX(G);
+        return finder.hasCycle();
+    }
+
+    private boolean hasMultipleRoots(Digraph G) {
+        int rootCnt = 0;
+        for (int i = 0; i < G.V(); i++) {
+            if (G.outdegree(i) == 0)
+                rootCnt++;
+        }
+        return rootCnt > 1;
     }
 
     /**
