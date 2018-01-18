@@ -26,7 +26,7 @@ public class WordNet {
         wordMap = new ST<String, SET<Integer>>();
         synsetMap = new ST<Integer, SET<String>>();
         int vertexCnt = readSynsets(synsets);
-        StdOut.println("vertexCnt=" + vertexCnt);
+        // StdOut.println("vertexCnt=" + vertexCnt);
         Digraph digraph = new Digraph(vertexCnt);
         digraph = readHypernyms(hypernyms, digraph);
 
@@ -36,8 +36,8 @@ public class WordNet {
             throw new IllegalArgumentException("digraph has more than one root");
 
         sap = new SAP(digraph);
-        StdOut.println("G.V()=" + digraph.V());
-        StdOut.println("G.E()=" + digraph.E());
+        // StdOut.println("G.V()=" + digraph.V());
+        // StdOut.println("G.E()=" + digraph.E());
     }
 
     // Input synsets from a file, store all the nouns and return the vertex
@@ -50,7 +50,7 @@ public class WordNet {
     private int readSynsets(String synsets) {
         assert wordMap != null;
         assert synsetMap != null;
-        StdOut.println(synsets);
+        // StdOut.println(synsets);
         In synsetsIn = new In(synsets);
         int vertexCnt = 0;
         while (!synsetsIn.isEmpty()) {
@@ -94,7 +94,7 @@ public class WordNet {
     // @pre digraph != null
     private Digraph readHypernyms(String hypernyms, Digraph digraph) {
         assert digraph != null;
-        StdOut.println(hypernyms);
+        // StdOut.println(hypernyms);
         In hypernymsIn = new In(hypernyms);
         while (!hypernymsIn.isEmpty()) {
             String line = hypernymsIn.readLine();
