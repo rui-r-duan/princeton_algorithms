@@ -102,15 +102,17 @@ public class WordNet {
         sap = new SAP(digraph);
     }
 
-    // It modify wordMap and synsetMap!
-    // Input synsets from a file, store all the nouns and return the vertex
-    // number (number of synsets).
-    // It should be called only by the constructor.
-    //
-    // @param synsets the input file name
-    // @return number of synsets
-    // @pre wordMap != null
-    // @pre synsetMap != null
+    /*
+     * It modify wordMap and synsetMap!
+     * Input synsets from a file, store all the nouns and return the vertex
+     * number (number of synsets).
+     * It should be called only by the constructor.
+     *
+     * @param synsets the input file name
+     * @return number of synsets
+     * @pre wordMap != null
+     * @pre synsetMap != null
+     */
     private int readSynsets(String synsets) {
         assert wordMap != null;
         assert synsetMap != null;
@@ -145,11 +147,13 @@ public class WordNet {
         return vertexCnt;
     }
 
-    // Input hypernyms from a file, and build up the digraph.
-    // It should be called only by the constructor.
-    // @return the constructed digraph
-    // @param hypernyms the input file name
-    // @param vertexCnt the number of vertices for the new digraph
+    /*
+     * Input hypernyms from a file, and build up the digraph.
+     * It should be called only by the constructor.
+     * @return the constructed digraph
+     * @param hypernyms the input file name
+     * @param vertexCnt the number of vertices for the new digraph
+     */
     private Digraph readHypernyms(String hypernyms, int vertexCnt) {
         Digraph G = new Digraph(vertexCnt);
         In hypernymsIn = new In(hypernyms);
