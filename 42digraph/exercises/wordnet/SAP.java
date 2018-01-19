@@ -5,7 +5,8 @@
  *
  * Shortest Ancestral Path
  *
- * $ java SAP digraph1.txt 3 1
+ * $ java SAP digraph1.txt
+ * 3 1
  * 7 4 9
  * 2
  * length([9,4,7],[2])=3
@@ -61,9 +62,9 @@ public class SAP {
      */
     public int length(int v, int w) {
         BreadthFirstDirectedPaths bfs = new BreadthFirstDirectedPaths(G, v);
-        int[] distFromV = distFrom(v, bfs);
+        int[] distFromV = distFrom(bfs);
         BreadthFirstDirectedPaths bfs2 = new BreadthFirstDirectedPaths(G, w);
-        int[] distFromW = distFrom(w, bfs2);
+        int[] distFromW = distFrom(bfs2);
         int[] result = calcAncestor(distFromV, distFromW);
         return result[0];       // min
     }
@@ -78,9 +79,9 @@ public class SAP {
      */
     public int ancestor(int v, int w) {
         BreadthFirstDirectedPaths bfs = new BreadthFirstDirectedPaths(G, v);
-        int[] distFromV = distFrom(v, bfs);
+        int[] distFromV = distFrom(bfs);
         BreadthFirstDirectedPaths bfs2 = new BreadthFirstDirectedPaths(G, w);
-        int[] distFromW = distFrom(w, bfs2);
+        int[] distFromW = distFrom(bfs2);
         int[] result = calcAncestor(distFromV, distFromW);
         return result[1];       // ancestor
     }
@@ -95,9 +96,9 @@ public class SAP {
      */
     public int length(Iterable<Integer> v, Iterable<Integer> w) {
         BreadthFirstDirectedPaths bfs = new BreadthFirstDirectedPaths(G, v);
-        int[] distFromV = distFrom(v, bfs);
+        int[] distFromV = distFrom(bfs);
         BreadthFirstDirectedPaths bfs2 = new BreadthFirstDirectedPaths(G, w);
-        int[] distFromW = distFrom(w, bfs2);
+        int[] distFromW = distFrom(bfs2);
         int[] result = calcAncestor(distFromV, distFromW);
         return result[0];       // min
     }
@@ -112,19 +113,17 @@ public class SAP {
      */
     public int ancestor(Iterable<Integer> v, Iterable<Integer> w) {
         BreadthFirstDirectedPaths bfs = new BreadthFirstDirectedPaths(G, v);
-        int[] distFromV = distFrom(v, bfs);
+        int[] distFromV = distFrom(bfs);
         BreadthFirstDirectedPaths bfs2 = new BreadthFirstDirectedPaths(G, w);
-        int[] distFromW = distFrom(w, bfs2);
+        int[] distFromW = distFrom(bfs2);
         int[] result = calcAncestor(distFromV, distFromW);
         return result[1];       // ancestor
     }
 
-    // Query BreadthFirstDirectedPaths the distances from vertex v to each
-    // vertex.
+    // Query BreadthFirstDirectedPaths the distances from vertex v or vertices
+    // v to each vertex.
     // @pre bfs != null
-    // @pre bfs is created by the constructor
-    //      BreadthFirstDirectedPaths(Digraph, int)
-    private int[] distFrom(int v, BreadthFirstDirectedPaths bfs) {
+    private int[] distFrom(BreadthFirstDirectedPaths bfs) {
         assert bfs != null;
         int[] dist = new int[G.V()];
         for (int i = 0; i < G.V(); i++) {
@@ -135,24 +134,6 @@ public class SAP {
         }
         return dist;
     }
-
-    // Query BreadthFirstDirectedPaths the distances from vertex v to each
-    // vertex.
-    // @pre bfs != null
-    // @pre bfs is created by the constructor
-    //      BreadthFirstDirectedPaths(Digraph, Interable<Integer>)
-    private int[] distFrom(Iterable<Integer> v, BreadthFirstDirectedPaths bfs) {
-        assert bfs != null;
-        int[] dist = new int[G.V()];
-        for (int i = 0; i < G.V(); i++) {
-            if (bfs.hasPathTo(i))
-                dist[i] = bfs.distTo(i);
-            else
-                dist[i] = -1;
-        }
-        return dist;
-    }
-
 
     // @pre distFromV != null
     // @pre distFromW != null
@@ -180,21 +161,25 @@ public class SAP {
 
     /**
      * do unit testing of this class<p>
+     * input format:<p>
+     * <pre>v_num w_num
+     * v1 v2 ... vn
+     * w1 w2 ... wn</pre>
      * usage example:<p>
-     * $java SAP digraph1.txt vn=3 wn=1<p>
+     * $java SAP digraph1.txt<p>
+     * 3 1<p>
      * 7 4 9<p>
      * 2<p>
      * length([9,4,7],[2])=3<p>
      * ancestor([9,4,7],[2])=0
-     * @param args args[0] digraph_file, args[1] number of vertices in the list
-     * {@code v}, args[2] number of vertices in the list {@code w}
+     * @param args args[0] digraph_file
      */
     public static void main(String[] args) {
         In in = new In(args[0]);
         Digraph G = new Digraph(in);
 
-        int vn = Integer.parseInt(args[1]);
-        int wn = Integer.parseInt(args[2]);
+        int vn = StdIn.readInt();
+        int wn = StdIn.readInt();
         Bag<Integer> v = new Bag<Integer>();
         for (int i = 0; i < vn; i++) {
             v.add(StdIn.readInt());
