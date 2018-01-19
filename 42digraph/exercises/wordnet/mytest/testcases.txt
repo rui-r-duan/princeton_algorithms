@@ -22,6 +22,7 @@ C(3,1) * C(5,1) * C(2,1) * C(2,1)= 60 combinations
 - return the paths v->c and w->c
 
 * test WordNet
+java-algs4 WordNet wordnet-testing/synsets.txt wordnet-testing/hypernyms.txt worm bird
 ** dimension 1: methods
 *** constructor
 - null arguments

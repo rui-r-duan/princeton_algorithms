@@ -23,6 +23,7 @@ import edu.princeton.cs.algs4.SET;
 import edu.princeton.cs.algs4.DirectedCycleX;
 
 import edu.princeton.cs.algs4.StdOut;
+import java.util.Iterator;
 
 /**
  * The {@code WordNet} class is a datatype for representing a WordNet. This
@@ -71,7 +72,7 @@ import edu.princeton.cs.algs4.StdOut;
  */
 public class WordNet {
     private final ST<String, SET<Integer>> wordMap;   // <noun, synset_id list>
-    private final ST<Integer, SET<String>> synsetMap; // <synset_id, noun list>
+    private final ST<Integer, String> synsetMap; // <synset_id, whole noun list>
     private final SAP sap;
 
     /**
@@ -89,11 +90,9 @@ public class WordNet {
             throw new IllegalArgumentException("arguments cannot be null");
 
         wordMap = new ST<String, SET<Integer>>();
-        synsetMap = new ST<Integer, SET<String>>();
+        synsetMap = new ST<Integer, String>();
         int vertexCnt = readSynsets(synsets);
-        // StdOut.println("vertexCnt=" + vertexCnt);
-        Digraph digraph = new Digraph(vertexCnt);
-        digraph = readHypernyms(hypernyms, digraph);
+        Digraph digraph = readHypernyms(hypernyms, vertexCnt);
 
         if (hasCycle(digraph))
             throw new IllegalArgumentException("digraph has cycle");
@@ -103,9 +102,11 @@ public class WordNet {
         sap = new SAP(digraph);
     }
 
+    // It modify wordMap and synsetMap!
     // Input synsets from a file, store all the nouns and return the vertex
     // number (number of synsets).
     // It should be called only by the constructor.
+    //
     // @param synsets the input file name
     // @return number of synsets
     // @pre wordMap != null
@@ -124,11 +125,7 @@ public class WordNet {
             String[] words = fields[1].split(" ");
             // String gloss = fields[2];
 
-            SET<String> wordSet = new SET<String>();
-            for (int i = 0; i < words.length; i++) {
-                wordSet.add(words[i]);
-            }
-            synsetMap.put(synsetID, wordSet);
+            synsetMap.put(synsetID, fields[1]);
 
             for (int i = 0; i < words.length; i++) {
                 SET<Integer> set = wordMap.get(words[i]);
@@ -152,10 +149,9 @@ public class WordNet {
     // It should be called only by the constructor.
     // @return the constructed digraph
     // @param hypernyms the input file name
-    // @param digraph an empty digraph
-    // @pre digraph != null
-    private Digraph readHypernyms(String hypernyms, Digraph digraph) {
-        assert digraph != null;
+    // @param vertexCnt the number of vertices for the new digraph
+    private Digraph readHypernyms(String hypernyms, int vertexCnt) {
+        Digraph G = new Digraph(vertexCnt);
         In hypernymsIn = new In(hypernyms);
         while (!hypernymsIn.isEmpty()) {
             String line = hypernymsIn.readLine();
@@ -167,12 +163,12 @@ public class WordNet {
                 parents = new int[nums.length - 1];
                 for (int i = 0; i < parents.length; i++) {
                     parents[i] = Integer.parseInt(nums[i+1]);
-                    digraph.addEdge(synsetID, parents[i]);
+                    G.addEdge(synsetID, parents[i]);
                 }
             }
         }
         hypernymsIn.close();
-        return digraph;
+        return G;
     }
 
     // It should be called only by the constructor.
@@ -258,10 +254,9 @@ public class WordNet {
             return null;
         }
         else {
-            SET<String> wordList = synsetMap.get(ancestor);
-            // once SAP object is created, no invalid synsetID exists in digraph
-            assert wordList != null;
-            return wordList.min();
+            String wordList = synsetMap.get(ancestor);
+            // if the input data is good, wordList != null
+            return wordList;
         }
     }
 
@@ -280,9 +275,12 @@ public class WordNet {
 
         StdOut.println();
         Iterable<String> words = wn.nouns();
+
+        Iterator<String> itr = words.iterator();
         int i = 0;
-        for (String s : words) {
+        while (itr.hasNext()) {
             i++;
+            itr.next();
         }
         StdOut.println("total number of words: " + i);
 
