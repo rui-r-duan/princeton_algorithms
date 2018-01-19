@@ -1,3 +1,21 @@
+/*******************************************************************************
+ * Compilation:  javac WordNet.java
+ * Execution:    java WordNet synsets_file hypernyms_file nounA nounB
+ * Dependencies: Digraph.java SAP.java In.java ST.java SET.java
+ *               DirectedCycleX.java
+ *
+ * WordNet representation
+ *
+ * $ java WordNet synsets.txt hypernyms.txt worm bird
+ * isNoun("Actifed")? true
+ * isNoun("AND_circuit")? true
+ * isNoun("antihistamine")? true
+ * isNoun("nasal_decongestant")? true
+ * total number of words: 119188
+ * distance(worm,bird)=5
+ * sap(worm,bird)=animal
+ *
+ ******************************************************************************/
 import edu.princeton.cs.algs4.Digraph;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.ST;
@@ -5,8 +23,52 @@ import edu.princeton.cs.algs4.SET;
 import edu.princeton.cs.algs4.DirectedCycleX;
 
 import edu.princeton.cs.algs4.StdOut;
-// import edu.princeton.cs.algs4.Out;
 
+/**
+ * The {@code WordNet} class is a datatype for representing a WordNet. This
+ * class is immutable.
+ * <p>
+ * WordNet is a semantic lexicon for the English language that is used
+ * extensively by computational linguists and cognitive scientists. WordNet
+ * groups words into sets of synonyms called synsets and describes semantic
+ * relationships between them. One such relationship is the is-a relationship,
+ * which connects a hyponym (more specific synset) to a hypernym (more general
+ * synset). For example, animal is a hypernym of both bird and fish; bird is a
+ * hypernym of eagle, pigeon, and seagull.
+ * <p>
+ * The wordnet digraph is a rooted DAG: it is acyclic and has one vertex—the
+ * root—that is an ancestor of every other vertex. However, it is not
+ * necessarily a tree because a synset can have more than one hypernym.
+ * <p>
+ * <b>Input</b>
+ * <p>
+ * A synsets file consists of lines of synsets. Each line is a synset that is
+ * in the format like:<p>
+ * <code>synset_id,noun_1 noun_2 ...,definition (gloss)</code><p>
+ * For example,<p>
+ * <code>84,Abruzzi Abruzzi_e_Molise,a mountainous region of central Italy on
+ * the Adriatic</code>
+ * <p>
+ * A hypernyms file consists of lines of hypernyms. Each lins is a hypernym set
+ * for a WordNet noun:<p>
+ * <code>synset_id,parent1,parent2</code><p>
+ * For example,<p>
+ * <code>164,21012,56099</code><p>
+ * It means that the the synset 164 ("Actifed") has two hypernyms: 21012
+ * ("antihistamine") and 56099 ("nasal_decongestant"), representing that
+ * Actifed is both an antihistamine and a nasal decongestant.
+ *
+ * <p>
+ * <b>Methods</b><p>
+ * {@code nouns()} returns all the WordNet nouns.<p>
+ * {@code isNoun(s)} judges if the argument is a noun in this WordNet.<p>
+ * {@code distance(n1,n2)} returns the distances of the two nouns n1 and n2.<p>
+ * {@code ancestor(n1,n2)} returns the common ancestor in the SAP of n1 and n2.
+ * <p>
+ * For the descrptions of SAP and distances, see SAP.java
+ *
+ * @author Ryan Duan
+ */
 public class WordNet {
     private final ST<String, SET<Integer>> wordMap;   // <noun, synset_id list>
     private final ST<Integer, SET<String>> synsetMap; // <synset_id, noun list>
@@ -14,6 +76,9 @@ public class WordNet {
 
     /**
      * constructor takes the name of the two input files
+     *
+     * @param synsets   file name of the synsets
+     * @param hypernyms file name of the hypernyms
      *
      * @throws IllegalArgumentException if any of the arguments is null, or if
      * the constructed digraph is not a rooted DAG (a.k.a no cycle, and has
@@ -36,8 +101,6 @@ public class WordNet {
             throw new IllegalArgumentException("digraph has more than one root");
 
         sap = new SAP(digraph);
-        // StdOut.println("G.V()=" + digraph.V());
-        // StdOut.println("G.E()=" + digraph.E());
     }
 
     // Input synsets from a file, store all the nouns and return the vertex
@@ -50,7 +113,6 @@ public class WordNet {
     private int readSynsets(String synsets) {
         assert wordMap != null;
         assert synsetMap != null;
-        // StdOut.println(synsets);
         In synsetsIn = new In(synsets);
         int vertexCnt = 0;
         while (!synsetsIn.isEmpty()) {
@@ -94,7 +156,6 @@ public class WordNet {
     // @pre digraph != null
     private Digraph readHypernyms(String hypernyms, Digraph digraph) {
         assert digraph != null;
-        // StdOut.println(hypernyms);
         In hypernymsIn = new In(hypernyms);
         while (!hypernymsIn.isEmpty()) {
             String line = hypernymsIn.readLine();
@@ -114,11 +175,13 @@ public class WordNet {
         return digraph;
     }
 
+    // It should be called only by the constructor.
     private boolean hasCycle(Digraph G) {
         DirectedCycleX finder = new DirectedCycleX(G);
         return finder.hasCycle();
     }
 
+    // It should be called only by the constructor.
     private boolean hasMultipleRoots(Digraph G) {
         int rootCnt = 0;
         for (int i = 0; i < G.V(); i++) {
@@ -137,6 +200,7 @@ public class WordNet {
 
     /**
      * is the word a WordNet noun?
+     * @param word a query word
      * @throws IllegalArgumentException if {@code word} is null
      */
     public boolean isNoun(String word) {
@@ -150,6 +214,9 @@ public class WordNet {
      * {@code v} of {@code nounA} and any synset {@code w} of {@code nounB}. -1
      * if {@code nounA} and {@code nounB} do not have any common ancestral
      * path.
+     *
+     * @param nounA the first query noun
+     * @param nounB the second query noun
      *
      * @throws IllegalArgumentException if any of {@code nounA} or {@code nounB}
      * is null, or if any of {@code nounA} or {@code nounB} is not a WordNet
@@ -171,6 +238,9 @@ public class WordNet {
      *
      * @return a noun in the closest common ancestor synset; {@code null} if
      * the two nouns do not have any ancestral path
+     *
+     * @param nounA the first query noun
+     * @param nounB the second query noun
      *
      * @throws IllegalArgumentException if any of {@code nounA} or {@code nounB}
      * is null, or if any of {@code nounA} or {@code nounB} is not a WordNet
@@ -198,11 +268,12 @@ public class WordNet {
 
     /**
      * do unit testing of this class
+     * @param args args[0] synsets file name, args[1] hypernyms file name,
+     * args[2] the first query noun, args[3] the second query noun
      */
     public static void main(String[] args) {
         WordNet wn = new WordNet(args[0], args[1]);
 
-        StdOut.println();
         StdOut.println("isNoun(\"Actifed\")? " + wn.isNoun("Actifed"));
         StdOut.println("isNoun(\"AND_circuit\")? " + wn.isNoun("AND_circuit"));
         StdOut.println("isNoun(\"antihistamine\")? " + wn.isNoun("antihistamine"));
@@ -215,12 +286,6 @@ public class WordNet {
             i++;
         }
         StdOut.println("total number of words: " + i);
-        // StdOut.println("writing all the words to file \"all_words\"");
-        // Out o = new Out("all_words");
-        // for (String s : words) {
-        //     o.println(s);
-        // }
-        // o.close();
 
         StdOut.println();
         StdOut.printf("distance(%s,%s)=%d\n", args[2], args[3],
