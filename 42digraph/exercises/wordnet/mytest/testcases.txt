@@ -1,0 +1,55 @@
+-*- org -*-
+* test SAP
+C(3,1) * C(5,1) * C(2,1) * C(2,1)= 60 combinations
+** dimension 1: different digraphs
+- rooted DAG
+- two or more rooted DAG
+- cyclic digraph
+- null
+** dimension 2: relationship of v and w 
+- v->c, w->c, v and w are not connected
+- v->w, w-!->v, v has a path to w, but w does not have a path to v
+- w->v, v-!->w
+- v and w does not have a common ancestor
+- v == w
+** dimension 3: two nouns or two set of nouns (v and w)
+- v and w are ints
+- v and w are Iterables
+** dimension 4: methods
+- length
+- ancestor
+** dimension 5: white box testing
+- return the paths v->c and w->c
+
+* test WordNet
+** dimension 1: methods
+*** constructor
+- null arguments
+- cyclic digraph
+- multiple roots digraph
+- bad vertex value in hypernyms
+*** nouns
+- noun list
+- number of nouns
+*** isNoun
+- lookup successful
+- lookup unsuccessful
+*** distance
+- null arguments
+- non-WordNet noun
+- have SAP
+- have no SAP
+*** sap
+- null arguments
+- non-WordNet nouns
+- have SAP
+- have no SAP
+** dimension 2: consistent input or inconsistent input
+- consistent
+- inconsistent: hypernyms references invalid synset ID (<0 or >V-1)
+** dimension 3: white box testing
+- if wordMap.get(string) returns the correct set of synset IDs
+- if synsetMap.get(synsetID) returns the correct set of words
+
+* test Outcast
+- normal test, each test input more than two valid WordNet nouns
