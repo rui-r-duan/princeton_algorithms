@@ -82,7 +82,7 @@ public class WordNet {
      *
      * @throws IllegalArgumentException if any of the arguments is null, or if
      * the constructed digraph is not a rooted DAG (a.k.a no cycle, and has
-     * only one root)
+     * only one root), or any vertex value is invalid in hypernyms
      */
     public WordNet(String synsets, String hypernyms) {
         if (synsets == null || hypernyms == null)
@@ -259,9 +259,8 @@ public class WordNet {
         }
         else {
             SET<String> wordList = synsetMap.get(ancestor);
-            if (wordList == null) {
-                throw new IllegalArgumentException("data inconsistent, cannot find the closest common ancestor");
-            }
+            // once SAP object is created, no invalid synsetID exists in digraph
+            assert wordList != null;
             return wordList.min();
         }
     }

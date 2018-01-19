@@ -78,9 +78,7 @@ public class Outcast {
         }
         int max = d[0];
         int outcast = 0;
-        // StdOut.printf("d[%d]=%d\n", 0, d[0]);
         for (i = 1; i < nouns.length; i++) {
-            // StdOut.printf("d[%d]=%d\n", i, d[i]);
             if (d[i] > max) {
                 max = d[i];
                 outcast = i;
