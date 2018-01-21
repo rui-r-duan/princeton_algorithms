@@ -4,7 +4,6 @@ package: edu.princeton.cs.algs4
 
 classes:
   - EdgeWeightedGraph
-  - EdgeWeightedDirectedCycle
   - LazyPrimMST
   - PrimMST
   - IndexMinPQ
