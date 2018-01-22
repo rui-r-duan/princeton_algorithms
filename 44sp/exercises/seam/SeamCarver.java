@@ -37,34 +37,28 @@ public class SeamCarver {
      * energy of pixel at column x and row y
      */
     public double energy(int x, int y) {
-        Color c1 = pic.get(x+1, y);
-        int r1 = c1.getRed();
-        int g1 = c1.getGreen();
-        int b1 = c1.getBlue();
+        final int N = 4;     // neighbors: right,left,down,up
+        Color[] c = new Color[N];
+        int[] r = new int[N];
+        int[] g = new int[N];
+        int[] b = new int[N];
+        int[] xx = new int[] { x+1, x-1, x, x }; // right,left,down,up
+        int[] yy = new int[] { y, y, y+1, y-1 }; // right,left,down,up
+        for (int i = 0; i < N; i++) {
+            c[i] = pic.get(xx[i], yy[i]);
+            r[i] = c[i].getRed();
+            g[i] = c[i].getGreen();
+            b[i] = c[i].getBlue();
+        }
 
-        Color c2 = pic.get(x-1, y);
-        int r2 = c2.getRed();
-        int g2 = c2.getGreen();
-        int b2 = c2.getBlue();
-
-        Color c3 = pic.get(x, y+1);
-        int r3 = c3.getRed();
-        int g3 = c3.getGreen();
-        int b3 = c3.getBlue();
-
-        Color c4 = pic.get(x, y-1);
-        int r4 = c4.getRed();
-        int g4 = c4.getGreen();
-        int b4 = c4.getBlue();
-
-        double rxsq = Math.pow(r2 - r1, 2);
-        double gxsq = Math.pow(g2 - g1, 2);
-        double bxsq = Math.pow(b2 - b1, 2);
+        double rxsq = Math.pow(r[1] - r[0], 2);
+        double gxsq = Math.pow(g[1] - g[0], 2);
+        double bxsq = Math.pow(b[1] - b[0], 2);
         double dxsq = rxsq + gxsq + bxsq;
 
-        double rysq = Math.pow(r4 - r3, 2);
-        double gysq = Math.pow(g4 - g3, 2);
-        double bysq = Math.pow(b4 - b3, 2);
+        double rysq = Math.pow(r[3] - r[2], 2);
+        double gysq = Math.pow(g[3] - g[2], 2);
+        double bysq = Math.pow(b[3] - b[2], 2);
         double dysq = rysq + gysq + bysq;
 
         return Math.sqrt(dxsq + dysq);
