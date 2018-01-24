@@ -9,6 +9,7 @@ classes:
   - AcyclicSP
   - AcyclicLP
   - Topological
+  - TopologicalX
   - CPM
   - BellmanFordSP
   - EdgeWeightedDirectedCycle
