@@ -7,8 +7,6 @@ public class SeamCarver {
     private int width;
     private int height;
     private double[] energyArray;
-    private double[] distTo;
-    private int[] edgeTo;
 
     /**
      * create a seam carver object based on the given picture
