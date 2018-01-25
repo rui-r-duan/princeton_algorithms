@@ -24,19 +24,6 @@ public class SeamCarver {
                 computeEnergy(col, row);
             }
         }
-        distTo = new double[n];
-        edgeTo = new int[n];
-        for (int i = 0; i < n; i++)
-            distTo[i] = Double.POSITIVE_INFINITY;
-        for (int i = 0; i < width; i++)
-            distTo[i] = energyArray[i];
-        for (int i = 0; i < n; i++)
-            edgeTo[i] = -1;
-        // debug
-        // for (int i = 0; i < n; i++) {
-        //     StdOut.printf("(%2d,%2d) ", index2D(i)[0], index2D(i)[1]);
-        // }
-        // StdOut.println();
     }
 
     // column x, row y
@@ -78,6 +65,7 @@ public class SeamCarver {
             energyArray[index(x, y)] = 1000.0;
             return;
         }
+
         int[] xx = new int[] { x+1, x-1, x, x }; // right,left,down,up
         int[] yy = new int[] { y, y, y+1, y-1 }; // right,left,down,up
         final int N = xx.length;     // neighbors: right,left,down,up
@@ -133,6 +121,17 @@ public class SeamCarver {
         }
         return order;
     }
+    private int[][] topologicalOrder2() {
+        final int n = width * height;
+        int[][] order = new int[n][2];
+        int i = 0;
+        for (int row = 0; row < height; row++) {
+            for (int col = 0; col < width; col++) {
+                order[i++] = new int[] { col, row };
+            }
+        }
+        return order;
+    }
 
     private boolean isValidIndex2D(int x, int y) {
         return x >= 0 && x < width && y >= 0 && y < height;
@@ -160,7 +159,7 @@ public class SeamCarver {
                 return new int[] { index(x-1, y+1), index(x, y+1), index(x+1, y+1) };
     }
 
-    private void relax(int x, int y) {
+    private void relax(int x, int y, double distTo[], int edgeTo[]) {
         int v = index(x, y);
         int[] w = getChildren(x, y);
         for (int i = 0; i < w.length; i++) {
@@ -184,12 +183,22 @@ public class SeamCarver {
      * sequence of indices for vertical seam
      */
     public int[] findVerticalSeam() {
+        final int n = width * height;
+        double[] distTo = new double[n];
+        int[] edgeTo = new int[n];
+        for (int i = 0; i < n; i++)
+            distTo[i] = Double.POSITIVE_INFINITY;
+        for (int i = 0; i < width; i++)
+            distTo[i] = energyArray[i];
+        for (int i = 0; i < n; i++)
+            edgeTo[i] = -1;
+
         int[][] order = topologicalOrder();
         StdOut.println("topological order:");
         printOrder(order);
 
         for (int i = 0; i < order.length; i++) {
-            relax(order[i][0], order[i][1]);
+            relax(order[i][0], order[i][1], distTo, edgeTo);
         }
 
         int[] resultIndex1D = new int[height];
@@ -217,15 +226,87 @@ public class SeamCarver {
         for (i = 0, j = resultIndex1D.length - 1; j >= 0; j--) {
             resultX[i++] = index2D(resultIndex1D[j])[0]; // list of x coordinates
         }
+
+        ////////////////////////////////////////////////////////////
+        // debug
+        StdOut.println("distTo=");
+        for (int row = 0; row < height; row++) {
+            for (int col = 0; col < width; col++)
+                StdOut.printf("%9.2f ", distTo[index(col, row)]);
+            StdOut.println();
+        }
+        StdOut.println("edgeTo=");
+        for (int row = 0; row < height; row++) {
+            for (int col = 0; col < width; col++)
+                StdOut.printf("%9d ", edgeTo[index(col, row)]);
+            StdOut.println();
+        }
+        ////////////////////////////////////////////////////////////
+
         return resultX;
     }
+    public int[] findVerticalSeam2() {
+        final int n = width * height;
+        double[] distTo = new double[n];
+        int[] edgeTo = new int[n];
+        for (int i = 0; i < n; i++)
+            distTo[i] = Double.POSITIVE_INFINITY;
+        for (int i = 0; i < width; i++)
+            distTo[i] = energyArray[i];
+        for (int i = 0; i < n; i++)
+            edgeTo[i] = -1;
 
-    // for debug
-    public double distTo(int x, int y) {
-        return distTo[index(x, y)];
-    }
-    public int edgeTo(int x, int y) {
-        return edgeTo[index(x, y)];
+        int[][] order = topologicalOrder2();
+        StdOut.println("topological order:");
+        printOrder(order);
+
+        for (int i = 0; i < order.length; i++) {
+            relax(order[i][0], order[i][1], distTo, edgeTo);
+        }
+
+        int[] resultIndex1D = new int[height];
+
+        // find the smallest distance in the bottom line
+        double min = distTo[distTo.length - 1];
+        int minIndex = distTo.length - 1;
+        int i;
+        for (i = distTo.length - 2; i > distTo.length - (width - 1); i--) {
+            if (distTo[i] < min) {
+                min = distTo[i];
+                minIndex = i;
+            }
+        }
+
+        // trace back the shortest path
+        int j = 0;
+        for (int v = minIndex; v != -1; v = edgeTo[v]) {
+            resultIndex1D[j++] = v;
+        }
+
+        // convert the 1D index to 2D index and only push them into the result
+        // array in reverse order, only push the x coordinates
+        int[] resultX = new int[resultIndex1D.length];
+        for (i = 0, j = resultIndex1D.length - 1; j >= 0; j--) {
+            resultX[i++] = index2D(resultIndex1D[j])[0]; // list of x coordinates
+        }
+
+        ////////////////////////////////////////////////////////////
+        // debug
+        StdOut.println("distTo=");
+        for (int row = 0; row < height; row++) {
+            for (int col = 0; col < width; col++)
+                StdOut.printf("%9.2f ", distTo[index(col, row)]);
+            StdOut.println();
+        }
+        StdOut.println("edgeTo=");
+        for (int row = 0; row < height; row++) {
+            for (int col = 0; col < width; col++)
+                StdOut.printf("%9d ", edgeTo[index(col, row)]);
+            StdOut.println();
+        }
+        ////////////////////////////////////////////////////////////
+
+        return resultX;
     }
 
     /**
@@ -243,31 +324,19 @@ public class SeamCarver {
     public static void main(String[] args) {
         Picture picture = new Picture(args[0]);
         StdOut.printf("image is %d pixels wide by %d pixels high.\n", picture.width(), picture.height());
-        
+
         SeamCarver sc = new SeamCarver(picture);
-        
-        StdOut.printf("Printing energy calculated for each pixel.\n");        
+
+        StdOut.printf("Printing energy calculated for each pixel.\n");
         for (int row = 0; row < sc.height(); row++) {
             for (int col = 0; col < sc.width(); col++)
                 StdOut.printf("%9.2f ", sc.energy(col, row));
             StdOut.println();
         }
 
-        StdOut.print("findVerticalSeam...");
+        StdOut.println("findVerticalSeam...");
         int[] path = sc.findVerticalSeam();
         StdOut.println("done.");
-        StdOut.println("distTo=");
-        for (int row = 0; row < sc.height(); row++) {
-            for (int col = 0; col < sc.width(); col++)
-                StdOut.printf("%9.2f ", sc.distTo(col, row));
-            StdOut.println();
-        }
-        StdOut.println("edgeTo=");
-        for (int row = 0; row < sc.height(); row++) {
-            for (int col = 0; col < sc.width(); col++)
-                StdOut.printf("%9d ", sc.edgeTo(col, row));
-            StdOut.println();
-        }
         StdOut.println("path:");
         for (int i = 0; i < path.length; i++) {
             StdOut.print(path[i]);
@@ -276,5 +345,17 @@ public class SeamCarver {
             else
                 StdOut.print(" ");
         }
+        StdOut.println("findVerticalSeam 2...");
+        path = sc.findVerticalSeam2();
+        StdOut.println("done.");
+        StdOut.println("path:");
+        for (int i = 0; i < path.length; i++) {
+            StdOut.print(path[i]);
+            if (i == path.length - 1)
+                StdOut.println();
+            else
+                StdOut.print(" ");
+        }
+
     }
 }
