@@ -4,12 +4,22 @@ import edu.princeton.cs.algs4.StdOut;
 
 public class SeamCarver {
     private Picture pic;
+    private int width;
+    private int height;
+    private double energy[];
 
     /**
      * create a seam carver object based on the given picture
      */
     public SeamCarver(Picture picture) {
         pic = new Picture(picture);
+        width = pic.width();
+        height = pic.height();
+        energy = new double[width * height];
+        for (int row = 0; row < height; row++)
+            for (int col = 0; col < width; col++) {
+                computeEnergy(col, row);
+            }
     }
 
     /**
@@ -23,31 +33,41 @@ public class SeamCarver {
      * width of current picture
      */
     public int width() {
-        return pic.width();
+        return width;
     }
 
     /**
      * height of current picture
      */
     public int height() {
-        return pic.height();
+        return height;
     }
 
-    /**
-     * energy of pixel at column x and row y
-     */
-    public double energy(int x, int y) {
-        if (x == 0 || x == pic.width() - 1
-            || y == 0 || y == pic.height() - 1) {
-            return 1000.0;
+    // column x, row y
+    private int index(int x, int y) {
+        return y * width + x;
+    }
+
+    private int[] index2D(int i) {
+        int y = i / width;      // row
+        int x = i - y * width;  // column
+        return new int[] { x, y };
+    }
+
+    // column x, row y
+    private void computeEnergy(int x, int y) {
+        if (x == 0 || x == width - 1
+            || y == 0 || y == height - 1) {
+            energy[index(x, y)] = 1000.0;
+            return;
         }
-        final int N = 4;     // neighbors: right,left,down,up
+        int[] xx = new int[] { x+1, x-1, x, x }; // right,left,down,up
+        int[] yy = new int[] { y, y, y+1, y-1 }; // right,left,down,up
+        final int N = xx.length;     // neighbors: right,left,down,up
         Color[] c = new Color[N];
         int[] r = new int[N];
         int[] g = new int[N];
         int[] b = new int[N];
-        int[] xx = new int[] { x+1, x-1, x, x }; // right,left,down,up
-        int[] yy = new int[] { y, y, y+1, y-1 }; // right,left,down,up
         for (int i = 0; i < N; i++) {
             c[i] = pic.get(xx[i], yy[i]);
             r[i] = c[i].getRed();
@@ -65,7 +85,14 @@ public class SeamCarver {
         double bysq = Math.pow(b[3] - b[2], 2);
         double dysq = rysq + gysq + bysq;
 
-        return Math.sqrt(dxsq + dysq);
+        energy[index(x, y)] = Math.sqrt(dxsq + dysq);
+    }
+
+    /**
+     * energy of pixel at column x and row y
+     */
+    public double energy(int x, int y) {
+        return energy[index(x, y)];
     }
 
     /**
