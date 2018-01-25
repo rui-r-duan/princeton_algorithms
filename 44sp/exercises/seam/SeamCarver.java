@@ -7,6 +7,8 @@ public class SeamCarver {
     private int width;
     private int height;
     private double energy[];
+    private double distTo[];
+    private int edgeTo[];
 
     /**
      * create a seam carver object based on the given picture
@@ -20,6 +22,17 @@ public class SeamCarver {
             for (int col = 0; col < width; col++) {
                 computeEnergy(col, row);
             }
+    }
+
+    // column x, row y
+    private int index(int x, int y) {
+        return y * width + x;
+    }
+
+    private int[] index2D(int i) {
+        int y = i / width;      // row
+        int x = i - y * width;  // column
+        return new int[] { x, y };
     }
 
     /**
@@ -41,17 +54,6 @@ public class SeamCarver {
      */
     public int height() {
         return height;
-    }
-
-    // column x, row y
-    private int index(int x, int y) {
-        return y * width + x;
-    }
-
-    private int[] index2D(int i) {
-        int y = i / width;      // row
-        int x = i - y * width;  // column
-        return new int[] { x, y };
     }
 
     // column x, row y
@@ -95,6 +97,42 @@ public class SeamCarver {
         return energy[index(x, y)];
     }
 
+    // from upper left to bottom right, traverse in the diagonal lines in the
+    // direction from upper right to bottom left
+    // e.g.
+    // (0,0) (1,0) (2,0)
+    // (0,1) (1,1) (2,1)
+    // should be traversed in this topological order:
+    // (0,0) (1,0) (0,1) (2,0) (1,1) (2,1)
+    private int[][] topologicalOrder() {
+        final int p = width + height - 2;
+        final int n = width * height;
+        int[][] order = new int[n][2];
+        int j = 0;
+        for (int i = 0; i <= p; i++) {
+            for (int x = i; x >= 0; x--) {
+                int y = i - x;
+                if (isValidIndex2D(x, y))
+                    order[j++] = new int[] { x, y };
+            }
+        }
+        return order;
+    }
+
+    private boolean isValidIndex2D(int x, int y) {
+        return x >= 0 && x < width && y >= 0 && y < height;
+    }
+
+    private void printOrder(int[][] order) {
+        for (int i = 0; i < order.length; i++) {
+            StdOut.printf("(%2d,%2d)", order[i][0], order[i][1]);
+            if ((i+1) % width == 0)
+                StdOut.println();
+            else
+                StdOut.print(" ");
+        }
+    }
+
     /**
      * sequence of indices for horizontal seam
      */
@@ -106,6 +144,8 @@ public class SeamCarver {
      * sequence of indices for vertical seam
      */
     public int[] findVerticalSeam() {
+        int[][] order = topologicalOrder();
+        printOrder(order);
         return null;
     }
 
@@ -126,7 +166,8 @@ public class SeamCarver {
         SeamCarver seam = new SeamCarver(pic);
         StdOut.println("width=" + seam.width());
         StdOut.println("height=" + seam.height());
-        StdOut.printf("energy(1,2)=%.2f\n", seam.energy(1, 2));
-        StdOut.printf("energy(1,1)=%.2f\n", seam.energy(1, 1));
+        // StdOut.printf("energy(1,2)=%.2f\n", seam.energy(1, 2));
+        // StdOut.printf("energy(1,1)=%.2f\n", seam.energy(1, 1));
+        seam.findVerticalSeam();
     }
 }
