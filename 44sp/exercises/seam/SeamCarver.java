@@ -100,51 +100,8 @@ public class SeamCarver {
         return energyArray[index(x, y)];
     }
 
-    // from upper left to bottom right, traverse in the diagonal lines in the
-    // direction from upper right to bottom left
-    // e.g.
-    // (0,0) (1,0) (2,0)
-    // (0,1) (1,1) (2,1)
-    // should be traversed in this topological order:
-    // (0,0) (1,0) (0,1) (2,0) (1,1) (2,1)
-    private int[][] topologicalOrder() {
-        final int p = width + height - 2;
-        final int n = width * height;
-        int[][] order = new int[n][2];
-        int j = 0;
-        for (int i = 0; i <= p; i++) {
-            for (int x = i; x >= 0; x--) {
-                int y = i - x;
-                if (isValidIndex2D(x, y))
-                    order[j++] = new int[] { x, y };
-            }
-        }
-        return order;
-    }
-    private int[][] topologicalOrder2() {
-        final int n = width * height;
-        int[][] order = new int[n][2];
-        int i = 0;
-        for (int row = 0; row < height; row++) {
-            for (int col = 0; col < width; col++) {
-                order[i++] = new int[] { col, row };
-            }
-        }
-        return order;
-    }
-
     private boolean isValidIndex2D(int x, int y) {
         return x >= 0 && x < width && y >= 0 && y < height;
-    }
-
-    private void printOrder(int[][] order) {
-        for (int i = 0; i < order.length; i++) {
-            StdOut.printf("(%2d,%2d)", order[i][0], order[i][1]);
-            if ((i+1) % width == 0)
-                StdOut.println();
-            else
-                StdOut.print(" ");
-        }
     }
 
     private int[] getChildren(int x, int y) {
@@ -163,8 +120,6 @@ public class SeamCarver {
         int v = index(x, y);
         int[] w = getChildren(x, y);
         for (int i = 0; i < w.length; i++) {
-            // StdOut.printf("distTo[v=%d]=%.2f, distTo[w=%d]=%.2f, energy[w=%d]=%.2f\n",
-                          // v, distTo[v], w[i], distTo[w[i]], w[i], energyArray[w[i]]);
             if (distTo[w[i]] > distTo[v] + energyArray[w[i]]) {
                 distTo[w[i]] = distTo[v] + energyArray[w[i]];
                 edgeTo[w[i]] = v;
@@ -193,75 +148,13 @@ public class SeamCarver {
         for (int i = 0; i < n; i++)
             edgeTo[i] = -1;
 
-        int[][] order = topologicalOrder();
-        StdOut.println("topological order:");
-        printOrder(order);
-
-        for (int i = 0; i < order.length; i++) {
-            relax(order[i][0], order[i][1], distTo, edgeTo);
-        }
-
-        int[] resultIndex1D = new int[height];
-
-        // find the smallest distance in the bottom line
-        double min = distTo[distTo.length - 1];
-        int minIndex = distTo.length - 1;
-        int i;
-        for (i = distTo.length - 2; i > distTo.length - (width - 1); i--) {
-            if (distTo[i] < min) {
-                min = distTo[i];
-                minIndex = i;
+        // Relax the vertices (pixels) in a topological order.
+        // Note that there are more than 3 topological orders for this digraph.
+        // We choose the simplest one which is the natual sequence order.
+        for (int row = 0; row < height; row++) {
+            for (int col = 0; col < width; col++) {
+                relax(col, row, distTo, edgeTo);
             }
-        }
-
-        // trace back the shortest path
-        int j = 0;
-        for (int v = minIndex; v != -1; v = edgeTo[v]) {
-            resultIndex1D[j++] = v;
-        }
-
-        // convert the 1D index to 2D index and only push them into the result
-        // array in reverse order, only push the x coordinates
-        int[] resultX = new int[resultIndex1D.length];
-        for (i = 0, j = resultIndex1D.length - 1; j >= 0; j--) {
-            resultX[i++] = index2D(resultIndex1D[j])[0]; // list of x coordinates
-        }
-
-        ////////////////////////////////////////////////////////////
-        // debug
-        StdOut.println("distTo=");
-        for (int row = 0; row < height; row++) {
-            for (int col = 0; col < width; col++)
-                StdOut.printf("%9.2f ", distTo[index(col, row)]);
-            StdOut.println();
-        }
-        StdOut.println("edgeTo=");
-        for (int row = 0; row < height; row++) {
-            for (int col = 0; col < width; col++)
-                StdOut.printf("%9d ", edgeTo[index(col, row)]);
-            StdOut.println();
-        }
-        ////////////////////////////////////////////////////////////
-
-        return resultX;
-    }
-    public int[] findVerticalSeam2() {
-        final int n = width * height;
-        double[] distTo = new double[n];
-        int[] edgeTo = new int[n];
-        for (int i = 0; i < n; i++)
-            distTo[i] = Double.POSITIVE_INFINITY;
-        for (int i = 0; i < width; i++)
-            distTo[i] = energyArray[i];
-        for (int i = 0; i < n; i++)
-            edgeTo[i] = -1;
-
-        int[][] order = topologicalOrder2();
-        StdOut.println("topological order:");
-        printOrder(order);
-
-        for (int i = 0; i < order.length; i++) {
-            relax(order[i][0], order[i][1], distTo, edgeTo);
         }
 
         int[] resultIndex1D = new int[height];
@@ -334,9 +227,9 @@ public class SeamCarver {
             StdOut.println();
         }
 
-        StdOut.println("findVerticalSeam...");
+        StdOut.println("Finding a vertical seam...");
         int[] path = sc.findVerticalSeam();
-        StdOut.println("done.");
+        StdOut.println("Done.");
         StdOut.println("path:");
         for (int i = 0; i < path.length; i++) {
             StdOut.print(path[i]);
@@ -345,17 +238,5 @@ public class SeamCarver {
             else
                 StdOut.print(" ");
         }
-        StdOut.println("findVerticalSeam 2...");
-        path = sc.findVerticalSeam2();
-        StdOut.println("done.");
-        StdOut.println("path:");
-        for (int i = 0; i < path.length; i++) {
-            StdOut.print(path[i]);
-            if (i == path.length - 1)
-                StdOut.println();
-            else
-                StdOut.print(" ");
-        }
-
     }
 }
