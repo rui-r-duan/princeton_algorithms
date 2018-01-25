@@ -37,6 +37,10 @@ public class SeamCarver {
      * energy of pixel at column x and row y
      */
     public double energy(int x, int y) {
+        if (x == 0 || x == pic.width() - 1
+            || y == 0 || y == pic.height() - 1) {
+            return 1000.0;
+        }
         final int N = 4;     // neighbors: right,left,down,up
         Color[] c = new Color[N];
         int[] r = new int[N];
