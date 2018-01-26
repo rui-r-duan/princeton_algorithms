@@ -1,6 +1,6 @@
 import edu.princeton.cs.algs4.StdOut;
 
-public class SeamFinder {
+class SeamFinder {
     private final Matrix<Double> energy;
 
     public SeamFinder(Double[][] energyArray, boolean isVertical) {
