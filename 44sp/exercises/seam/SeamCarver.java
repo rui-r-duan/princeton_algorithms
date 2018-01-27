@@ -14,6 +14,10 @@ public class SeamCarver {
      */
     public SeamCarver(Picture picture) {
         pic = new Picture(picture);
+        update();
+    }
+
+    private void update() {
         int width = pic.width();
         int height = pic.height();
         final int n = width * height;
@@ -108,12 +112,32 @@ public class SeamCarver {
      * remove horizontal seam from current picture
      */
     public void removeHorizontalSeam(int[] seam) {
+        Picture np = new Picture(width(), height() - 1);
+        for (int x = 0; x < width(); x++) {
+            int y = 0;
+            for (int y0 = 0; y0 < height(); y0++) {
+                if (seam[x] != y0)
+                    np.setRGB(x, y++, pic.getRGB(x, y0));
+            }
+        }
+        pic = np;
+        update();
     }
 
     /**
      * remove vertical seam from current picture
      */
     public void removeVerticalSeam(int[] seam) {
+        Picture np = new Picture(width() - 1, height());
+        for (int y = 0; y < height(); y++) {
+            int x = 0;
+            for (int x0 = 0; x0 < width(); x0++) {
+                if (seam[y] != x0)
+                    np.setRGB(x++, y, pic.getRGB(x0, y));
+            }
+        }
+        pic = np;
+        update();
     }
 
     public static void main(String[] args) {
