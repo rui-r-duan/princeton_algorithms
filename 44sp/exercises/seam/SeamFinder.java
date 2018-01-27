@@ -1,5 +1,3 @@
-import edu.princeton.cs.algs4.StdOut;
-
 class SeamFinder {
     private final Matrix<Double> energy;
 
@@ -29,6 +27,7 @@ class SeamFinder {
 
     /**
      * energy of pixel at column x and row y
+     * @throws IllegalArgumentException if x or y is outside its prescribed range
      */
     public double energy(int x, int y) {
         return energy.get(new Coordinate(x, y));

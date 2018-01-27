@@ -11,12 +11,18 @@ public class SeamCarver {
     private static final boolean HORIZONTAL = false;
     /**
      * create a seam carver object based on the given picture
+     * @throws IllegalArgumentException if x or y is outside its prescribed range
+     *         or if the argument {@code picture} is null
      */
     public SeamCarver(Picture picture) {
+        if (picture == null) throw new IllegalArgumentException("null argument");
         pic = new Picture(picture);
         update();
     }
 
+    /*
+     * @throws IllegalArgumentException if x or y is outside its prescribed range
+     */
     private void update() {
         int width = pic.width();
         int height = pic.height();
@@ -89,6 +95,7 @@ public class SeamCarver {
 
     /**
      * energy of pixel at column x and row y
+     * @throws IllegalArgumentException if x or y is outside its prescribed range
      */
     public double energy(int x, int y) {
         return seamV.energy(x, y);
@@ -110,8 +117,17 @@ public class SeamCarver {
 
     /**
      * remove horizontal seam from current picture
+     * @throws IllegalArgumentException if the argument {@code seam} is null
      */
     public void removeHorizontalSeam(int[] seam) {
+        if (seam == null)
+            throw new IllegalArgumentException("null argument");
+
+        checkSeamValid(seam, HORIZONTAL);
+
+        if (height() == 1)
+            throw new IllegalArgumentException("height=1,cannot remove more");
+
         Picture np = new Picture(width(), height() - 1);
         for (int x = 0; x < width(); x++) {
             int y = 0;
@@ -126,8 +142,17 @@ public class SeamCarver {
 
     /**
      * remove vertical seam from current picture
+     * @throws IllegalArgumentException if the argument {@code seam} is null
      */
     public void removeVerticalSeam(int[] seam) {
+        if (seam == null)
+            throw new IllegalArgumentException("null argument");
+
+        checkSeamValid(seam, VERTICAL);
+
+        if (width() == 1)
+            throw new IllegalArgumentException("height=1,cannot remove more");
+
         Picture np = new Picture(width() - 1, height());
         for (int y = 0; y < height(); y++) {
             int x = 0;
@@ -138,6 +163,48 @@ public class SeamCarver {
         }
         pic = np;
         update();
+    }
+
+    /*
+     * @pre: seam != null
+     */
+    private void checkSeamValid(int[] seam, boolean direction) {
+        assert seam != null;
+        // check the length
+        if (direction == VERTICAL) {
+            if (seam.length != height())
+                throw new IllegalArgumentException("invalid seam: bad length: " + seam.length);
+        }
+        else {
+            if (seam.length != width())
+                throw new IllegalArgumentException("invalid seam: bad length: " + seam.length);
+        }
+
+        // check whether every element is in the prescribed range
+        if (direction == VERTICAL) {
+            for (int i = 0; i < seam.length; i++)
+                if (!xValid(seam[i]))
+                    throw new IllegalArgumentException("invalid seam: bad range: " + seam[i]);
+        }
+        else {
+            for (int i = 0; i < seam.length; i++)
+                if (!yValid(seam[i]))
+                    throw new IllegalArgumentException("invalid seam: bad range: " + seam[i]);
+        }
+
+        // check if two adjacent entries differ by more than 1
+        for (int i = 0; i < seam.length - 1; i++) {
+            if (Math.abs(seam[i+1] - seam[i]) > 1)
+                throw new IllegalArgumentException("invalid seam: bad adjacent: " + seam[i] + ", " + seam[i+1]);
+        }
+    }
+
+    private boolean xValid(int x) {
+        return x >= 0 && x < width();
+    }
+
+    private boolean yValid(int y) {
+        return y >= 0 && y < height();
     }
 
     public static void main(String[] args) {
@@ -154,12 +221,12 @@ public class SeamCarver {
         }
 
         StdOut.println("Finding a vertical seam...");
-        int[] path = sc.findVerticalSeam();
+        int[] seam = sc.findVerticalSeam();
         StdOut.println("Done.");
         StdOut.println("Vertial seam:");
-        for (int i = 0; i < path.length; i++) {
-            StdOut.print(path[i]);
-            if (i == path.length - 1)
+        for (int i = 0; i < seam.length; i++) {
+            StdOut.print(seam[i]);
+            if (i == seam.length - 1)
                 StdOut.println();
             else
                 StdOut.print(" ");
@@ -167,15 +234,45 @@ public class SeamCarver {
 
         StdOut.println();
         StdOut.println("Finding a horizontal seam...");
-        path = sc.findHorizontalSeam();
+        seam = sc.findHorizontalSeam();
         StdOut.println("Done.");
         StdOut.println("Horizontal seam:");
-        for (int i = 0; i < path.length; i++) {
-            StdOut.print(path[i]);
-            if (i == path.length - 1)
+        for (int i = 0; i < seam.length; i++) {
+            StdOut.print(seam[i]);
+            if (i == seam.length - 1)
                 StdOut.println();
             else
                 StdOut.print(" ");
+        }
+
+        StdOut.println();
+        StdOut.println("Check invalid seam");
+        try {
+            int[] badSeam1 = new int[0]; // bad length
+            sc.removeHorizontalSeam(badSeam1);
+        }
+        catch (IllegalArgumentException e) {
+            StdOut.println(e);
+        }
+
+        try {
+            int[] badSeam2 = new int[seam.length];
+            System.arraycopy(badSeam2, 0, seam, 0, seam.length);
+            badSeam2[0] = sc.height(); // bad range
+            sc.removeHorizontalSeam(badSeam2);
+        }
+        catch (IllegalArgumentException e) {
+            StdOut.println(e);
+        }
+
+        try {
+            int[] badSeam3 = new int[seam.length];
+            System.arraycopy(badSeam3, 0, seam, 0, seam.length);
+            badSeam3[0] = badSeam3[1] + 2; // bad adjacent
+            sc.removeHorizontalSeam(badSeam3);
+        }
+        catch (IllegalArgumentException e) {
+            StdOut.println(e);
         }
     }
 }

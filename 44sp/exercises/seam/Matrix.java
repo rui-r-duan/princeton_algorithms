@@ -39,7 +39,9 @@ class Matrix<E> {
         return n;
     }
 
-    // @throws IllegalArgumentException if p is out of the array bounds
+    /**
+     * @throws IllegalArgumentException if p is out of the array bounds
+     */
     public E get(Coordinate p) {
         if (!isValidCoordinate(p))
             throw new IllegalArgumentException("p.x=" + p.x + ", p.y=" + p.y
@@ -51,6 +53,9 @@ class Matrix<E> {
             return a[p.y][p.x]; // x is column number, x is row number
     }
 
+    /**
+     * @throws IllegalArgumentException if p is out of the array bounds
+     */
     public void set(Coordinate p, E v) {
         if (!isValidCoordinate(p))
             throw new IllegalArgumentException("p.x=" + p.x + ", p.y=" + p.y
