@@ -39,7 +39,7 @@ class SeamFinder {
         else
             if (width() == 1)
                 return new Coordinate[] {
-                    new Coordinate(x, y+1);
+                    new Coordinate(x, y+1)
                 };
             else if (x == 0)
                 return new Coordinate[] {
