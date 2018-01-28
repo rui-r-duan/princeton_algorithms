@@ -151,7 +151,7 @@ public class SeamCarver {
         checkSeamValid(seam, VERTICAL);
 
         if (width() == 1)
-            throw new IllegalArgumentException("height=1,cannot remove more");
+            throw new IllegalArgumentException("width=1,cannot remove more");
 
         Picture np = new Picture(width() - 1, height());
         for (int y = 0; y < height(); y++) {
