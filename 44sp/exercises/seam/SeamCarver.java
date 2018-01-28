@@ -41,7 +41,8 @@ public class SeamCarver {
      * current picture
      */
     public Picture picture() {
-        return pic;
+        // prevent the client to mutate the internal picture
+        return new Picture(pic);
     }
 
     /**
