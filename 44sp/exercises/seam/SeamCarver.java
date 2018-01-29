@@ -3,12 +3,13 @@ import edu.princeton.cs.algs4.Picture;
 import edu.princeton.cs.algs4.StdOut;
 
 public class SeamCarver {
+    private static final boolean VERTICAL = true;
+    private static final boolean HORIZONTAL = false;
+
     private Picture pic;
     private SeamFinder seamV;
     private SeamFinder seamH;
 
-    private static final boolean VERTICAL = true;
-    private static final boolean HORIZONTAL = false;
     /**
      * create a seam carver object based on the given picture
      * @throws IllegalArgumentException if x or y is outside its prescribed range
@@ -26,7 +27,6 @@ public class SeamCarver {
     private void update() {
         int width = pic.width();
         int height = pic.height();
-        final int n = width * height;
         Double[][] energyArray = new Double[height][width]; // row major order
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
