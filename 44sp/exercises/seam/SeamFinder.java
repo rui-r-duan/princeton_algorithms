@@ -1,11 +1,11 @@
 class SeamFinder {
-    private final Matrix<Double> energy;
+    private final Matrix energy;
 
-    public SeamFinder(Double[][] energyArray, boolean isVertical) {
+    public SeamFinder(double[][] energyArray, boolean isVertical) {
         assert energyArray != null;
         assert energyArray[0] != null;
         boolean isTransposed = !isVertical;
-        energy = new Matrix<Double>(energyArray, isTransposed);
+        energy = new Matrix(energyArray, isTransposed);
     }
 
     private int width() {
@@ -59,8 +59,8 @@ class SeamFinder {
                 };
     }
 
-    private void relax(int x, int y, Matrix<Double> distTo,
-                       Matrix<Coordinate> edgeTo) {
+    private void relax(int x, int y, Matrix distTo,
+                       CoordMatrix edgeTo) {
         Coordinate v = new Coordinate(x, y);
         Coordinate[] children = getChildren(x, y);
         for (Coordinate w : children) {
@@ -75,17 +75,17 @@ class SeamFinder {
      * sequence of indices for vertical seam
      */
     public int[] findVerticalSeam() {
-        Double[][] arrayDistTo = new Double[height()][width()];
-        arrayDistTo[0] = new Double[width()];
+        double[][] arrayDistTo = new double[height()][width()];
+        arrayDistTo[0] = new double[width()];
         for (int x = 0; x < width(); x++)
             arrayDistTo[0][x] = energy(x, 0);
         for (int y = 1; y < height(); y++) {
-            arrayDistTo[y] = new Double[width()];
+            arrayDistTo[y] = new double[width()];
             for (int x = 0; x < width(); x++) {
                 arrayDistTo[y][x] = Double.POSITIVE_INFINITY;
             }
         }
-        Matrix<Double> distTo = new Matrix<>(arrayDistTo);
+        Matrix distTo = new Matrix(arrayDistTo);
 
         Coordinate[][] arrayEdgeTo = new Coordinate[height()][width()];
         for (int y = 0; y < height(); y++) {
@@ -94,7 +94,7 @@ class SeamFinder {
                 arrayEdgeTo[y][x] = new Coordinate(-1, -1);
             }
         }
-        Matrix<Coordinate> edgeTo = new Matrix<>(arrayEdgeTo);
+        CoordMatrix edgeTo = new CoordMatrix(arrayEdgeTo);
 
         // Relax the vertices (pixels) in a topological order.
         // Note that there are more than 3 topological orders for this digraph.

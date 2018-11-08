@@ -2,7 +2,7 @@
  *  Compilation:  javac TimingBasic.java
  *  Execution:    java TimingBasic input.png columnsToRemove rowsToRemove
  *  Dependencies: SeamCarver.java
- *                
+ *
  *
  *  Read image from file specified as command line argument. Use SeamCarver
  *  to remove number of rows and columns specified as command line arguments.

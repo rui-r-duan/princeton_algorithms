@@ -27,7 +27,7 @@ public class SeamCarver {
     private void update() {
         int width = pic.width();
         int height = pic.height();
-        Double[][] energyArray = new Double[height][width]; // row major order
+        double[][] energyArray = new double[height][width]; // row major order
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 computeEnergy(x, y, energyArray);
@@ -60,7 +60,7 @@ public class SeamCarver {
     }
 
     // column x, row y
-    private void computeEnergy(int x, int y, Double[][] energyArray) {
+    private void computeEnergy(int x, int y, double[][] energyArray) {
         if (x == 0 || x == pic.width() - 1
             || y == 0 || y == pic.height() - 1) {
             energyArray[y][x] = 1000.0;

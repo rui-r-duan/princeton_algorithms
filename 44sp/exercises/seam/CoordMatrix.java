@@ -1,18 +1,18 @@
 /**
- * number matrix that has the normal mode and transpose mode
+ * Coordinate matrix that has the normal mode and transpose mode
  */
-class Matrix {
+class CoordMatrix {
     private int m;
     private int n;
     private boolean isTrans;
-    private final double[][] a; // a reference to an external object
+    private final Coordinate[][] a; // a reference to an external object
 
-    public Matrix(double[][] matrix) {
+    public CoordMatrix(Coordinate[][] matrix) {
         // isTransposed == false, row major mode
         this(matrix, false);
     }
 
-    public Matrix(double[][] matrix, boolean isTransposed) {
+    public CoordMatrix(Coordinate[][] matrix, boolean isTransposed) {
         assert matrix != null;
         assert matrix[0] != null;
         a = matrix;
@@ -42,7 +42,7 @@ class Matrix {
     /**
      * @throws IllegalArgumentException if p is out of the array bounds
      */
-    public double get(Coordinate p) {
+    public Coordinate get(Coordinate p) {
         if (!isValidCoordinate(p))
             throw new IllegalArgumentException("p.x=" + p.x + ", p.y=" + p.y
                                                + " is out of bounds. rows="
@@ -56,7 +56,7 @@ class Matrix {
     /**
      * @throws IllegalArgumentException if p is out of the array bounds
      */
-    public void set(Coordinate p, double v) {
+    public void set(Coordinate p, Coordinate v) {
         if (!isValidCoordinate(p))
             throw new IllegalArgumentException("p.x=" + p.x + ", p.y=" + p.y
                                                + " is out of bounds. rows="
