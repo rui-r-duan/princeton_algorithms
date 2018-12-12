@@ -27,14 +27,30 @@ public class SeamCarver {
     private void update() {
         int width = pic.width();
         int height = pic.height();
-        double[][] energyArray = new double[height][width]; // row major order
+        double[][] energyMatrix = new double[height][width]; // row major order
+        int[][] colorMatrix = getColorMatrix(pic);
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                computeEnergy(x, y, energyArray);
+                computeEnergy(x, y, colorMatrix, energyMatrix); // update energyMatrix
             }
         }
-        seamV = new SeamFinder(energyArray, VERTICAL);
-        seamH = new SeamFinder(energyArray, HORIZONTAL);
+        seamV = new SeamFinder(energyMatrix, VERTICAL);
+        seamH = new SeamFinder(energyMatrix, HORIZONTAL);
+    }
+
+    /*
+     * generate a color matrix of the picture
+     */
+    private int[][] getColorMatrix(Picture pic) {
+        int width = pic.width();
+        int height = pic.height();
+        int[][] m = new int[height][width]; // row major order
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                m[y][x] = pic.getRGB(x, y);
+            }
+        }
+        return m;
     }
 
     /**
@@ -60,25 +76,27 @@ public class SeamCarver {
     }
 
     // column x, row y
-    private void computeEnergy(int x, int y, double[][] energyArray) {
-        if (x == 0 || x == pic.width() - 1
+    // input: x, y, colorMatrix
+    // output: energyMatrix
+    private void computeEnergy(int x, int y, int[][] colorMatrix, double[][] energyMatrix) {
+        if (   x == 0 || x == pic.width() - 1
             || y == 0 || y == pic.height() - 1) {
-            energyArray[y][x] = 1000.0;
+            energyMatrix[y][x] = 1000.0;
             return;
         }
 
         int[] xx = new int[] { x+1, x-1, x, x }; // right,left,down,up
         int[] yy = new int[] { y, y, y+1, y-1 }; // right,left,down,up
         final int N = xx.length;     // neighbors: right,left,down,up
-        Color[] c = new Color[N];
+        int[] rgb = new int[N];
         int[] r = new int[N];
         int[] g = new int[N];
         int[] b = new int[N];
         for (int i = 0; i < N; i++) {
-            c[i] = pic.get(xx[i], yy[i]);
-            r[i] = c[i].getRed();
-            g[i] = c[i].getGreen();
-            b[i] = c[i].getBlue();
+            rgb[i] = colorMatrix[yy[i]][xx[i]];
+            r[i] = (rgb[i] >> 16) & 0xFF;
+            g[i] = (rgb[i] >>  8) & 0xFF;
+            b[i] =  rgb[i]        & 0xFF;
         }
 
         double rxsq = Math.pow(r[1] - r[0], 2);
@@ -91,7 +109,7 @@ public class SeamCarver {
         double bysq = Math.pow(b[3] - b[2], 2);
         double dysq = rysq + gysq + bysq;
 
-        energyArray[y][x] = Math.sqrt(dxsq + dysq);
+        energyMatrix[y][x] = Math.sqrt(dxsq + dysq);
     }
 
     /**
