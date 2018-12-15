@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# ***************************************************
+# javac-algs4
+# ------------------
+# Wrapper for java that includes algs4.jar (including 
+# stdlib and selected exercise code)
+# ***************************************************
+
+INSTALLDIR=~/code/princeton_algorithms
+
+/usr/bin/javac -cp ".:$INSTALLDIR/algs4.jar" -g -encoding UTF-8 -Xlint:all $*
