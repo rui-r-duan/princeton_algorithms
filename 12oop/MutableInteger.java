@@ -3,7 +3,7 @@
  *  Execution:    java MutableInteger
  *  Dependencies: StdOut.java
  *
- *  Shows that Integerss are mutable if you allow reflection.
+ *  Shows that Integers are mutable if you allow reflection.
  *
  *  Edited by Ryan Duan on 31st Oct, 2017
  * 
